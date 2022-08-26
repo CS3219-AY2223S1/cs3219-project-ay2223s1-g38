@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: "[#IssueNumber] [Service] [FR/NFR #] Issue Name"
+title: "[#IssueNumber] [Service] [FR/NFR #] [W#] Issue Name"
 labels: ''
 assignees: ''
 
