@@ -1,4 +1,4 @@
-import { createUser, isUserExists } from './repository.js';
+import { createUser, isUserExists, login } from './repository.js';
 
 //need to separate orm functions from repository to decouple business logic from persistence
 export async function ormCreateUser(username, password) {
@@ -11,6 +11,20 @@ export async function ormCreateUser(username, password) {
         return true;
     } catch (err) {
         console.log('ERROR: Could not create new user');
-        return { err : 400, msg : "Could not create a new user!" };
+        return { err : 400, msg : err };
+    }
+}
+
+export async function ormLogin(username, password) {
+    try {
+        let user = await login({username, password})
+        if (user) {
+            return { username : user.username };
+        }
+        console.log("Invalid login credentials!")
+        return { err : 401, msg : "Invalid login credentials!"};
+    } catch (err) {
+        console.log('ERROR: Could not log in!');
+        return { err : 400, msg : err };
     }
 }

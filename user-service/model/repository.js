@@ -15,6 +15,11 @@ export async function createUser(params) {
   return new UserModel(params)
 }
 
+export async function login(params) {
+  let user = await db.collection('usermodels').findOne({username : params.username, password : params.password});
+  return user;
+}
+
 export async function isUserExists(username) {
   let user = await db.collection('usermodels').findOne({username : username});
   return (user != null);

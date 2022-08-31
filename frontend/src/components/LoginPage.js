@@ -11,9 +11,8 @@ import {
 } from "@mui/material";
 import {useState} from "react";
 import axios from "axios";
-import {URL_USER_SVC} from "../configs";
-import {STATUS_CODE_CONFLICT, STATUS_CODE_CREATED} from "../constants";
-import {Link} from "react-router-dom";
+import {URL_LOGIN_SVC} from "../configs";
+import { STATUS_CODE_SUCCESS, STATUS_CODE_UNAUTHORIZED} from "../constants";
 
 function LoginPage() {
     const [username, setUsername] = useState("")
@@ -22,20 +21,23 @@ function LoginPage() {
     const [dialogTitle, setDialogTitle] = useState("")
     const [dialogMsg, setDialogMsg] = useState("")
     const [isLoginSuccess, setIsLoginSuccess] = useState(false)
+    const [loggedInUser, setLoggedInUser] = useState("")
 
     const handleLogin = async () => {
         setIsLoginSuccess(false)
-        const res = await axios.post(URL_USER_SVC, { username, password })
+        const res = await axios.post(URL_LOGIN_SVC, { username, password })
             .catch((err) => {
-                if (err.response.status === STATUS_CODE_CONFLICT) {
-                    setErrorDialog('This username already exists')
+                if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
+                    setErrorDialog('Invalid username or password!')
                 } else {
                     setErrorDialog('Please try again later')
                 }
             })
-        if (res && res.status === STATUS_CODE_CREATED) {
-            setSuccessDialog('Account successfully created')
+        if (res && res.status === STATUS_CODE_SUCCESS) {
+            setSuccessDialog('Successfully logged in!')
             setIsLoginSuccess(true)
+            setIsDialogOpen(true)
+            setLoggedInUser(res.data.username)
         }
     }
 
@@ -85,12 +87,10 @@ function LoginPage() {
                     <DialogContentText>{dialogMsg}</DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    {isLoginSuccess
-                        ? <Button component={Link} to="/login">Success</Button>
-                        : <Button onClick={closeDialog}>Failure</Button>
-                    }
+                    <Button onClick={closeDialog}>Done</Button>
                 </DialogActions>
             </Dialog>
+            {isLoginSuccess ? <Typography>Logged in to {loggedInUser}</Typography> : <></>}
         </Box>
     )
 }
