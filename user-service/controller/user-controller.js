@@ -7,7 +7,7 @@ export async function createUser(req, res) {
             const resp = await _createUser(username, password);
             console.log(resp);
             if (resp.err) {
-                return res.status(400).json({message: 'Could not create a new user!'});
+                return res.status(resp.err).json({message: resp.msg});
             } else {
                 console.log(`Created new user ${username} successfully!`)
                 return res.status(201).json({message: `Created new user ${username} successfully!`});
