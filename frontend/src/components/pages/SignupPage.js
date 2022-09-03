@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -16,12 +16,14 @@ import { Link as RRLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { URL_CREATE_USER_SVC } from "../../configs";
-// import { STATUS_CODE_CONFLICT, STATUS_CODE_CREATED } from "../../constants";
+import { STATUS_CODE_CONFLICT, STATUS_CODE_CREATED } from "../../constants";
 
 const theme = createTheme();
 
 export default function SignUp() {
 	const navigate = useNavigate(); 
+	const [ usernameError, setUsernameError ] = useState(false); 
+	const [ passwordError, setPasswordError ] = useState(false); 
 
 	const handleSignup = async (event) => {
 		event.preventDefault();
@@ -29,15 +31,23 @@ export default function SignUp() {
 		const username = data.get("username"); 
 		const password = data.get("password");
 
-		await axios.post(URL_CREATE_USER_SVC, { username, password });
-		// .catch((err) => {
-		// 	if (err.response.status === STATUS_CODE_CONFLICT) {
-		// 	} else {
-		// 	}
-		// });
-		// if (res && res.status === STATUS_CODE_CREATED) {
-		// }
-		navigate("/login");
+		if (!username || !password) {
+			setUsernameError(!username ? "Username cannot be empty." : null); 
+			setPasswordError(!password ? "Password cannot be empty." : null);
+			return; 
+		}
+		const res = await axios.post(URL_CREATE_USER_SVC, { username, password })
+			.catch((err) => {
+				if (err.response.status === STATUS_CODE_CONFLICT) {
+					setUsernameError("Username already exists.");
+				} else {
+					setUsernameError(true); 
+					setPasswordError("Something went wrong. Please try again later.");
+				}
+			});
+		if (res && res.status === STATUS_CODE_CREATED) {
+			navigate("/login");
+		}
 	};
 
 	return (
@@ -66,6 +76,8 @@ export default function SignUp() {
 						<Grid container spacing={2}>
 							<Grid item xs={12}>
 								<TextField
+									error={usernameError}
+									helperText={usernameError}
 									required
 									fullWidth
 									id="username"
@@ -76,6 +88,8 @@ export default function SignUp() {
 							</Grid>
 							<Grid item xs={12}>
 								<TextField
+									error={passwordError}
+									helperText={passwordError}
 									required
 									fullWidth
 									name="password"

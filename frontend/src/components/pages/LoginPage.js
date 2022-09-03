@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -20,20 +18,34 @@ import backgroundImage from "../../static/algohike.jpg";
 import { URL_LOGIN_SVC } from "../../configs";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/user/userSlice";
-import { STATUS_CODE_SUCCESS } from "../../constants";
+import { STATUS_CODE_SUCCESS, STATUS_CODE_UNAUTHORIZED } from "../../constants";
 
 const theme = createTheme();
 
 const LoginPage = () => {
 	const dispatch = useDispatch(); 
+	const [ usernameError, setUsernameError ] = useState(false); 
+	const [ passwordError, setPasswordError ] = useState(false); 
 
 	const handleLogin = async (event) => {
 		event.preventDefault(); 
 		const data = new FormData(event.currentTarget);
 		const username = data.get("username");
 		const password = data.get("password");
-		const res = await axios.post(URL_LOGIN_SVC, { username, password }).catch(err => console.log(err, "failed")); 
-
+		if (!username || !password) {
+			setUsernameError(!username ? "Username cannot be empty." : null); 
+			setPasswordError(!password ? "Password cannot be empty." : null);
+			return; 
+		}
+		const res = await axios.post(URL_LOGIN_SVC, { username, password }).catch(err => {
+			if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
+				setUsernameError(true); 
+				setPasswordError("Invalid username or password."); 
+			} else {
+				setUsernameError(true); 
+				setPasswordError("Something went wrong. Please try again later.");
+			}
+		}); 
 		if (res && res.status === STATUS_CODE_SUCCESS ) {
 			dispatch(login());
 		}
@@ -75,6 +87,8 @@ const LoginPage = () => {
 						</Typography>
 						<Box component="form" noValidate onSubmit={handleLogin} sx={{ mt: 1 }}>
 							<TextField
+								error={usernameError}
+								helperText={usernameError}
 								margin="normal"
 								required
 								fullWidth
@@ -85,6 +99,8 @@ const LoginPage = () => {
 								autoFocus
 							/>
 							<TextField
+								error={passwordError}
+								helperText={passwordError}
 								margin="normal"
 								required
 								fullWidth
@@ -93,10 +109,6 @@ const LoginPage = () => {
 								type="password"
 								id="password"
 								autoComplete="current-password"
-							/>
-							<FormControlLabel
-								control={<Checkbox value="remember" color="primary" />}
-								label="Remember me"
 							/>
 							<Button
 								type="submit"
@@ -108,9 +120,9 @@ const LoginPage = () => {
 							</Button>
 							<Grid container>
 								<Grid item xs>
-									<Link href="#" variant="body2">
+									{/* <Link href="#" variant="body2">
                     Forgot password?
-									</Link>
+									</Link> */}
 								</Grid>
 								<Grid item>
 									<RRLink to='/signup'>
