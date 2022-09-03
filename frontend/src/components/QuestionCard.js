@@ -20,9 +20,7 @@ const QuestionCard = () => {
 				}}
 				sx={{
 					backgroundColor: (theme) =>
-						theme.palette.mode === "light"
-							? theme.palette.grey[200]
-							: theme.palette.grey[700],
+						theme.palette.primary.dark
 				}}
 			/>
 			<CardContent>
@@ -40,7 +38,7 @@ const QuestionCard = () => {
 				</Box>
 			</CardContent>
 			<CardActions>
-				<Button fullWidth>
+				<Button fullWidth sx={{ color: "black" }}>
 					{"Start"}
 				</Button>
 			</CardActions>
