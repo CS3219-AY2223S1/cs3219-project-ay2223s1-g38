@@ -1,2 +1,8 @@
+# Node 
 node_modules
-user-service/.env
+
+# Project files  
+*.env
+
+# MacOS 
+*.DS_Store
