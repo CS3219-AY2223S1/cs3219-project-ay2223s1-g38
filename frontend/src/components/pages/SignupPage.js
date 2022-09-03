@@ -1,100 +1,111 @@
-import React, { useState } from "react";
+import React from "react";
 
-import {
-	Box,
-	Button,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogContentText,
-	DialogTitle,
-	TextField,
-	Typography
-} from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Paper from "@mui/material/Paper";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Link as RRLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { URL_CREATE_USER_SVC } from "../../configs";
-import { STATUS_CODE_CONFLICT, STATUS_CODE_CREATED } from "../../constants";
-import { Link } from "react-router-dom";
+// import { STATUS_CODE_CONFLICT, STATUS_CODE_CREATED } from "../../constants";
 
-function SignupPage() {
-	const [ username, setUsername ] = useState("");
-	const [ password, setPassword ] = useState("");
-	const [ isDialogOpen, setIsDialogOpen ] = useState(false);
-	const [ dialogTitle, setDialogTitle ] = useState("");
-	const [ dialogMsg, setDialogMsg ] = useState("");
-	const [ isSignupSuccess, setIsSignupSuccess ] = useState(false);
+const theme = createTheme();
 
-	const handleSignup = async () => {
-		setIsSignupSuccess(false);
-		const res = await axios.post(URL_CREATE_USER_SVC, { username, password })
-			.catch((err) => {
-				if (err.response.status === STATUS_CODE_CONFLICT) {
-					setErrorDialog("This username already exists");
-				} else {
-					setErrorDialog("Please try again later");
-				}
-			});
-		if (res && res.status === STATUS_CODE_CREATED) {
-			setSuccessDialog("Account successfully created");
-			setIsSignupSuccess(true);
-		}
-	};
+export default function SignUp() {
+	const navigate = useNavigate(); 
 
-	const closeDialog = () => setIsDialogOpen(false);
+	const handleSignup = async (event) => {
+		event.preventDefault();
+		const data = new FormData(event.currentTarget);
+		const username = data.get("username"); 
+		const password = data.get("password");
 
-	const setSuccessDialog = (msg) => {
-		setIsDialogOpen(true);
-		setDialogTitle("Success");
-		setDialogMsg(msg);
-	};
-
-	const setErrorDialog = (msg) => {
-		setIsDialogOpen(true);
-		setDialogTitle("Error");
-		setDialogMsg(msg);
+		await axios.post(URL_CREATE_USER_SVC, { username, password });
+		// .catch((err) => {
+		// 	if (err.response.status === STATUS_CODE_CONFLICT) {
+		// 	} else {
+		// 	}
+		// });
+		// if (res && res.status === STATUS_CODE_CREATED) {
+		// }
+		navigate("/login");
 	};
 
 	return (
-		<Box display={"flex"} flexDirection={"column"} width={"30%"}>
-			<Typography variant={"h3"} marginBottom={"2rem"}>Sign Up</Typography>
-			<TextField
-				label="Username"
-				variant="standard"
-				value={username}
-				onChange={(e) => setUsername(e.target.value)}
-				sx={{ marginBottom: "1rem" }}
-				autoFocus
-			/>
-			<TextField
-				label="Password"
-				variant="standard"
-				type="password"
-				value={password}
-				onChange={(e) => setPassword(e.target.value)}
-				sx={{ marginBottom: "2rem" }}
-			/>
-			<Box display={"flex"} flexDirection={"row"} justifyContent={"flex-end"}>
-				<Button variant={"outlined"} onClick={handleSignup}>Sign up</Button>
-			</Box>
-
-			<Dialog
-				open={isDialogOpen}
-				onClose={closeDialog}
-			>
-				<DialogTitle>{dialogTitle}</DialogTitle>
-				<DialogContent>
-					<DialogContentText>{dialogMsg}</DialogContentText>
-				</DialogContent>
-				<DialogActions>
-					{isSignupSuccess
-						? <Button component={Link} to="/login">Log in</Button>
-						: <Button onClick={closeDialog}>Done</Button>
-					}
-				</DialogActions>
-			</Dialog>
-		</Box>
+		<ThemeProvider theme={theme}>
+			<Container component="main" maxWidth="sm">
+				<CssBaseline />
+				<Box
+					component={Paper}
+					elevation={6}
+					sx={{
+						borderRadius: 8,
+						padding: 10,
+						marginTop: 10,
+						display: "flex",
+						flexDirection: "column",
+						alignItems: "center",
+					}}
+				>
+					<Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+						<LockOutlinedIcon />
+					</Avatar>
+					<Typography component="h1" variant="h5">
+            Sign up
+					</Typography>
+					<Box component="form" noValidate onSubmit={handleSignup} sx={{ mt: 3 }}>
+						<Grid container spacing={2}>
+							<Grid item xs={12}>
+								<TextField
+									required
+									fullWidth
+									id="username"
+									label="Username"
+									name="username"
+									autoComplete="username"
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									required
+									fullWidth
+									name="password"
+									label="Password"
+									type="password"
+									id="password"
+									autoComplete="new-password"
+								/>
+							</Grid>
+						</Grid>
+						<Button
+							type="submit"
+							fullWidth
+							variant="contained"
+							sx={{ mt: 3, mb: 2 }}
+						>
+              Sign Up
+						</Button>
+						<Grid container justifyContent="flex-end">
+							<Grid item>
+								<RRLink to='/login'>
+									<Link href="#" variant="body2">
+					Already have an account? Sign in
+									</Link>
+								</RRLink>
+							</Grid>
+						</Grid>
+					</Box>
+				</Box>
+			</Container>
+		</ThemeProvider>
 	);
 }
-
-export default SignupPage;

@@ -13,8 +13,10 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
+import { Link as RRLink } from "react-router-dom";
 import axios from "axios";
 
+import backgroundImage from "../../static/algohike.jpg";
 import { URL_LOGIN_SVC } from "../../configs";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/user/userSlice";
@@ -47,7 +49,7 @@ const LoginPage = () => {
 					sm={4}
 					md={7}
 					sx={{
-						backgroundImage: "url(https://source.unsplash.com/random)",
+						backgroundImage: `url(${backgroundImage})`,
 						backgroundRepeat: "no-repeat",
 						backgroundColor: (t) => 
 							t.palette.mode === "light" ? t.palette.grey[50] : t.palette.grey[900],
@@ -55,7 +57,7 @@ const LoginPage = () => {
 						backgroundPosition: "center"
 					}}
 				/>
-				<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+				<Grid item borderRadius={8} xs={12} sm={8} md={5} component={Paper} elevation={6} square>
 					<Box
 						sx={{
 							my: 8,
@@ -111,9 +113,11 @@ const LoginPage = () => {
 									</Link>
 								</Grid>
 								<Grid item>
-									<Link href="#" variant="body2">
-										{"Don't have an account? Sign Up"}
-									</Link>
+									<RRLink to='/signup'>
+										<Link href="#" variant="body2">
+											{"Don't have an account? Sign Up"}
+										</Link>
+									</RRLink>
 								</Grid>
 							</Grid>
 						</Box>
