@@ -22,11 +22,13 @@ import { STATUS_CODE_SUCCESS, STATUS_CODE_UNAUTHORIZED } from "../../constants";
 
 const theme = createTheme();
 
+// TODO: fix invalid DOM nesting
 const LoginPage = () => {
 	const dispatch = useDispatch(); 
-	const [ usernameError, setUsernameError ] = useState(false); 
-	const [ passwordError, setPasswordError ] = useState(false); 
+	const [ usernameError, setUsernameError ] = useState(null); 
+	const [ passwordError, setPasswordError ] = useState(null); 
 
+	// TODO: store JWT token in response into HTTP only cookie
 	const handleLogin = async (event) => {
 		event.preventDefault(); 
 		const data = new FormData(event.currentTarget);
@@ -39,10 +41,10 @@ const LoginPage = () => {
 		}
 		const res = await axios.post(URL_LOGIN_SVC, { username, password }).catch(err => {
 			if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
-				setUsernameError(true); 
+				setUsernameError(""); 
 				setPasswordError("Invalid username or password."); 
 			} else {
-				setUsernameError(true); 
+				setUsernameError(""); 
 				setPasswordError("Something went wrong. Please try again later.");
 			}
 		}); 
@@ -87,7 +89,7 @@ const LoginPage = () => {
 						</Typography>
 						<Box component="form" noValidate onSubmit={handleLogin} sx={{ mt: 1 }}>
 							<TextField
-								error={usernameError}
+								error={usernameError != null}
 								helperText={usernameError}
 								margin="normal"
 								required
@@ -99,7 +101,7 @@ const LoginPage = () => {
 								autoFocus
 							/>
 							<TextField
-								error={passwordError}
+								error={passwordError != null}
 								helperText={passwordError}
 								margin="normal"
 								required

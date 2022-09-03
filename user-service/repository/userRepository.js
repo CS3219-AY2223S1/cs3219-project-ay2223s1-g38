@@ -18,7 +18,7 @@ export const addUser = async (username, password) => {
 
 export const getUserByUsername = async (username) => {
 	try {
-		let user = await findUserByUsername({ username });
+		let user = await findUserByUsername(username);
 		return user; 
 	} catch (err) {
 		console.error("ERROR: Failed to retrieve user");

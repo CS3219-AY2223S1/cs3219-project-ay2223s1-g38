@@ -17,5 +17,6 @@ export const createUser = (params) => {
 
 export const findUserByUsername = async (username) => {
 	let user = await db.collection("usermodels").findOne({ username });
+	console.debug("Found user: " + user._id);
 	return user;
 };

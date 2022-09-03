@@ -22,8 +22,8 @@ const theme = createTheme();
 
 export default function SignUp() {
 	const navigate = useNavigate(); 
-	const [ usernameError, setUsernameError ] = useState(false); 
-	const [ passwordError, setPasswordError ] = useState(false); 
+	const [ usernameError, setUsernameError ] = useState(null); 
+	const [ passwordError, setPasswordError ] = useState(null); 
 
 	const handleSignup = async (event) => {
 		event.preventDefault();
@@ -41,7 +41,7 @@ export default function SignUp() {
 				if (err.response.status === STATUS_CODE_CONFLICT) {
 					setUsernameError("Username already exists.");
 				} else {
-					setUsernameError(true); 
+					setUsernameError(""); 
 					setPasswordError("Something went wrong. Please try again later.");
 				}
 			});
@@ -76,7 +76,7 @@ export default function SignUp() {
 						<Grid container spacing={2}>
 							<Grid item xs={12}>
 								<TextField
-									error={usernameError}
+									error={usernameError != null}
 									helperText={usernameError}
 									required
 									fullWidth
@@ -88,7 +88,7 @@ export default function SignUp() {
 							</Grid>
 							<Grid item xs={12}>
 								<TextField
-									error={passwordError}
+									error={passwordError != null}
 									helperText={passwordError}
 									required
 									fullWidth

@@ -15,7 +15,7 @@ export const handleUserLogin = async (username, password) => {
 			return null; 
 		}
 	}
-	console.log("No user found for username");
+	console.debug("No user found for username: " + username);
 	return null; 
 }; 
 
