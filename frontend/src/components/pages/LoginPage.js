@@ -41,7 +41,7 @@ const LoginPage = () => {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<Grid container component="main" sx={{ height: "100vh" }}>
+			<Grid container component="main" sx={{ height: "100vh", padding: "4rem" }}>
 				<CssBaseline />
 				<Grid 
 					item
