@@ -24,7 +24,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "npx eslint .",
-    "lint-fix": "npx eslint . --fix"
+    "lint-fix": "npx eslint . --fix",
+    "prepare": "cd ../ && husky install ./frontend/.husky"
   },
   "eslintConfig": {
     "extends": [
@@ -46,6 +47,8 @@
   },
   "devDependencies": {
     "eslint": "^8.21.0",
-    "eslint-plugin-react": "^7.31.4"
+    "eslint-plugin-react": "^7.31.4",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3"
   }
 }
