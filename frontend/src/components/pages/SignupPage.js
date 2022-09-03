@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+
 import {
 	Box,
 	Button,
@@ -10,35 +11,33 @@ import {
 	TextField,
 	Typography
 } from "@mui/material";
-import { useState } from "react";
 import axios from "axios";
-import { URL_LOGIN_SVC } from "../configs";
-import { STATUS_CODE_SUCCESS, STATUS_CODE_UNAUTHORIZED } from "../constants";
 
-const LoginPage = () => {
+import { URL_CREATE_USER_SVC } from "../../configs";
+import { STATUS_CODE_CONFLICT, STATUS_CODE_CREATED } from "../../constants";
+import { Link } from "react-router-dom";
+
+function SignupPage() {
 	const [ username, setUsername ] = useState("");
 	const [ password, setPassword ] = useState("");
 	const [ isDialogOpen, setIsDialogOpen ] = useState(false);
 	const [ dialogTitle, setDialogTitle ] = useState("");
 	const [ dialogMsg, setDialogMsg ] = useState("");
-	const [ isLoginSuccess, setIsLoginSuccess ] = useState(false);
-	const [ loggedInUser, setLoggedInUser ] = useState("");
+	const [ isSignupSuccess, setIsSignupSuccess ] = useState(false);
 
-	const handleLogin = async () => {
-		setIsLoginSuccess(false);
-		const res = await axios.post(URL_LOGIN_SVC, { username, password })
+	const handleSignup = async () => {
+		setIsSignupSuccess(false);
+		const res = await axios.post(URL_CREATE_USER_SVC, { username, password })
 			.catch((err) => {
-				if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
-					setErrorDialog("Invalid username or password!");
+				if (err.response.status === STATUS_CODE_CONFLICT) {
+					setErrorDialog("This username already exists");
 				} else {
 					setErrorDialog("Please try again later");
 				}
 			});
-		if (res && res.status === STATUS_CODE_SUCCESS) {
-			setSuccessDialog("Successfully logged in!");
-			setIsLoginSuccess(true);
-			setIsDialogOpen(true);
-			setLoggedInUser(res.data.username);
+		if (res && res.status === STATUS_CODE_CREATED) {
+			setSuccessDialog("Account successfully created");
+			setIsSignupSuccess(true);
 		}
 	};
 
@@ -58,7 +57,7 @@ const LoginPage = () => {
 
 	return (
 		<Box display={"flex"} flexDirection={"column"} width={"30%"}>
-			<Typography variant={"h3"} marginBottom={"2rem"}>Login</Typography>
+			<Typography variant={"h3"} marginBottom={"2rem"}>Sign Up</Typography>
 			<TextField
 				label="Username"
 				variant="standard"
@@ -76,7 +75,7 @@ const LoginPage = () => {
 				sx={{ marginBottom: "2rem" }}
 			/>
 			<Box display={"flex"} flexDirection={"row"} justifyContent={"flex-end"}>
-				<Button variant={"outlined"} onClick={handleLogin}>Login</Button>
+				<Button variant={"outlined"} onClick={handleSignup}>Sign up</Button>
 			</Box>
 
 			<Dialog
@@ -88,12 +87,14 @@ const LoginPage = () => {
 					<DialogContentText>{dialogMsg}</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={closeDialog}>Done</Button>
+					{isSignupSuccess
+						? <Button component={Link} to="/login">Log in</Button>
+						: <Button onClick={closeDialog}>Done</Button>
+					}
 				</DialogActions>
 			</Dialog>
-			{isLoginSuccess ? <Typography>Logged in to {loggedInUser}</Typography> : <></>}
 		</Box>
 	);
-};
+}
 
-export default LoginPage;
+export default SignupPage;

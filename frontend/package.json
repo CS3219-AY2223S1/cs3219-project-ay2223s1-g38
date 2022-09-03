@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
+    "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.9.1",
     "@reduxjs/toolkit": "^1.8.5",
     "@testing-library/jest-dom": "^5.16.4",
@@ -48,7 +49,6 @@
   "devDependencies": {
     "eslint": "^8.21.0",
     "eslint-plugin-react": "^7.31.4",
-    "husky": "^8.0.1",
-    "lint-staged": "^13.0.3"
+    "husky": "^8.0.1"
   }
 }
