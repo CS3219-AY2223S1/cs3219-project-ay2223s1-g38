@@ -1,6 +1,6 @@
-const { getMatches, createMatch } = require('../repository/repository');
+const { getMatches, createMatch } = require('../repository/matchRepository');
 
-const ormGetMatches = async () => {
+const handleGetMatches = async () => {
   try {
     const matches = await getMatches();
     return { matches };
@@ -10,7 +10,7 @@ const ormGetMatches = async () => {
   }
 }
 
-const ormCreateMatch = async(user, difficulty) => {
+const handleCreateMatch = async(user, difficulty) => {
   try {
     const match = await createMatch({ user, difficulty });
     return { match };
@@ -21,6 +21,6 @@ const ormCreateMatch = async(user, difficulty) => {
 }
 
 module.exports = {
-  ormGetMatches,
-  ormCreateMatch,
+  handleGetMatches,
+  handleCreateMatch,
 }

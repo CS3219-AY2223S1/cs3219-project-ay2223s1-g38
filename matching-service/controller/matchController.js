@@ -1,9 +1,9 @@
-const { ormGetMatches, ormCreateMatch } = require('../orm/match-orm');
+const { handleGetMatches, handleCreateMatch } = require('../domain/matchDomain');
 const { generateRandomRoomId } = require('../utils/utils');
 
 const getMatches = async (req, res) => {
   try {
-    const resp = await ormGetMatches();
+    const resp = await handleGetMatches();
     if (resp.err) {
       return res.status(400).json({ message: 'Could not get matches.' })
     } else {
@@ -19,7 +19,7 @@ const getMatches = async (req, res) => {
 const createMatch = async (req, res) => {
   try {
     const { user, difficulty } = req.body;
-    const resp = await ormCreateMatch(user, difficulty);
+    const resp = await handleCreateMatch(user, difficulty);
     if (resp.error) {
       return res.status(400).json({ message: 'Could not create a new match.' });
     } else {

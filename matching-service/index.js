@@ -11,9 +11,8 @@ app.use(bodyParser.json());
 app.use(cors()) // config cors so that front-end can use
 app.options('*', cors())
 
-const matchRouter = require('./routes/matches');
-const { createMatch } = require('./controller/match-controller');
-const { ormCreateMatch } = require('./orm/match-orm');
+const matchRouter = require('./routes/matchRoutes');
+const { createMatch } = require('./controller/matchController');
 
 app.use('/api/match', matchRouter).all((_, res) => {
     res.setHeader('content-type', 'application/json')
@@ -30,7 +29,7 @@ io.on('connection', (socket) => {
     socket.on('match', (data) => {
         console.log("match event from client")
         const { user, difficulty } = data;
-        const match = ormCreateMatch(user, difficulty);
+        const match = createMatch(user, difficulty);
         io.emit('match', "finding a match...")
     })
 })
