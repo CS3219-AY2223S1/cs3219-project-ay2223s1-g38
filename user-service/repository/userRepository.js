@@ -4,6 +4,7 @@ import { findUserByUsername, createUser } from "../model/userOrm.js";
 // Repo layer should not contain error codes for client
 export const addUser = async (username, password) => {
 	try {
+		console.log(username, password);
 		if (await findUserByUsername(username)) {
 			return { err : 409, msg : "User already exists!" };
 		}
@@ -11,7 +12,7 @@ export const addUser = async (username, password) => {
 		newUser.save();
 		return true;
 	} catch (err) {
-		console.error("ERROR: Could not create new user");
+		console.error("ERROR: Could not create new user", err);
 		return { err : 400, msg : err };
 	}
 };
@@ -21,7 +22,7 @@ export const getUserByUsername = async (username) => {
 		let user = await findUserByUsername(username);
 		return user; 
 	} catch (err) {
-		console.error("ERROR: Failed to retrieve user");
+		console.error("ERROR: Failed to retrieve user", err);
 		throw err; 
 	}
 };
