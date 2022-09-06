@@ -22,8 +22,7 @@ const App = () => {
 					<Router>
 						{ !isUserLoggedIn ? 
 							<Routes>
-								<Route exact path="/" element={<Navigate replace to="/home" />}/>
-								{/* <Route exact path="/" element={<Navigate replace to="/login" />}/> */}
+								<Route exact path="/" element={<Navigate replace to="/login" />}/>
 								<Route path="/signup" element={<SignupPage/>} />
 								<Route path="/login" element={<LoginPage/>} />
 								<Route path="/home" element={<HomePage/>} />
