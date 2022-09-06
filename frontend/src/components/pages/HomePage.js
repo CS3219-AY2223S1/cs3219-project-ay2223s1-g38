@@ -1,7 +1,10 @@
+import React, { Fragment }  from "react";
+
 import { Container, Grid, Typography } from "@mui/material";
-import React, { Fragment } from "react";
+
 import CustomAppBar from "../CustomAppBar";
 import QuestionCard from "../QuestionCard";
+
 
 
 const HomePage = () => {
