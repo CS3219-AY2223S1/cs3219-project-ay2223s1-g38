@@ -1,25 +1,26 @@
 import React from "react";
 
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import CssBaseline from "@mui/material/CssBaseline";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { Link as RRLink } from "react-router-dom";
 import axios from "axios";
-
-import backgroundImage from "../../static/algohike.jpg";
-import { URL_LOGIN_SVC } from "../../configs";
 import { useDispatch } from "react-redux";
-import { login } from "../../features/user/userSlice";
+import { Link as RRLink } from "react-router-dom";
+
+import { URL_LOGIN_SVC } from "../../configs";
 import { STATUS_CODE_SUCCESS } from "../../constants";
+import { login } from "../../features/user/userSlice";
+import backgroundImage from "../../static/algohike.jpg";
+
 
 const LoginPage = () => {
 	const dispatch = useDispatch(); 

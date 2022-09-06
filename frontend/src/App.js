@@ -1,13 +1,14 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import { Box, ThemeProvider } from "@mui/material";
 import { useSelector } from "react-redux";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
-import SignupPage from "./components/pages/SignupPage";
-import LoginPage from "./components/pages/LoginPage";
-import { selectIsUserLoggedIn } from "./features/user/userSlice";
+
 import HomePage from "./components/pages/HomePage";
+import LoginPage from "./components/pages/LoginPage";
+import SignupPage from "./components/pages/SignupPage";
+import { selectIsUserLoggedIn } from "./features/user/userSlice";
 import { globalTheme } from "./globalTheme";
 
 
