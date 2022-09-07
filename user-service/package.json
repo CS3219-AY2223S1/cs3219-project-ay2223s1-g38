@@ -13,7 +13,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.19",
+    "eslint": "^8.21.0",
+    "eslint-plugin-import": "^2.26.0"
   },
   "dependencies": {
     "cors": "^2.8.5",
