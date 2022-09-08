@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { Box } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
 import CssBaseline from "@mui/material/CssBaseline";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
@@ -17,28 +15,45 @@ import { useDispatch } from "react-redux";
 import { Link as RRLink } from "react-router-dom";
 
 import { URL_LOGIN_SVC } from "../../configs";
-import { STATUS_CODE_SUCCESS } from "../../constants";
+import { STATUS_CODE_SUCCESS, STATUS_CODE_UNAUTHORIZED } from "../../constants";
 import { login } from "../../features/user/userSlice";
 import backgroundImage from "../../static/algohike.jpg";
 
 
+
+// TODO: fix invalid DOM nesting
 const LoginPage = () => {
 	const dispatch = useDispatch(); 
+	const [ usernameError, setUsernameError ] = useState(null); 
+	const [ passwordError, setPasswordError ] = useState(null); 
 
+	// TODO: store JWT token in response into HTTP only cookie
 	const handleLogin = async (event) => {
 		event.preventDefault(); 
 		const data = new FormData(event.currentTarget);
 		const username = data.get("username");
 		const password = data.get("password");
-		const res = await axios.post(URL_LOGIN_SVC, { username, password }).catch(err => console.log(err, "failed")); 
-
+		if (!username || !password) {
+			setUsernameError(!username ? "Username cannot be empty." : null); 
+			setPasswordError(!password ? "Password cannot be empty." : null);
+			return; 
+		}
+		const res = await axios.post(URL_LOGIN_SVC, { username, password }).catch(err => {
+			if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
+				setUsernameError(""); 
+				setPasswordError("Invalid username or password."); 
+			} else {
+				setUsernameError(""); 
+				setPasswordError("Something went wrong. Please try again later.");
+			}
+		}); 
 		if (res && res.status === STATUS_CODE_SUCCESS ) {
 			dispatch(login());
 		}
 	};
 
 	return (
-		<Grid container component="main" sx={{ height: "100vh", padding: "4rem" }}>
+		<Grid container component="main" xs={{ height: "100vh" }} sx={{ height: "100vh", padding: "4rem" }}>
 			<CssBaseline />
 			<Grid 
 				item
@@ -72,6 +87,8 @@ const LoginPage = () => {
 					</Typography>
 					<Box component="form" noValidate onSubmit={handleLogin} sx={{ mt: 1 }}>
 						<TextField
+							error={usernameError != null}
+							helperText={usernameError}
 							margin="normal"
 							required
 							fullWidth
@@ -82,6 +99,8 @@ const LoginPage = () => {
 							autoFocus
 						/>
 						<TextField
+							error={passwordError != null}
+							helperText={passwordError}
 							margin="normal"
 							required
 							fullWidth
@@ -90,10 +109,6 @@ const LoginPage = () => {
 							type="password"
 							id="password"
 							autoComplete="current-password"
-						/>
-						<FormControlLabel
-							control={<Checkbox value="remember" color="primary" />}
-							label="Remember me"
 						/>
 						<Button
 							type="submit"
@@ -105,9 +120,9 @@ const LoginPage = () => {
 						</Button>
 						<Grid container>
 							<Grid item xs>
-								<Link href="#" variant="body2">
+								{/* <Link href="#" variant="body2">
                     Forgot password?
-								</Link>
+									</Link> */}
 							</Grid>
 							<Grid item>
 								<RRLink to='/signup'>
@@ -121,7 +136,7 @@ const LoginPage = () => {
 				</Box>
 			</Grid>
 		</Grid>
-
-	);};
+	);
+};
 
 export default LoginPage;
