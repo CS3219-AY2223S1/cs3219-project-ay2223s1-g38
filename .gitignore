@@ -1,0 +1,11 @@
+# Node 
+node_modules
+
+# Project files  
+*.env
+
+# Local config 
+*.vscode
+
+# MacOS 
+*.DS_Store
