@@ -41,18 +41,18 @@ const findOrCreateMatchByDifficulty = async ({ user, difficulty, socketId }) => 
 };
 
 const deleteMatchByMatchInfo = async ({ user, difficulty, socketId }) => {
-  return await db.Match.destroy({
-    where: { 
-      user: user,
-      difficulty: difficulty,
-      socketId: socketId,
-    }
-  })
-}
+	return await db.Match.destroy({
+		where: { 
+			user: user,
+			difficulty: difficulty,
+			socketId: socketId,
+		}
+	});
+};
 
 module.exports = {
 	getMatches,
 	createMatch,
 	findOrCreateMatchByDifficulty,
-  deleteMatchByMatchInfo,
+	deleteMatchByMatchInfo,
 };

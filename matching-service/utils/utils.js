@@ -4,7 +4,7 @@ const generateRandomRoomId = () => {
 
 const generateCronJobName = (userId, socketId, difficulty) => {
 	return `${userId}-${socketId}-${difficulty}`;
-}
+};
 
 module.exports = {
 	generateRandomRoomId,

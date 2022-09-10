@@ -11,6 +11,7 @@
     "parserOptions": {
         "ecmaVersion": "latest"
     },
+    "ignorePatterns": ["migrations/*.js", "seeders/*.js"],
     "rules": {
         "indent": [
             "error",

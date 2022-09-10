@@ -34,11 +34,11 @@ const handleDeleteMatch = async (user, difficulty, socketId) => {
 	try {
 		const resp = await deleteMatchByMatchInfo({ user, difficulty, socketId });
 		return resp;
-	} catch {
+	} catch (err) {
 		console.log("ERROR: Could not delete match from database.");
 		return { err };
 	}
-}
+};
 
 module.exports = {
 	handleGetMatches,

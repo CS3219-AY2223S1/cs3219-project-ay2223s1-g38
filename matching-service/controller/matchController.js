@@ -37,24 +37,24 @@ const findMatch = async (user, difficulty, socketId) => {
 };
 
 const deleteMatch = async (user, difficulty, socketId) => {
-  try {
-    const resp = await handleDeleteMatch(user, difficulty, socketId);
-    if (resp.err) {
+	try {
+		const resp = await handleDeleteMatch(user, difficulty, socketId);
+		if (resp.err) {
 			return {
 				error: "Error while deleting a match."
 			};
 		} else {
 			return resp;
 		}
-  } catch {
-    return {
+	} catch {
+		return {
 			error: "Database failure while deleting match."
 		};
-  }
-}
+	}
+};
 
 module.exports = {
 	createMatch,
 	findMatch,
-  deleteMatch,
+	deleteMatch,
 };
