@@ -24,14 +24,17 @@ module.exports = (io, socket) => {
 			schedule.scheduleJob(generateCronJobName(user, socket.id, difficulty), startTime,
 				() => cancelFindMatchJob(user, difficulty, socket.id),
 			);
-
+			
 			io.to(socket.id).emit(MatchEvent.WAITING, "Waiting for another user to join...");
 		} else {
 			// If a Match object was found, generate a room id and send to both socket ids
 			const { user, socketId, difficulty } = resp.match;
 
 			const job = schedule.scheduledJobs[generateCronJobName(user, socketId, difficulty)];
-			job.cancel();
+
+			if (job !== undefined) {
+				job.cancel();
+			}
 
 			const roomId = generateRandomRoomId();
 			const roomString = `Room: ${roomId}`;
@@ -42,6 +45,26 @@ module.exports = (io, socket) => {
 			await deleteMatch(user, difficulty, socketId);
 		}
 	};
+
+	const handleCancelMatchEvent = async (data) => {
+		const { user, difficulty } = data;
+
+		if (user === undefined || difficulty === undefined) {
+			io.to(socket.id).emit(MatchEvent.CANCEL, "Invalid data provided.");
+		}
+
+		const resp = await deleteMatch(user, difficulty, socket.id);
+		
+		if (resp) {
+			const job = schedule.scheduledJobs[generateCronJobName(user, socket.id, difficulty)];
+			if (job !== undefined) {
+				job.cancel();
+			}	
+		}
+
+		io.to(socket.id).emit(MatchEvent.CANCEL, "You have left the matchmaking queue.")
+	}
   
 	socket.on(MatchEvent.FIND, handleFindMatchEvent);
+	socket.on(MatchEvent.CANCEL, handleCancelMatchEvent);
 };
