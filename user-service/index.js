@@ -1,5 +1,5 @@
-import express from "express";
 import cors from "cors";
+import express from "express";
 
 // import { verifyToken } from "./middleware/auth.js";
 import { handleCreateUser, handleLogin, } from "./controller/userController.js";
