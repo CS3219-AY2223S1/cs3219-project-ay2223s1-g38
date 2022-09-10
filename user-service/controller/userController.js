@@ -1,7 +1,7 @@
 import bcryptjs from "bcryptjs";
 
-import { addUser  } from "../repository/userRepository.js";
 import { handleUserLogin } from "../domain/userDomain.js";
+import { addUser  } from "../repository/userRepository.js";
 
 // TODO: IMPORTANT: need to decouple this and refactor
 export async function handleCreateUser(req, res) {
