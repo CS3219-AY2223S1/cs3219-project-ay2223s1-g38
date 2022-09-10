@@ -3,13 +3,18 @@
         "browser": true,
         "es2021": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+        "eslint:recommended"
+    ],
     "overrides": [
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
+    "plugins": [
+        "import"
+    ],
     "rules": {
         "indent": [
             "error",
@@ -35,6 +40,14 @@
         "array-bracket-spacing": [
             "error", 
             "always"
-        ]
+        ],
+        "import/order": ["error", {
+          "alphabetize": {
+            "order": "asc",
+            "caseInsensitive": true
+          },
+          "newlines-between": "always-and-inside-groups",
+          "groups": ["builtin", "external", "parent", "sibling", "index"]
+        }]
     }
 }

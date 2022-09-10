@@ -62,8 +62,8 @@ module.exports = (io, socket) => {
 			}	
 		}
 
-		io.to(socket.id).emit(MatchEvent.CANCEL, "You have left the matchmaking queue.")
-	}
+		io.to(socket.id).emit(MatchEvent.CANCEL, "You have left the matchmaking queue.");
+	};
   
 	socket.on(MatchEvent.FIND, handleFindMatchEvent);
 	socket.on(MatchEvent.CANCEL, handleCancelMatchEvent);

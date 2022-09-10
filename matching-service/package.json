@@ -16,7 +16,8 @@
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.23.0",
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.19",
+    "eslint-plugin-import": "^2.26.0"
   },
   "dependencies": {
     "body-parser": "^1.20.0",
