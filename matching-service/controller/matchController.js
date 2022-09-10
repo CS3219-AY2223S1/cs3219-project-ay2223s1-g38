@@ -1,36 +1,60 @@
-const { handleGetMatches, handleCreateMatch } = require('../domain/matchDomain');
-const { generateRandomRoomId } = require('../utils/utils');
+const { handleCreateMatch, handleFindMatch, handleDeleteMatch } = require("../domain/matchDomain");
 
-const getMatches = async (req, res) => {
+const createMatch = async (user, difficulty) => {
+	try {
+		const resp = await handleCreateMatch(user, difficulty);
+		if (resp.err) {
+			return {
+				error: "Could not create match."
+			};
+		} else {
+			return {
+				match: resp.match
+			};
+		}
+	} catch (err) {
+		return {
+			error: "Database failure when creating a new match."
+		};
+	}
+};
+
+const findMatch = async (user, difficulty, socketId) => {
+	try {
+		const resp = await handleFindMatch(user, difficulty, socketId);
+		if (resp.err) {
+			return {
+				error: "Error while finding a match."
+			};
+		} else {
+			return resp;
+		}
+	} catch (err) {
+		return {
+			error: "Database failure when finding a match."
+		};
+	}
+};
+
+const deleteMatch = async (user, difficulty, socketId) => {
   try {
-    const resp = await handleGetMatches();
+    const resp = await handleDeleteMatch(user, difficulty, socketId);
     if (resp.err) {
-      return res.status(400).json({ message: 'Could not get matches.' })
-    } else {
-      return res.status(200).json({ matches: resp.matches });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: 'Database failure when getting matches.' })
-  }
-}
-
-// TODO: Remove this function once it is obsolete. Currently it is here for
-// testing purposes.
-const createMatch = async (req, res) => {
-  try {
-    const { user, difficulty } = req.body;
-    const resp = await handleCreateMatch(user, difficulty);
-    if (resp.error) {
-      return res.status(400).json({ message: 'Could not create a new match.' });
-    } else {
-      return res.status(200).json({ match: resp.match });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: 'Database failure when creating a new match.' })
+			return {
+				error: "Error while deleting a match."
+			};
+		} else {
+			return resp;
+		}
+  } catch {
+    return {
+			error: "Database failure while deleting match."
+		};
   }
 }
 
 module.exports = {
-  getMatches,
-  createMatch,
-}
+	createMatch,
+	findMatch,
+  deleteMatch,
+};
