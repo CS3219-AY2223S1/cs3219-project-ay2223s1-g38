@@ -5,24 +5,20 @@ import { findUserByUsername, createUser } from "../model/userOrm.js";
 export const addUser = async (username, password) => {
 	try {
 		console.log(username, password);
-		if (await findUserByUsername(username)) {
-			return { err : 409, msg : "User already exists!" };
-		}
-		const newUser = await createUser({ username, password });
+		const newUser = createUser({ username, password });
 		newUser.save();
-		return true;
 	} catch (err) {
 		console.error("ERROR: Could not create new user", err);
-		return { err : 400, msg : err };
+		throw err;
 	}
 };
 
 export const getUserByUsername = async (username) => {
 	try {
 		let user = await findUserByUsername(username);
-		return user; 
+		return user;
 	} catch (err) {
 		console.error("ERROR: Failed to retrieve user", err);
-		throw err; 
+		throw err;
 	}
 };

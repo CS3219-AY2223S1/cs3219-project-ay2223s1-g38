@@ -2,7 +2,7 @@ import cors from "cors";
 import express from "express";
 
 // import { verifyToken } from "./middleware/auth.js";
-import { handleCreateUser, handleLogin, } from "./controller/userController.js";
+import { handleSignUp, handleLogin } from "./controller/userController.js";
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -17,7 +17,7 @@ app.use("/api/user", router).all((_, res) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
 });
 
-router.post("/createUser", handleCreateUser);
+router.post("/createUser", handleSignUp);
 router.post("/login", handleLogin);
 
 // usage of JWT token 
