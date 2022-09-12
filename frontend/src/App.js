@@ -4,7 +4,7 @@ import { Box, ThemeProvider } from "@mui/material";
 import { useSelector } from "react-redux";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
-
+import CountdownPage from "./components/pages/CountdownPage";
 import HomePage from "./components/pages/HomePage";
 import LoginPage from "./components/pages/LoginPage";
 import SignupPage from "./components/pages/SignupPage";
@@ -26,10 +26,12 @@ const App = () => {
 								<Route path="/signup" element={<SignupPage/>} />
 								<Route path="/login" element={<LoginPage/>} />
 								<Route path="/home" element={<HomePage/>} />
+								<Route path="/countdown" element={<CountdownPage/>} />
 							</Routes>
 							: 
 							<Routes>
-								<Route path="/login" element={<HomePage/>} />
+								<Route path="/home" element={<HomePage/>} />
+								<Route path="/countdown" element={<CountdownPage/>} />
 							</Routes>
 						}
 					</Router>
