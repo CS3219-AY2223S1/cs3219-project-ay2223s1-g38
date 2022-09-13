@@ -7,17 +7,22 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Typography from "@mui/material/Typography";
+import { PropTypes } from "prop-types";
 
 
-const QuestionCard = () => {
+const QuestionCard = (props) => {
+	// let navigate = useNavigate();
+
+	const { handleOpenModal } = props;
 	return (
 		<Card sx={{ borderRadius: 8 }}>
 			<CardHeader
 				title={"Difficulty"}
 				subheader={"Time?"}
-				titleTypographyProps={{ align: "center" }}
+				titleTypographyProps={{ align: "center", color: "white" }}
 				subheaderTypographyProps={{
 					align: "center",
+					color: "white",
 				}}
 				sx={{
 					backgroundColor: (theme) =>
@@ -39,12 +44,20 @@ const QuestionCard = () => {
 				</Box>
 			</CardContent>
 			<CardActions>
-				<Button fullWidth sx={{ color: "black" }}>
+				<Button fullWidth sx={{ color: "black" }} onClick={() => {
+					// TODO send request to search for match
+					handleOpenModal();
+					// navigate("/countdown", { replace: true });
+				}}>
 					{"Start"}
 				</Button>
 			</CardActions>
 		</Card>
 	);
+};
+
+QuestionCard.propTypes = {
+	handleOpenModal: PropTypes.func,
 };
 
 export default QuestionCard;

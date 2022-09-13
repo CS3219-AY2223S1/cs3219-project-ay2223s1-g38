@@ -14,8 +14,8 @@ import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { Link as RRLink, useNavigate } from "react-router-dom";
 
-import { URL_CREATE_USER_SVC } from "../../configs";
-import { STATUS_CODE_CONFLICT, STATUS_CODE_CREATED } from "../../constants";
+import { URL_CREATE_USER_SVC } from "../configs";
+import { STATUS_CODE_CONFLICT, STATUS_CODE_CREATED } from "../constants";
 
 export default function SignUp() {
 	const navigate = useNavigate(); 
