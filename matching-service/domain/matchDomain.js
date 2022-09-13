@@ -5,7 +5,7 @@ const handleGetMatches = async () => {
 		const matches = await getMatches();
 		return { matches };
 	} catch (err) {
-		console.log("ERROR: Could not get matches");
+		console.error("ERROR: Could not get matches");
 		return { err };
 	}
 };
@@ -15,7 +15,7 @@ const handleCreateMatch = async (user, difficulty) => {
 		const match = await createMatch({ user, difficulty });
 		return { match };
 	} catch (err) {
-		console.log("ERROR: Could not create a new match.");
+		console.error("ERROR: Could not create a new match.");
 		return { err };
 	}
 };
@@ -25,7 +25,7 @@ const handleFindMatch = async (user, difficulty, socketId) => {
 		const resp = await findOrCreateMatchByDifficulty({ user, difficulty, socketId });
 		return resp;
 	} catch (err) {
-		console.log("ERROR: Error while trying to find a match.");
+		console.error("ERROR: Error while trying to find a match.");
 		return { err };
 	}
 };
@@ -35,7 +35,7 @@ const handleDeleteMatch = async (user, difficulty, socketId) => {
 		const resp = await deleteMatchByMatchInfo({ user, difficulty, socketId });
 		return resp;
 	} catch (err) {
-		console.log("ERROR: Could not delete match from database.");
+		console.error("ERROR: Could not delete match from database.");
 		return { err };
 	}
 };
