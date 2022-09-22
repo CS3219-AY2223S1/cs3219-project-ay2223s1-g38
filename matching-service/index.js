@@ -1,5 +1,4 @@
 const { createServer } = require("http");
-const { Server } = require("socket.io");
 const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -14,7 +13,13 @@ app.use(cors()); // config cors so that front-end can use
 app.options("*", cors());
 
 const httpServer = createServer(app);
-const io = new Server(httpServer);
+
+const io = require("socket.io")(httpServer, {
+	cors: {
+		// TODO put link in .env
+		origin: "http://localhost:3000"
+	}
+});
 
 const onConnection = (socket) => {
 	registerMatchHandlers(io, socket);

@@ -14,10 +14,10 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { Link as RRLink } from "react-router-dom";
 
-import { URL_LOGIN_SVC } from "../../configs";
-import { STATUS_CODE_SUCCESS, STATUS_CODE_UNAUTHORIZED } from "../../constants";
-import { login } from "../../features/user/userSlice";
-import backgroundImage from "../../static/algohike.jpg";
+import { URL_LOGIN_SVC } from "../configs";
+import { STATUS_CODE_SUCCESS, STATUS_CODE_UNAUTHORIZED } from "../constants";
+import { login } from "../features/user/userSlice";
+import backgroundImage from "../static/algohike.jpg";
 
 
 

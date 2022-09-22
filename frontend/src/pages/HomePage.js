@@ -2,14 +2,19 @@ import React from "react";
 
 import { Box, Container, Grid, Modal, Typography } from "@mui/material";
 
+import { PropTypes } from "prop-types";
+
 import CountdownTimer from "../components/CountdownTimer";
 import CustomAppBar from "../components/CustomAppBar";
 import QuestionCard from "../components/QuestionCard";
 
-const HomePage = () => {
+const HomePage = (props) => {
+
+	const { socket } = props;
+
 	const [ open, setOpen ] = React.useState(false);
-	const handleOpenModal = () => setOpen(true);
-	const handleCloseModal = () => setOpen(false);
+	const handleOpenCountdownModal = () => setOpen(true);
+	const handleCloseCountdownModal = () => setOpen(false);
 	return (
 		<>
 			<CustomAppBar/>
@@ -31,7 +36,7 @@ const HomePage = () => {
 					p: 4,
 				}
 				}>
-					<CountdownTimer handleCloseModal={handleCloseModal}/>	
+					<CountdownTimer handleCloseCountdownModal={handleCloseCountdownModal} socket={socket}/>	
 				</Box>
 			</Modal>
 			<Container>
@@ -45,7 +50,7 @@ const HomePage = () => {
 						sm={6}
 						md={4}
 					>
-						<QuestionCard handleOpenModal={handleOpenModal}/>
+						<QuestionCard handleOpenCountdownModal={handleOpenCountdownModal} socket={socket}/>
 					</Grid>
 					<Grid
 						item
@@ -53,7 +58,7 @@ const HomePage = () => {
 						sm={6}
 						md={4}
 					>
-						<QuestionCard handleOpenModal={handleOpenModal}/>
+						<QuestionCard handleOpenCountdownModal={handleOpenCountdownModal} socket={socket}/>
 					</Grid>
 					<Grid
 						item
@@ -61,12 +66,16 @@ const HomePage = () => {
 						sm={6}
 						md={4}
 					>
-						<QuestionCard handleOpenModal={handleOpenModal}/>
+						<QuestionCard handleOpenCountdownModal={handleOpenCountdownModal} socket={socket}/>
 					</Grid>
 				</Grid>
 			</Container>
 		</>
 	);
+};
+
+HomePage.propTypes ={
+	socket: PropTypes.any,
 };
 
 export default HomePage;
