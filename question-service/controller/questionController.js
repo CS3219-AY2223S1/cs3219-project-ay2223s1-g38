@@ -12,7 +12,7 @@ export const handleGetQuestion = (req, res) => {
 				message: "Retrieved question successfully",
 				question: question,
 			});
-		})
+		});
 	} catch (err) {
 		console.debug("Error: ", err);
 		return res.status(500).json({ message: "An error occured, please try again later." });
@@ -21,8 +21,8 @@ export const handleGetQuestion = (req, res) => {
 
 export const handleGetQuestionWithBlackList = (req, res) => {
 	try {
-        const { error, value } = blackListSchema.validate(req.body);
-        if (error) {
+		const { error, value } = blackListSchema.validate(req.body);
+		if (error) {
 			return res.status(400).json({ message: error.message });
 		}
 		const { list } = value;
@@ -36,7 +36,7 @@ export const handleGetQuestionWithBlackList = (req, res) => {
 				message: "Retrieved question successfully",
 				question: question,
 			});
-		})
+		});
 	} catch (err) {
 		console.debug("Error: ", err);
 		return res.status(500).json({ message: "An error occured, please try again later." });
