@@ -10,46 +10,50 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import axios from "axios";
-import { useDispatch } from "react-redux";
-import { Link as RRLink } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { Link as RRLink, useNavigate } from "react-router-dom";
 
-import { URL_LOGIN_SVC } from "../../configs";
-import { STATUS_CODE_SUCCESS, STATUS_CODE_UNAUTHORIZED } from "../../constants";
-import { login } from "../../features/user/userSlice";
-import backgroundImage from "../../static/algohike.jpg";
+import firebaseAuth from "../config/firebase";
+import backgroundImage from "../static/algohike.jpg";
+import { STATUS_CODE_MANY_REQ, STATUS_CODE_NOT_FOUND, STATUS_CODE_WRONG_PASSWORD } from "../utils/constants";
+
 
 
 
 // TODO: fix invalid DOM nesting
 const LoginPage = () => {
-	const dispatch = useDispatch(); 
-	const [ usernameError, setUsernameError ] = useState(null); 
+	const navigate = useNavigate();
+	const [ emailError, setEmailError ] = useState(null); 
 	const [ passwordError, setPasswordError ] = useState(null); 
 
-	// TODO: store JWT token in response into HTTP only cookie
 	const handleLogin = async (event) => {
 		event.preventDefault(); 
 		const data = new FormData(event.currentTarget);
-		const username = data.get("username");
+		const email = data.get("email");
 		const password = data.get("password");
-		if (!username || !password) {
-			setUsernameError(!username ? "Username cannot be empty." : null); 
+		if (!email || !password) {
+			setEmailError(!email ? "Username cannot be empty." : null); 
 			setPasswordError(!password ? "Password cannot be empty." : null);
 			return; 
 		}
-		const res = await axios.post(URL_LOGIN_SVC, { username, password }).catch(err => {
-			if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
-				setUsernameError(""); 
-				setPasswordError("Invalid username or password."); 
-			} else {
-				setUsernameError(""); 
-				setPasswordError("Something went wrong. Please try again later.");
-			}
-		}); 
-		if (res && res.status === STATUS_CODE_SUCCESS ) {
-			dispatch(login());
-		}
+		signInWithEmailAndPassword(firebaseAuth, email, password)
+			.then((userCredential) => {
+				const user = userCredential.user;
+				console.log("-------SIGNED IN----------");
+				console.log(user);
+				navigate("/home");
+			})
+			.catch((error) => {
+				const errorCode = error.code;
+				if (errorCode == STATUS_CODE_WRONG_PASSWORD) {
+					setPasswordError("Invalid password.");
+				} else if (errorCode == STATUS_CODE_NOT_FOUND) {
+					setEmailError("User does not exist");
+				} else if (errorCode == STATUS_CODE_MANY_REQ) {
+					setEmailError("Too many repeated attempts, please try again later.");
+				}
+			});
+		
 	};
 
 	return (
@@ -87,16 +91,16 @@ const LoginPage = () => {
 					</Typography>
 					<Box component="form" noValidate onSubmit={handleLogin} sx={{ mt: 1 }}>
 						<TextField
-							error={usernameError != null}
-							helperText={usernameError}
+							error={emailError != null}
+							helperText={emailError}
 							margin="normal"
 							required
 							fullWidth
-							id="username"
-							label="Username"
-							name="username"
-							autoComplete="username"
-							autoFocus
+							id="email"
+							label="Email"
+							name="email"
+							autoComplete="email"
+							onChange={() => setEmailError(null)}
 						/>
 						<TextField
 							error={passwordError != null}
@@ -109,6 +113,7 @@ const LoginPage = () => {
 							type="password"
 							id="password"
 							autoComplete="current-password"
+							onChange={() => setPasswordError(null)}
 						/>
 						<Button
 							type="submit"

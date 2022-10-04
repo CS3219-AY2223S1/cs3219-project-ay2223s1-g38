@@ -2,10 +2,8 @@ import React, { Fragment }  from "react";
 
 import { Container, Grid, Typography } from "@mui/material";
 
-import CustomAppBar from "../CustomAppBar";
-import QuestionCard from "../QuestionCard";
-
-
+import CustomAppBar from "../components/CustomAppBar";
+import QuestionCard from "../components/QuestionCard";
 
 const HomePage = () => {
 	return (

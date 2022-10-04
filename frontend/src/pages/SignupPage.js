@@ -11,40 +11,46 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import axios from "axios";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { Link as RRLink, useNavigate } from "react-router-dom";
 
-import { URL_CREATE_USER_SVC } from "../../configs";
-import { STATUS_CODE_CONFLICT, STATUS_CODE_CREATED } from "../../constants";
+import firebaseAuth from "../config/firebase";
 
 export default function SignUp() {
 	const navigate = useNavigate(); 
-	const [ usernameError, setUsernameError ] = useState(null); 
+	const [ emailError, setEmailError ] = useState(null); 
 	const [ passwordError, setPasswordError ] = useState(null); 
+	const [ usernameError, setUsernameError ] = useState(null);
 
 	const handleSignup = async (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
-		const username = data.get("username"); 
+		const email = data.get("email"); 
 		const password = data.get("password");
+		const username = data.get("username");
 
-		if (!username || !password) {
-			setUsernameError(!username ? "Username cannot be empty." : null); 
+		if (!email || !password) {
+			setEmailError(!email ? "Email cannot be empty." : null); 
 			setPasswordError(!password ? "Password cannot be empty." : null);
+			setUsernameError(!username ? "Username cannot be empty." : null);
 			return; 
 		}
-		const res = await axios.post(URL_CREATE_USER_SVC, { username, password })
-			.catch((err) => {
-				if (err.response.status === STATUS_CODE_CONFLICT) {
-					setUsernameError("Username already exists.");
-				} else {
-					setUsernameError(""); 
-					setPasswordError("Something went wrong. Please try again later.");
-				}
+		createUserWithEmailAndPassword(firebaseAuth, email, password)
+			.then((userCredential) => {
+				const user = userCredential.user;
+				updateProfile(user, {
+					displayName: username
+				});
+				// TODO make a call to UserService to create user in MongoDB
+				navigate("/login");
+			})
+			.catch((error) => {
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				console.log("----------------------------ERROR---------");
+				console.log(errorCode);
+				console.log(errorMessage);
 			});
-		if (res && res.status === STATUS_CODE_CREATED) {
-			navigate("/login");
-		}
 	};
 
 	return (
@@ -72,14 +78,14 @@ export default function SignUp() {
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
 							<TextField
-								error={usernameError != null}
-								helperText={usernameError}
+								error={emailError != null}
+								helperText={emailError}
 								required
 								fullWidth
-								id="username"
-								label="Username"
-								name="username"
-								autoComplete="username"
+								id="email"
+								label="Email"
+								name="email"
+								autoComplete="email"
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -93,6 +99,19 @@ export default function SignUp() {
 								type="password"
 								id="password"
 								autoComplete="new-password"
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<TextField
+								error={usernameError != null}
+								helperText={usernameError}
+								required
+								fullWidth
+								name="username"
+								label="Username"
+								type="username"
+								id="username"
+								autoComplete="username"
 							/>
 						</Grid>
 					</Grid>
