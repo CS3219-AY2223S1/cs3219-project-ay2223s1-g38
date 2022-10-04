@@ -17,3 +17,4 @@ This is our CS3219 project.
 ### Frontend
 1. Install npm packages using `npm i`.
 2. Run Frontend using `npm start`.
+3. Set up `.env` file by renaming the `.env.sample` file and filling up the details for the firebase project. (For collaborative code editor)
