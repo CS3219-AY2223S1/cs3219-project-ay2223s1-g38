@@ -13,7 +13,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 export const getQuestionById = async (id) => {
 	try {
 		console.debug("Retrieving question " + id + " from the database");
-		let question = await db.collection("questionmodels").findOne({"questionId" : id});
+		let question = await db.collection("questionmodels").findOne({ "questionId" : id });
 		console.debug(question);
 		return question;
 	} catch (err) {
@@ -23,11 +23,11 @@ export const getQuestionById = async (id) => {
 };
 
 export const getNumQuestions = async () => {
-    try {
-        const numQuestions = await db.collection("questionmodels").countDocuments();
-        return numQuestions;
-    } catch (err) {
-        console.error("ERROR: Could not retrieve question count", err);
+	try {
+		const numQuestions = await db.collection("questionmodels").countDocuments();
+		return numQuestions;
+	} catch (err) {
+		console.error("ERROR: Could not retrieve question count", err);
 		throw err;
-    }
-}
+	}
+};
