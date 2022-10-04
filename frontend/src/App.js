@@ -1,27 +1,24 @@
 import React, { useEffect } from "react";
 
 import { Box, ThemeProvider } from "@mui/material";
+import firebase from "firebase/app"; 
 import { useSelector } from "react-redux";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
-import { useSelector } from "react-redux";
-import firebase from "firebase/app"; 
-import firebaseConfig from "./services/firebaseConfig";
-
+import CollabPage from "./components/pages/CollabPage";
 import HomePage from "./components/pages/HomePage";
 import LoginPage from "./components/pages/LoginPage";
 import SignupPage from "./components/pages/SignupPage";
-import CollabPage from "./components/pages/CollabPage";
 
 import { selectIsUserLoggedIn } from "./features/user/userSlice";
 import { globalTheme } from "./globalTheme";
+import firebaseConfig from "./services/firebaseConfig";
 
 const App = () => {
 	const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
 
 	// Initialize firebase once 
 	useEffect(() => {
-		console.log("config: " + firebaseConfig.appId);
 		if (!firebase.apps.length) {
 			firebase.initializeApp(firebaseConfig); 
 		} else {
@@ -29,6 +26,7 @@ const App = () => {
 		}
 	}, []);
 
+	// TODO: remove Collab from non-auth path when user auth works
 	return (
 		<div className="App">
 			<ThemeProvider theme={globalTheme}>
@@ -40,6 +38,7 @@ const App = () => {
 								<Route path="/signup" element={<SignupPage/>} />
 								<Route path="/login" element={<LoginPage/>} />
 								<Route path="/home" element={<HomePage/>} />
+								<Route path="/collab" element={<CollabPage/>} />
 							</Routes>
 							: 
 							<Routes>

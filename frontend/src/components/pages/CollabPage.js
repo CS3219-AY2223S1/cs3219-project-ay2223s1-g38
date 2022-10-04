@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import Editor from "@monaco-editor/react"; 
+
 import { fromMonaco } from "@hackerrank/firepad"; 
+import Editor from "@monaco-editor/react"; 
 import firebase from "firebase/app"; 
 
 const CollabPage = () => {
@@ -19,10 +20,12 @@ const CollabPage = () => {
 		if (!editorLoaded) {
 			return; 
 		} 
+
+		// TODO: update this to fit MatchID 
 		const dbRef = firebase.database().ref().child("pair001"); 
 		const firepad = fromMonaco(dbRef, editorRef.current); 
 
-		// const name = prompt("Enter your name: "); 
+		// TODO: set this as authenticated user's username 
 		firepad.setUserName("Hello world"); 
 	}, [ editorLoaded ]);
 
