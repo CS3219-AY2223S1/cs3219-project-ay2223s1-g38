@@ -1,9 +1,10 @@
 const { createServer } = require("http");
-const { Server } = require("socket.io");
 const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
-const registerMatchHandlers = require("./eventHandlers/matchHandler");
+const registerMatchHandlers = require("./producer/eventHandlers/matchHandler");
+const { socketConnection } = require("./utils/socket");
+const connect = require("./consumer/consumer");
 
 const app = express();
 
@@ -14,12 +15,13 @@ app.use(cors()); // config cors so that front-end can use
 app.options("*", cors());
 
 const httpServer = createServer(app);
-const io = new Server(httpServer);
 
-const onConnection = (socket) => {
+const onConnection = (io, socket) => {
 	registerMatchHandlers(io, socket);
 };
 
-io.on("connection", onConnection);
+socketConnection(httpServer, onConnection);
+connect();
+
 
 httpServer.listen(8001, () => console.log("MatchService listening on port 8001"));
