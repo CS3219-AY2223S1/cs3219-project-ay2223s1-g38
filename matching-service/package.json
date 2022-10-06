@@ -16,16 +16,18 @@
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.23.0",
-    "nodemon": "^2.0.19",
-    "eslint-plugin-import": "^2.26.0"
+    "eslint-plugin-import": "^2.26.0",
+    "nodemon": "^2.0.19"
   },
   "dependencies": {
+    "amqplib": "^0.10.3",
     "body-parser": "^1.20.0",
     "express": "^4.18.1",
     "node-schedule": "^2.1.0",
     "sequelize": "^6.21.4",
     "sequelize-cli": "^6.4.1",
     "socket.io": "^4.5.1",
+    "socket.io-client": "^4.5.2",
     "sqlite3": "^5.0.11",
     "uuid": "^8.3.2"
   }

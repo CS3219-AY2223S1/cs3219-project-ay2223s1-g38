@@ -1,4 +1,4 @@
-const { getMatches, createMatch, findOrCreateMatchByDifficulty, deleteMatchByMatchInfo } = require("../repository/matchRepository");
+const { getMatches, createMatch, findOrCreateMatchByDifficulty, deleteMatchByMatchInfo, findMatchByUser } = require("../repository/matchRepository");
 
 const handleGetMatches = async () => {
 	try {
@@ -40,9 +40,19 @@ const handleDeleteMatch = async (user, difficulty, socketId) => {
 	}
 };
 
+const checkUserHasMatch = async (user) => {
+	try {
+		return findMatchByUser(user);
+	} catch (err) {
+		console.error("ERROR: Could not check if user is in database.");
+		return { err };
+	}
+};
+
 module.exports = {
 	handleGetMatches,
 	handleCreateMatch,
 	handleFindMatch,
 	handleDeleteMatch,
+	checkUserHasMatch
 };
