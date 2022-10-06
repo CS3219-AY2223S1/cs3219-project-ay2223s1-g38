@@ -12,11 +12,14 @@ import { globalTheme } from "./globalTheme";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import { listen } from "./utils/eventHandlers";
 
 const socket = socketIO.connect(URI_MATCHING_SVC);
 
 const App = () => {
 	const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
+
+	listen(socket);
 
 	return (
 		<div className="App">

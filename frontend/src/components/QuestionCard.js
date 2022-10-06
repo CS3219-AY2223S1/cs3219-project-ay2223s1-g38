@@ -13,7 +13,7 @@ import { PropTypes } from "prop-types";
 const QuestionCard = (props) => {
 	// let navigate = useNavigate();
 
-	const { handleOpenCountdownModal, socket } = props;
+	const { handleFindMatch, handleOpenCountdownModal } = props;
 	return (
 		<Card sx={{ borderRadius: 8 }}>
 			<CardHeader
@@ -45,11 +45,7 @@ const QuestionCard = (props) => {
 			</CardContent>
 			<CardActions>
 				<Button fullWidth sx={{ color: "black" }} onClick={() => {
-					// TODO send request to search for match
-					socket.emit("match:find", {
-						user: "test",
-						difficulty: "MEDIUM"
-					});
+					handleFindMatch();
 					handleOpenCountdownModal();
 				}}>
 					{"Start"}
@@ -61,7 +57,7 @@ const QuestionCard = (props) => {
 
 QuestionCard.propTypes = {
 	handleOpenCountdownModal: PropTypes.func,
-	socket: PropTypes.any
+	handleFindMatch: PropTypes.func
 };
 
 export default QuestionCard;

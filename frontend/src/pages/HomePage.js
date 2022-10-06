@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Box, Container, Grid, Modal, Typography } from "@mui/material";
 
@@ -7,14 +7,35 @@ import { PropTypes } from "prop-types";
 import CountdownTimer from "../components/CountdownTimer";
 import CustomAppBar from "../components/CustomAppBar";
 import QuestionCard from "../components/QuestionCard";
+import { cancelMatch, findMatch } from "../utils/socket";
 
 const HomePage = (props) => {
 
 	const { socket } = props;
 
-	const [ open, setOpen ] = React.useState(false);
-	const handleOpenCountdownModal = () => setOpen(true);
-	const handleCloseCountdownModal = () => setOpen(false);
+	const [ open, setOpen ] = useState(false);
+	const [ chosen, setChosen ] = useState("");
+
+	const handleOpenCountdownModal = (difficulty) => {
+		setChosen(difficulty);
+		setOpen(true);
+	};
+
+	const handleCloseCountdownModal = () => {
+		setChosen("");
+		setOpen(false);
+	};
+
+	const difficulties = [ "EASY", "MEDIUM", "HARD" ];
+
+	const handleFindMatch = (userId, difficulty) => {
+		findMatch(socket, userId, difficulty);
+	};
+
+	const handleCancel = () => {
+		cancelMatch(socket, 1, chosen);
+	};
+
 	return (
 		<>
 			<CustomAppBar/>
@@ -36,7 +57,7 @@ const HomePage = (props) => {
 					p: 4,
 				}
 				}>
-					<CountdownTimer handleCloseCountdownModal={handleCloseCountdownModal} socket={socket}/>	
+					<CountdownTimer handleCloseCountdownModal={handleCloseCountdownModal} handleCancel={handleCancel}/>	
 				</Box>
 			</Modal>
 			<Container>
@@ -44,30 +65,17 @@ const HomePage = (props) => {
 					Pick a Difficulty!
 				</Typography>
 				<Grid container spacing={5} sx={{ mt: "2rem", paddingX: "2rem", alignItems: "center", justifyContent: "center", direction: "row" }}>
-					<Grid
-						item
-						xs={12}
-						sm={6}
-						md={4}
-					>
-						<QuestionCard handleOpenCountdownModal={handleOpenCountdownModal} socket={socket}/>
-					</Grid>
-					<Grid
-						item
-						xs={12}
-						sm={6}
-						md={4}
-					>
-						<QuestionCard handleOpenCountdownModal={handleOpenCountdownModal} socket={socket}/>
-					</Grid>
-					<Grid
-						item
-						xs={12}
-						sm={6}
-						md={4}
-					>
-						<QuestionCard handleOpenCountdownModal={handleOpenCountdownModal} socket={socket}/>
-					</Grid>
+					{difficulties.map((diff) => {
+						return (<Grid
+							key={`difficulty-box-${diff}}`}
+							item
+							xs={12}
+							sm={6}
+							md={4}
+						>
+							<QuestionCard handleOpenCountdownModal={() => handleOpenCountdownModal(diff)} handleFindMatch={() => handleFindMatch(1, diff)}/>
+						</Grid>);
+					})}
 				</Grid>
 			</Container>
 		</>

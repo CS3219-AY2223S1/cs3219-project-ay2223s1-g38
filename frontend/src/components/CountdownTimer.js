@@ -7,7 +7,7 @@ import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 const CountdownTimer = (props) => {
 
-	const { handleCloseCountdownModal, socket } = props;
+	const { handleCloseCountdownModal, handleCancel } = props;
 
 	const renderTime = ({ remainingTime }) => {
 		return (<Grid container sx={{ flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
@@ -15,10 +15,7 @@ const CountdownTimer = (props) => {
 				{remainingTime}
 			</Typography>
 			<Button variant="outlined" sx={{ color: "black", backgroundColor: "#FFA5A5", fontWeight: "bold" }} onClick={() => {
-				socket.emit("match:cancel", {
-					user: "test",
-					difficulty: "MEDIUM"
-				});
+				handleCancel();
 				handleCloseCountdownModal();
 			}}>
 				{"Cancel"}
@@ -52,7 +49,7 @@ const CountdownTimer = (props) => {
 
 CountdownTimer.propTypes = {
 	handleCloseCountdownModal: PropTypes.func,
-	socket: PropTypes.any
+	handleCancel: PropTypes.func
 };
 
 export default CountdownTimer;
