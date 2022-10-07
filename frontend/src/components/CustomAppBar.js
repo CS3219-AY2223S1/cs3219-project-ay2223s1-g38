@@ -12,16 +12,19 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { signOut } from "firebase/auth";
+import { useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 
 import firebaseAuth from "../config/firebase";
+import { selectUsername } from "../features/user/userSlice";
 
 const settings = [ "Profile", "Logout" ];
 
 const CustomAppBar = () => {
 	const [ anchorElUser, setAnchorElUser ] = React.useState(null);
 	const navigate = useNavigate();
+	const username = useSelector(selectUsername);
 
 	const handleOpenUserMenu = (event) => {
 		setAnchorElUser(event.currentTarget);
@@ -68,7 +71,7 @@ const CustomAppBar = () => {
 					<Box sx={{ flexGrow: 0 }}>
 						<Tooltip title="Open settings">
 							<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-								<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+								<Avatar alt={username} src="/static/images/avatar/2.jpg" />
 							</IconButton>
 						</Tooltip>
 						<Menu

@@ -34,6 +34,7 @@ const App = () => {
 							<Routes>
 								<Route exact path="/" element={<Navigate replace to="/home" />}/>
 								<Route path="/home" element={<HomePage/>} />
+								<Route path="/signup" element={<SignupPage/>} />
 							</Routes>
 						}
 					</Router>

@@ -10,21 +10,24 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import axios from "axios";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { useDispatch } from "react-redux";
 import { Link as RRLink, useNavigate } from "react-router-dom";
 
+import { URL_LOGIN_SVC } from "../config/config";
 import firebaseAuth from "../config/firebase";
+import { setUsername } from "../features/user/userSlice";
 import backgroundImage from "../static/algohike.jpg";
-import { STATUS_CODE_MANY_REQ, STATUS_CODE_NOT_FOUND, STATUS_CODE_WRONG_PASSWORD } from "../utils/constants";
-
-
-
+import { STATUS_CODE_INVALID_EMAIL, STATUS_CODE_MANY_REQ, STATUS_CODE_NOT_FOUND, STATUS_CODE_WRONG_PASSWORD } from "../utils/constants";
 
 // TODO: fix invalid DOM nesting
 const LoginPage = () => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [ emailError, setEmailError ] = useState(null); 
 	const [ passwordError, setPasswordError ] = useState(null); 
+	const [ generalError, setGeneralError ] = useState(null);
 
 	const handleLogin = async (event) => {
 		event.preventDefault(); 
@@ -36,24 +39,28 @@ const LoginPage = () => {
 			setPasswordError(!password ? "Password cannot be empty." : null);
 			return; 
 		}
-		signInWithEmailAndPassword(firebaseAuth, email, password)
-			.then((userCredential) => {
-				const user = userCredential.user;
-				console.log("-------SIGNED IN----------");
-				console.log(user);
-				navigate("/home");
-			})
-			.catch((error) => {
-				const errorCode = error.code;
-				if (errorCode == STATUS_CODE_WRONG_PASSWORD) {
-					setPasswordError("Invalid password.");
-				} else if (errorCode == STATUS_CODE_NOT_FOUND) {
-					setEmailError("User does not exist");
-				} else if (errorCode == STATUS_CODE_MANY_REQ) {
-					setEmailError("Too many repeated attempts, please try again later.");
-				}
-			});
-		
+
+		try {
+			const userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
+			const user = userCredential.user;
+			const token = await user.getIdToken();
+			const res = await axios.post(URL_LOGIN_SVC, {}, { headers: { Authorization: `Bearer ${token}` } });
+			const userData = res.data.user;
+			dispatch(setUsername({ username: userData.username }));
+			navigate("/home");
+		} catch (err) {
+			const errorCode = err.code;
+			console.log(err.code);
+			if (errorCode == STATUS_CODE_WRONG_PASSWORD) {
+				setPasswordError("Invalid password.");
+			} else if (errorCode == STATUS_CODE_INVALID_EMAIL) {
+				setEmailError("Invalid email");
+			} else if (errorCode == STATUS_CODE_NOT_FOUND) {
+				setEmailError("User does not exist");
+			} else if (errorCode == STATUS_CODE_MANY_REQ) {
+				setGeneralError("Too many repeated attempts, please try again later.");
+			}
+		}
 	};
 
 	return (
@@ -123,6 +130,7 @@ const LoginPage = () => {
 						>
                 Sign In
 						</Button>
+						<Typography sx = {{ ml: 2 }} variant="body2" color={"error"}>{ generalError }</Typography>
 						<Grid container>
 							<Grid item xs>
 								{/* <Link href="#" variant="body2">
