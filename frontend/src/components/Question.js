@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import { CardHeader, Paper, Typography } from "@mui/material";
+import { Button, CardHeader, CircularProgress, IconButton, Paper, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import axios from "axios";
 
 import { URL_GET_QUESTION_SVC } from "../configs";
@@ -11,18 +12,22 @@ const Question = () => {
 	const [ questionTitle, setQuestionTitle ] = useState(null);
 	const [ questionDifficulty, setQuestionDifficulty ] = useState("");
 	const [ questionError, setQuestionError ] = useState(null);
+	const [ isQuestionLoading, setIsQuestionLoading ] = useState(false);
 
 	const getQuestion = async () => {
+		setIsQuestionLoading(true);
 		const res = await axios.get(URL_GET_QUESTION_SVC)
 			.catch(() => {
-				setQuestionError("Error retrieving question");
+				setQuestionError("Error retrieving question, please try again later");
 			});
 		if (res && res.status === STATUS_CODE_SUCCESS) {
 			setQuestionError(null);
 			setQuestionTitle(res.data.question.title);
+			console.log(res.data.question.content);
 			setQuestion(res.data.question.content);
 			setQuestionDifficulty(res.data.question.difficulty);
 		}
+		setIsQuestionLoading(false);
 	};
 
 	useEffect(() => {
@@ -32,6 +37,11 @@ const Question = () => {
 	return (
 		<Paper>
 			<CardHeader
+				action={
+					<IconButton aria-label="settings" onClick={() => getQuestion()}>
+						<Button variant="outlined">Next Question</Button>
+					</IconButton>
+				}
 				title={questionTitle}
 				subheader={questionDifficulty}
 				titleTypographyProps={{ align: "center" }}
@@ -42,12 +52,17 @@ const Question = () => {
 					backgroundColor: (theme) =>
 						theme.palette.secondary.dark
 				}} />
-			<Typography style={{ whiteSpace: "pre-line" }} sx={{ margin: "10px" }}>
-				{question}
-			</Typography>
-			<Typography>
-				{questionError}
-			</Typography>
+
+			{isQuestionLoading ? <Box sx={{ marginLeft: "50%" }}><CircularProgress sx={{ py: 2 }} /></Box> :
+				<>
+					<Typography sx={{ margin: "10px", color: "red" }} variant="h6">
+						{questionError}
+					</Typography>
+					<Typography style={{ whiteSpace: "pre-line" }} sx={{ margin: "10px" }}>
+						{question}
+					</Typography>
+				</>
+			}
 		</Paper>
 	);
 };
