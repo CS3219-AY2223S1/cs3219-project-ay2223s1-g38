@@ -21,8 +21,6 @@ const Question = () => {
 			setQuestionError(null);
 			setQuestionTitle(res.data.question.title);
 			setQuestion(res.data.question.content);
-			//setQuestion(res.data.question.content.replace(/(?:\r\n|\r|\n)/g, "<br />"));
-			console.debug(res.data.question.content);
 			setQuestionDifficulty(res.data.question.difficulty);
 		}
 	};
@@ -44,7 +42,7 @@ const Question = () => {
 					backgroundColor: (theme) =>
 						theme.palette.secondary.dark
 				}} />
-			<Typography style={{ whiteSpace: "pre-line" }}>
+			<Typography style={{ whiteSpace: "pre-line" }} sx={{ margin: "10px" }}>
 				{question}
 			</Typography>
 			<Typography>
