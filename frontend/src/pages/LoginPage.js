@@ -12,18 +12,15 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useDispatch } from "react-redux";
 import { Link as RRLink, useNavigate } from "react-router-dom";
 
 import { URL_LOGIN_SVC } from "../config/config";
 import firebaseAuth from "../config/firebase";
-import { setUsername } from "../features/user/userSlice";
 import backgroundImage from "../static/algohike.jpg";
 import { STATUS_CODE_INVALID_EMAIL, STATUS_CODE_MANY_REQ, STATUS_CODE_NOT_FOUND, STATUS_CODE_WRONG_PASSWORD } from "../utils/constants";
 
 // TODO: fix invalid DOM nesting
 const LoginPage = () => {
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [ emailError, setEmailError ] = useState(null); 
 	const [ passwordError, setPasswordError ] = useState(null); 
@@ -44,9 +41,9 @@ const LoginPage = () => {
 			const userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
 			const user = userCredential.user;
 			const token = await user.getIdToken();
-			const res = await axios.post(URL_LOGIN_SVC, {}, { headers: { Authorization: `Bearer ${token}` } });
-			const userData = res.data.user;
-			dispatch(setUsername({ username: userData.username }));
+			await axios.post(URL_LOGIN_SVC, {}, { headers: { Authorization: `Bearer ${token}` } });
+			// const userData = res.data.user;
+			// dispatch(setUsername({ username: userData.username }));
 			navigate("/home");
 		} catch (err) {
 			const errorCode = err.code;
