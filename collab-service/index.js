@@ -23,4 +23,4 @@ router.put("/updateQuestionId", handleUpdateQuestionId);
 // eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => console.log("question-service is listening on port ", PORT));
+app.listen(PORT, () => console.log("collab-service is listening on port ", PORT));
