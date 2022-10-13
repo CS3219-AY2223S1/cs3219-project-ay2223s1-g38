@@ -1,4 +1,4 @@
-const { getMatches, createMatch, findOrCreateMatchByDifficulty, deleteMatchByMatchInfo, findMatchByUser } = require("../repository/matchRepository");
+const { getMatches, createMatch, findOrCreateMatchByDifficulty, deleteMatchByMatchInfo, findMatchByUser, deleteMatchBySocketId } = require("../repository/matchRepository");
 
 const handleGetMatches = async () => {
 	try {
@@ -49,10 +49,20 @@ const checkUserHasMatch = async (user) => {
 	}
 };
 
+const handleDeleteAllMatchesBySocketId = async (socketId) => {
+	try {
+		return deleteMatchBySocketId(socketId);
+	} catch (err) {
+		console.error("ERROR: Could not delete matches from database.");
+		return { err };
+	}
+}
+
 module.exports = {
 	handleGetMatches,
 	handleCreateMatch,
 	handleFindMatch,
 	handleDeleteMatch,
-	checkUserHasMatch
+	checkUserHasMatch,
+	handleDeleteAllMatchesBySocketId
 };

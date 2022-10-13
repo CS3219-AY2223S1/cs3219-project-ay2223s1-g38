@@ -14,10 +14,6 @@ exports.socketConnection = (server, eventHandler) => {
 		console.info(`Client connected [id=${socket.id}]`);
 		socket.join(socket.id);
 		eventHandler(io, socket);
-
-		socket.on("disconnect", () => {
-			console.info(`Client disconnected [id=${socket.id}]`);
-		});
 	});
 };
 

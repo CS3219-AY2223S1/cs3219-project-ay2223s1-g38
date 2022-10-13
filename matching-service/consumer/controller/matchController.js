@@ -1,4 +1,4 @@
-const { handleCreateMatch, handleFindMatch, handleDeleteMatch, checkUserHasMatch } = require("../domain/matchDomain");
+const { handleCreateMatch, handleFindMatch, handleDeleteMatch, checkUserHasMatch, handleDeleteAllMatchesBySocketId } = require("../domain/matchDomain");
 
 const createMatch = async (user, difficulty) => {
 	try {
@@ -63,9 +63,20 @@ const findMatchByUser = (user) => {
 	}
 };
 
+const deleteMatchesOnDisconnect = (socketId) => {
+	try {
+		handleDeleteAllMatchesBySocketId(socketId);
+	} catch (err) {
+		return {
+			error: "Database failure while deleting match."
+		};
+	}
+}
+
 module.exports = {
 	createMatch,
 	findMatch,
 	deleteMatch,
-	findMatchByUser
+	findMatchByUser,
+	deleteMatchesOnDisconnect
 };

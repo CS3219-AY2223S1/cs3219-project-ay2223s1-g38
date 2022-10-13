@@ -2,7 +2,7 @@ const { Milliseconds } = require("../constants/types");
 const { sendMessage, sendToTwoUsers, isSocketConnected } = require("../utils/socket");
 const { generateRandomRoomId, generateCronJobName, isValidMatch } = require("../utils/utils");
 const schedule = require("node-schedule");
-const { findMatch, deleteMatch } = require("./controller/matchController");
+const { findMatch, deleteMatch, deleteMatchesOnDisconnect } = require("./controller/matchController");
 const MatchEvent = require("../constants/events");
 const { findMatchByUser } = require("./repository/matchRepository");
 
@@ -61,7 +61,12 @@ const handleCancelMessage = (userId, difficulty, socketId) => {
 		});
 };
 
+const handleDisconnect = (socketId) => {
+	deleteMatchesOnDisconnect(socketId);
+}
+
 module.exports = {
 	handleFindMessage,
-	handleCancelMessage
+	handleCancelMessage,
+	handleDisconnect,
 };

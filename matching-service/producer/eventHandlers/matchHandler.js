@@ -12,7 +12,7 @@ module.exports = (io, socket) => {
 			io.to(socket.id).emit(MatchEvent.FIND, "Invalid data provided.");
 		}
 
-		await publishToQueue(MQ_NAME, generatePayload(socket.id, difficulty, user, "match:find"), Priority.MATCH_FIND);
+		await publishToQueue(MQ_NAME, generatePayload(socket.id, difficulty, user, MatchEvent.FIND), Priority.MATCH_FIND);
 	};
 
 	const handleCancelMatchEvent = async (data) => {
@@ -22,7 +22,7 @@ module.exports = (io, socket) => {
 			io.to(socket.id).emit(MatchEvent.CANCEL, "Invalid data provided.");
 		}
 
-		await publishToQueue(MQ_NAME, generatePayload(socket.id, difficulty, user, "match:cancel"), Priority.MATCH_CANCEL);
+		await publishToQueue(MQ_NAME, generatePayload(socket.id, difficulty, user, MatchEvent.CANCEL), Priority.MATCH_CANCEL);
 	};
   
 	socket.on(MatchEvent.FIND, handleFindMatchEvent);

@@ -14,7 +14,6 @@ import CollabPage from "./pages/CollabPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import TestPage from "./pages/TestPage";
 
 import firebaseConfig from "./services/firebaseConfig";
 import { listen } from "./utils/eventHandlers";
@@ -48,7 +47,6 @@ const App = () => {
 								<Route path="/login" element={<LoginPage/>} />
 								<Route path="/home" element={<HomePage socket={socket}/>} />
 								<Route path="/collab" element={<CollabPage/>} />
-								<Route path="/testpage" element={<TestPage/>} />
 							</Routes>
 							: 
 							<Routes>

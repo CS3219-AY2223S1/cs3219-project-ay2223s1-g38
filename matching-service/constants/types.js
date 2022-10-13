@@ -9,7 +9,8 @@ const Milliseconds = {
 };
 
 const Priority = {
-	MATCH_CANCEL: 10,
+	DISCONNECT: 10,
+	MATCH_CANCEL: 9,
 	MATCH_FIND: 1,
 };
 

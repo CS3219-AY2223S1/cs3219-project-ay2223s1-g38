@@ -56,10 +56,19 @@ const findMatchByUser = async (user) => {
 	});
 };
 
+const deleteMatchBySocketId = async (socketId) => {
+	return await db.Match.destroy({
+		where: {
+			socketId: socketId,
+		}
+	});
+}
+
 module.exports = {
 	getMatches,
 	createMatch,
 	findOrCreateMatchByDifficulty,
 	deleteMatchByMatchInfo,
-	findMatchByUser
+	findMatchByUser,
+	deleteMatchBySocketId
 };

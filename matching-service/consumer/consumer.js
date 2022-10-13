@@ -1,7 +1,7 @@
 const amqp = require("amqplib");
 const MatchEvent = require("../constants/events");
 
-const { handleFindMessage, handleCancelMessage } = require("./messageHandler");
+const { handleFindMessage, handleCancelMessage, handleDisconnect } = require("./messageHandler");
 
 async function connect() {
 	try {
@@ -14,10 +14,11 @@ async function connect() {
 
 		channel.consume("match-mq", message => {
 			const parsed = JSON.parse(message.content.toString());
-			console.log("Parsed message: ", parsed);
-			const { messageType, socketId, difficulty, userId } = parsed;
-
+			const { messageType, socketId, difficulty, userId, } = parsed;
 			switch (messageType) {
+			case MatchEvent.DISCONNECT:
+				handleDisconnect(socketId);
+				break;
 			case MatchEvent.FIND:
 				handleFindMessage(userId, difficulty, socketId);
 				break;
