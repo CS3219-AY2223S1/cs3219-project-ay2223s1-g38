@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 
-import { handleAddRoom } from "./controller/collabController.js";
+import { handleAddRoom, handleFindRoomByUid } from "./controller/collabController.js";
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -17,6 +17,7 @@ app.use("/api/collab", router).all((_, res) => {
 });
 
 router.post("/addRoom", handleAddRoom);
+router.post("/findRoomByUid", handleFindRoomByUid);
 
 // eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 8080;

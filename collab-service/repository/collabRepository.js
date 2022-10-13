@@ -16,3 +16,12 @@ export const addRoom = async (userId1, userId2, roomId, questionId) => {
 	const newRoom = await new RoomModel(room).save();
 	return newRoom;
 };
+
+export const findRoomByUid = async (userId) => {
+	const room = await db.collection("roommodels").findOne({$or:[
+        {"userId1": userId},
+        {"userId2": userId}
+    ]});
+	console.debug(room);
+	return room;
+}
