@@ -2,7 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 
 import { fromMonaco } from "@hackerrank/firepad"; 
 import Editor from "@monaco-editor/react"; 
-import firebase from "firebase/app"; 
+import { Box } from "@mui/system";
+import firebase from "firebase/app";
+ 
+import Question from "../Question";
 
 const CollabPage = () => {
 	const editorRef = useRef(null);
@@ -30,13 +33,17 @@ const CollabPage = () => {
 	}, [ editorLoaded ]);
 
 	return <div>
-		<Editor 
-			height="90vh"
-			defaultLanguage="java"
-			theme="vs-dark"
-			defaultValue="// Begin your Algohike here!"
-			onMount={handleEditorDidMount}
-		/>
+		<Box sx={{ display: "flex", direction: "row", height:"100%" }}>
+			<Question />
+			<Box sx={{ width:"55%", height:"100vh" }}>
+				<Editor 
+					defaultLanguage="java"
+					theme="vs-dark"
+					defaultValue="// Begin your Algohike here!"
+					onMount={handleEditorDidMount}
+				/>
+			</Box>
+		</Box>
 	</div>;
 };
 

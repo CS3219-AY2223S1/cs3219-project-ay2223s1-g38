@@ -7,6 +7,8 @@ import axios from "axios";
 import { URL_GET_QUESTION_SVC, URL_GET_QUESTION_WITH_BLACKLIST_SVC } from "../configs";
 import { STATUS_CODE_SUCCESS } from "../constants";
 
+
+
 const Question = () => {
 	const [ question, setQuestion ] = useState(null); 
 	const [ questionTitle, setQuestionTitle ] = useState(null);
@@ -16,6 +18,7 @@ const Question = () => {
 	let list = [];
 
 	const getQuestion = async () => {
+		question;
 		setIsQuestionLoading(true);
 		const res = await axios.get(URL_GET_QUESTION_SVC)
 			.catch(() => {
@@ -52,7 +55,7 @@ const Question = () => {
 	}, []);
 
 	return (
-		<Paper>
+		<Paper sx={{ width:"45%", height:"100%" }}>
 			<CardHeader
 				action={
 					<IconButton aria-label="settings" onClick={() => getQuestionWithBlackList(list)}>
@@ -66,19 +69,20 @@ const Question = () => {
 					align: "center",
 				}}
 				sx={{
+					height: "9vh",
 					backgroundColor: (theme) =>
 						theme.palette.secondary.dark
 				}} />
 
 			{isQuestionLoading ? <Box sx={{ marginLeft: "50%" }}><CircularProgress sx={{ py: 2 }} /></Box> :
-				<>
+				<Box sx={{ overflow: "auto", maxHeight:"86vh" }}>
 					<Typography sx={{ margin: "10px", color: "red" }} variant="h6">
 						{questionError}
 					</Typography>
 					<Typography style={{ whiteSpace: "pre-line" }} sx={{ margin: "10px" }}>
-						{question}
+						{question};
 					</Typography>
-				</>
+				</Box>
 			}
 		</Paper>
 	);
