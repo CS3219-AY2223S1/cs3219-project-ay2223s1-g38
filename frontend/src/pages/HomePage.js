@@ -1,20 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Box, Container, Grid, Modal, Typography } from "@mui/material";
 
 import { PropTypes } from "prop-types";
 
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 import CountdownTimer from "../components/CountdownTimer";
 import CustomAppBar from "../components/CustomAppBar";
 import QuestionCard from "../components/QuestionCard";
+import { selectRoomId } from "../features/match/matchSlice";
 import { cancelMatch, findMatch } from "../utils/socket";
 
 const HomePage = (props) => {
 
 	const { socket } = props;
+	
+	const roomId = useSelector(selectRoomId);
+	const navigate = useNavigate();
 
 	const [ open, setOpen ] = useState(false);
 	const [ chosen, setChosen ] = useState("");
+
+	useEffect(() => {
+		if (roomId != "") {
+			navigate("/collab");
+		}
+	}, [ roomId ]);
+
+	const difficulties = [ "EASY", "MEDIUM", "HARD" ];
 
 	const handleOpenCountdownModal = (difficulty) => {
 		setChosen(difficulty);
@@ -25,8 +40,6 @@ const HomePage = (props) => {
 		setChosen("");
 		setOpen(false);
 	};
-
-	const difficulties = [ "EASY", "MEDIUM", "HARD" ];
 
 	const handleFindMatch = (userId, difficulty) => {
 		findMatch(socket, userId, difficulty);
@@ -39,6 +52,7 @@ const HomePage = (props) => {
 	return (
 		<>
 			<CustomAppBar/>
+			<button onClick={() => console.log(roomId)}>Check Room id</button>
 			<Modal
 				open={open}
 				disableEscapeKeyDown={true}

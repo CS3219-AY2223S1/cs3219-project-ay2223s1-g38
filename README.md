@@ -15,5 +15,6 @@ This is our CS3219 project.
 4. Run User Service using `npm run dev`.
 
 ### Frontend
-1. Install npm packages using `npm i`.
+1. Install npm packages using `npm i --force`. (Need to force due to firepad dependencies not being the most up to date)
 2. Run Frontend using `npm start`.
+3. Set up `.env` file by renaming the `.env.sample` file and filling up the details for the firebase project. (For collaborative code editor)

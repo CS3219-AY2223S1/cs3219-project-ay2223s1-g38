@@ -1,30 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { MatchState } from "../../utils/constants";
-
 export const matchSlice = createSlice({
 	name: "match", 
 	initialState: {
-		matchState: MatchState.NONE,
+		roomId: ""
 	}, 
 	reducers: {
-		waiting: state => {
-			state.matchState = MatchState.WAITING_FOR_MATCH;
-		}, 
-		finding: state => {
-			state.matchState = MatchState.FINDING_MATCH;
+		setRoom: (state, action) => {
+			state.roomId = action.payload;
 		},
-		notFound: state => {
-			state.matchState = MatchState.MATCH_NOT_FOUND;
-		},
-		found: state => {
-			state.matchState = MatchState.MATCH_FOUND;
-		},
+		resetRoom: (state) => {
+			state.roomId = "";
+		}
 	}
 }); 
 
-export const { waiting, finding, notFound, found } = matchSlice.actions;
+export const { setRoom, resetRoom } = matchSlice.actions;
 export default matchSlice.reducer;
 
 // Selectors 
-export const selectMatchState = (state) => state.matchState; 
+export const selectRoomId = (state) => state.match.roomId; 
