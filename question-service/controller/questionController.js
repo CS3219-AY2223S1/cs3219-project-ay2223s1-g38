@@ -7,14 +7,13 @@ export const handleGetQuestion = (req, res) => {
 			if (!question) {
 				return res.status(400).json({ message: "Failed to retrieve question" });
 			}
-			console.debug("Retrieved question successfully");
 			return res.status(200).json({
 				message: "Retrieved question successfully",
 				question: question,
 			});
 		});
 	} catch (err) {
-		console.debug("Error: ", err);
+		console.error("Error: ", err);
 		return res.status(500).json({ message: "An error occured, please try again later." });
 	}
 };
@@ -31,14 +30,13 @@ export const handleGetQuestionWithBlackList = (req, res) => {
 			if (!question) {
 				return res.status(400).json({ message: "Failed to retrieve question" });
 			}
-			console.debug("Retrieved question successfully");
 			return res.status(200).json({
 				message: "Retrieved question successfully",
 				question: question,
 			});
 		});
 	} catch (err) {
-		console.debug("Error: ", err);
+		console.error("Error: ", err);
 		return res.status(500).json({ message: "An error occured, please try again later." });
 	}
 };

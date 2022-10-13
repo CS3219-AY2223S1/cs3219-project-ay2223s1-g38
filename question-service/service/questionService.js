@@ -1,19 +1,15 @@
 import { getNumQuestions, getQuestionById } from "../repository/questionRepository.js";
+import { numberGenerator } from "../utils/numberGenerator.js";
 
 export const getQuestionService = async () => {
-	let rand = 0;
-	while (rand === 0) {
-		rand = Math.ceil(Math.random() * await getNumQuestions());
-	}
+	let rand = await numberGenerator([], await getNumQuestions());
+	console.debug(rand);
 	let question = await getQuestionById(rand);
 	return question;
 };
 
 export const getQuestionServiceWithBlackList = async (list) => {
-	let rand = 0;
-	while (rand === 0 || list.includes(rand)) {
-		rand = Math.ceil(Math.random() * await getNumQuestions());
-	}
+	let rand = await numberGenerator(list, await getNumQuestions());
 	let question = await getQuestionById(rand);
 	return question;
 };
