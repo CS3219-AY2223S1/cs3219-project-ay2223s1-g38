@@ -18,7 +18,6 @@ const Question = () => {
 	let list = [];
 
 	const getQuestion = async () => {
-		question;
 		setIsQuestionLoading(true);
 		const res = await axios.get(URL_GET_QUESTION_SVC)
 			.catch(() => {
@@ -52,13 +51,12 @@ const Question = () => {
 	useEffect(() => {
 		getQuestion();
 	}, []);
-	console.log(question);
 	return (
 		<Paper sx={{ width:"45%", height:"100%" }}>
 			<CardHeader
 				action={
-					<IconButton aria-label="settings" onClick={() => getQuestionWithBlackList(list)}>
-						<Button variant="outlined">Next Question</Button>
+					<IconButton aria-label="settings" sx={{ borderRadius: "5px" }} onClick={() => getQuestionWithBlackList(list)}>
+						<Button variant="outlined" sx={{ color: "lightgreen",  borderColor: "lightgreen" }}>Next Question</Button>
 					</IconButton>
 				}
 				title={questionTitle}
