@@ -25,7 +25,7 @@ const HomePage = (props) => {
 
 	useEffect(() => {
 		if (roomId != "") {
-			navigate("/collab");
+			setTimeout(() => navigate("/collab"), 1000);
 		}
 	}, [ roomId ]);
 
@@ -52,7 +52,6 @@ const HomePage = (props) => {
 	return (
 		<>
 			<CustomAppBar/>
-			<button onClick={() => console.log(roomId)}>Check Room id</button>
 			<Modal
 				open={open}
 				disableEscapeKeyDown={true}
