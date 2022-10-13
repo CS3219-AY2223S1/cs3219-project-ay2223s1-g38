@@ -25,3 +25,13 @@ export const findRoomByUid = async (userId) => {
 	console.debug(room);
 	return room;
 }
+
+export const findRoomByRoomId = async (roomId) => {
+	const room = await db.collection("roommodels").findOne({ "roomId" : roomId});
+	return room;
+}
+
+export const updateQuestionId = async (room, newQuestionId) => {
+	const updateRoom = await db.collection("roommodels").updateOne(room, { $set: { "questionId": newQuestionId } });
+	return { "userId1": room.userId1, "userId2": room.userId2, "roomId" : room.roomId, "questionId" : newQuestionId };
+}

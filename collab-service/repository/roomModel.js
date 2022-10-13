@@ -12,6 +12,7 @@ let RoomModelSchema = new Schema({
     roomId: {
         type: String,
         required: true,
+        unique: true,
     },
     questionId: {
         type: Number,
