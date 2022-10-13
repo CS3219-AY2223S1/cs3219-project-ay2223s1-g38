@@ -16,7 +16,7 @@ app.use("/api/collab", router).all((_, res) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
 });
 
-router.get("/addRoom", handleAddRoom);
+router.post("/addRoom", handleAddRoom);
 
 // eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 8080;
