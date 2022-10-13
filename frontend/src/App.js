@@ -10,6 +10,7 @@ import HomePage from "./components/pages/HomePage";
 import LoginPage from "./components/pages/LoginPage";
 import SignupPage from "./components/pages/SignupPage";
 
+import TestPage from "./components/pages/TestPage";
 import { selectIsUserLoggedIn } from "./features/user/userSlice";
 import { globalTheme } from "./globalTheme";
 import firebaseConfig from "./services/firebaseConfig";
@@ -39,6 +40,7 @@ const App = () => {
 								<Route path="/login" element={<LoginPage/>} />
 								<Route path="/home" element={<HomePage/>} />
 								<Route path="/collab" element={<CollabPage/>} />
+								<Route path="/testpage" element={<TestPage/>} />
 							</Routes>
 							: 
 							<Routes>
