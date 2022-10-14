@@ -1,15 +1,14 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect } from "react";
+import React from "react";
 
 import { Box, ThemeProvider } from "@mui/material";
-import firebase from "firebase";
+// import firebase from "firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import { ClipLoader } from "react-spinners";
 
-import firebaseConfig from "./config/firebase";
+import firebaseApp from "./config/firebase";
 import { setUsername } from "./features/user/userSlice";
 import { globalTheme } from "./globalTheme";
 import CollabPage from "./pages/CollabPage";
@@ -19,17 +18,10 @@ import PasswordResetPage from "./pages/PasswordResetPage";
 import ProfilePage from "./pages/ProfilePage";
 import SignupPage from "./pages/SignupPage";
 
-const App = () => {
-	const [ user, loading ] = useAuthState(firebase.default.auth());
-	const dispatch = useDispatch();
 
-	useEffect(() => {
-		if (!firebase.apps.length) {
-			firebase.initializeApp(firebaseConfig); 
-		} else {
-			firebase.app(); 
-		}
-	}, []);
+const App = () => {
+	const [ user, loading ] = useAuthState(firebaseApp.auth());
+	const dispatch = useDispatch();
 
 	if (loading) {
 		return <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}>
