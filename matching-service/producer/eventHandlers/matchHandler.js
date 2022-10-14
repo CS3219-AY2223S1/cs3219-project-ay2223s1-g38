@@ -10,6 +10,7 @@ module.exports = (io, socket) => {
         
 		if (user === undefined || difficulty === undefined) {
 			io.to(socket.id).emit(MatchEvent.FIND, "Invalid data provided.");
+			return;
 		}
 
 		await publishToQueue(MQ_NAME, generatePayload(socket.id, difficulty, user, MatchEvent.FIND), Priority.MATCH_FIND);
