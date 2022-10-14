@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 
 import { Box, ThemeProvider } from "@mui/material";
@@ -13,6 +14,8 @@ import { setUsername } from "./features/user/userSlice";
 import { globalTheme } from "./globalTheme";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
+import PasswordResetPage from "./pages/PasswordResetPage";
+import ProfilePage from "./pages/ProfilePage";
 import SignupPage from "./pages/SignupPage";
 
 const App = () => {
@@ -35,12 +38,14 @@ const App = () => {
 								<Route exact path="/" element={<Navigate replace to="/login" />}/>
 								<Route path="/signup" element={<SignupPage/>} />
 								<Route path="/login" element={<LoginPage/>} />
+								<Route path="/password-reset" element={<PasswordResetPage/>} />
 							</Routes>
 							:
 							<Routes>
 								<Route exact path="/" element={<Navigate replace to="/home" />}/>
 								<Route path="/home" element={<HomePage/>} />
 								<Route path="/signup" element={<SignupPage/>} />
+								<Route path="/profile" element={<ProfilePage/>} />
 							</Routes>
 						}
 					</Router>

@@ -17,7 +17,7 @@ import { Link as RRLink, useNavigate } from "react-router-dom";
 import { URL_LOGIN_SVC } from "../config/config";
 import firebaseAuth from "../config/firebase";
 import backgroundImage from "../static/algohike.jpg";
-import { STATUS_CODE_INVALID_EMAIL, STATUS_CODE_MANY_REQ, STATUS_CODE_NOT_FOUND, STATUS_CODE_WRONG_PASSWORD } from "../utils/constants";
+import { FIREBASE_INVALID_EMAIL, FIREBASE_MANY_REQ, FIREBASE_NOT_FOUND, MSG_INVALID_EMAIL, MSG_MANY_REQ, MSG_NOT_FOUND, MSG_WRONG_PASSWORD, FIREBASE_WRONG_PASSWORD } from "../utils/constants";
 
 // TODO: fix invalid DOM nesting
 const LoginPage = () => {
@@ -47,15 +47,15 @@ const LoginPage = () => {
 			navigate("/home");
 		} catch (err) {
 			const errorCode = err.code;
-			console.log(err.code);
-			if (errorCode == STATUS_CODE_WRONG_PASSWORD) {
-				setPasswordError("Invalid password.");
-			} else if (errorCode == STATUS_CODE_INVALID_EMAIL) {
-				setEmailError("Invalid email");
-			} else if (errorCode == STATUS_CODE_NOT_FOUND) {
-				setEmailError("User does not exist");
-			} else if (errorCode == STATUS_CODE_MANY_REQ) {
-				setGeneralError("Too many repeated attempts, please try again later.");
+			console.debug(err.message);
+			if (errorCode == FIREBASE_WRONG_PASSWORD) {
+				setPasswordError(MSG_WRONG_PASSWORD);
+			} else if (errorCode == FIREBASE_INVALID_EMAIL) {
+				setEmailError(MSG_INVALID_EMAIL);
+			} else if (errorCode == FIREBASE_NOT_FOUND) {
+				setEmailError(MSG_NOT_FOUND);
+			} else if (errorCode == FIREBASE_MANY_REQ) {
+				setGeneralError(MSG_MANY_REQ);
 			}
 		}
 	};
@@ -130,9 +130,11 @@ const LoginPage = () => {
 						<Typography sx = {{ ml: 2 }} variant="body2" color={"error"}>{ generalError }</Typography>
 						<Grid container>
 							<Grid item xs>
-								{/* <Link href="#" variant="body2">
-                    Forgot password?
-									</Link> */}
+								<RRLink to='/password-reset'>
+									<Link href="#" variant="body2">
+										{"Forgot password?"}
+									</Link>
+								</RRLink>
 							</Grid>
 							<Grid item>
 								<RRLink to='/signup'>

@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import firebaseAuth from "../config/firebase";
 import { selectUsername } from "../features/user/userSlice";
 
-const settings = [ "Profile", "Logout" ];
+const settings = [ "Home", "Profile", "Logout" ];
 
 const CustomAppBar = () => {
 	const [ anchorElUser, setAnchorElUser ] = React.useState(null);
@@ -42,6 +42,10 @@ const CustomAppBar = () => {
 				console.debug(error);
 			});
 			navigate("/login");
+		} else if (setting === "Profile") {
+			navigate("/profile");
+		} else if (setting === "Home") {
+			navigate("/");
 		}
 	};
 

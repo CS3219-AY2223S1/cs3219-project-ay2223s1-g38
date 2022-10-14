@@ -17,7 +17,7 @@ import { Link as RRLink, useNavigate } from "react-router-dom";
 
 import { URL_CREATE_USER_SVC } from "../config/config";
 import firebaseAuth from "../config/firebase";
-import { STATUS_CODE_EMAIL_IN_USE } from "../utils/constants";
+import { FIREBASE_EMAIL_IN_USE, MSG_EMAIL_IN_USE } from "../utils/constants";
 import { passwordValidate } from "../utils/validation";
 
 export default function SignUp() {
@@ -71,8 +71,8 @@ export default function SignUp() {
 		} catch (err) {
 			const errorCode = err.code;
 			console.debug(err.message);
-			if (errorCode == STATUS_CODE_EMAIL_IN_USE) {
-				setGeneralError("Email already in use");
+			if (errorCode == FIREBASE_EMAIL_IN_USE) {
+				setGeneralError(MSG_EMAIL_IN_USE);
 			} else {
 				setGeneralError(err.response.data.message);
 				await user.delete();
