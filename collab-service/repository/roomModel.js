@@ -9,15 +9,15 @@ let RoomModelSchema = new Schema({
 		type: String,
 		required: true,
 	},
-    roomId: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    questionId: {
-        type: Number,
-        required: true,
-    }
+	roomId: {
+		type: String,
+		required: true,
+		unique: true,
+	},
+	questionId: {
+		type: Number,
+		required: true,
+	}
 });
 
 export default mongoose.model("RoomModel", RoomModelSchema);
