@@ -10,4 +10,22 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+  background-color: #f7f9fa;
+  font-size: 13px;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+}
+
+p {
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+}
+
+pre {
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  background-color: #f7f9fa;
+  font-size: 13px;
+  border-radius: 3px;
+  white-space: pre-wrap;
 }

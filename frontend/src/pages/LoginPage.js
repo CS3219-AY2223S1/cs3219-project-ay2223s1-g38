@@ -11,11 +11,11 @@ import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import firebase from "firebase";
 import { Link as RRLink, useNavigate } from "react-router-dom";
 
+
 import { URL_LOGIN_SVC } from "../config/config";
-import firebaseAuth from "../config/firebase";
 import backgroundImage from "../static/algohike.jpg";
 import { FIREBASE_INVALID_EMAIL, FIREBASE_MANY_REQ, FIREBASE_NOT_FOUND, MSG_INVALID_EMAIL, MSG_MANY_REQ, MSG_NOT_FOUND, MSG_WRONG_PASSWORD, FIREBASE_WRONG_PASSWORD } from "../utils/constants";
 
@@ -38,12 +38,13 @@ const LoginPage = () => {
 		}
 
 		try {
-			const userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
+			const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
 			const user = userCredential.user;
 			const token = await user.getIdToken();
 			await axios.post(URL_LOGIN_SVC, {}, { headers: { Authorization: `Bearer ${token}` } });
 			// const userData = res.data.user;
 			// dispatch(setUsername({ username: userData.username }));
+			console.debug(`User: ${user.displayName} logged in successfully`);
 			navigate("/home");
 		} catch (err) {
 			const errorCode = err.code;

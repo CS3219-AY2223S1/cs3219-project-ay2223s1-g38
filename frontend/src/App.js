@@ -1,17 +1,18 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Box, ThemeProvider } from "@mui/material";
+import firebase from "firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
-import ClipLoader from "react-spinners/ClipLoader";
+import { ClipLoader } from "react-spinners";
 
-import firebaseAuth from "./config/firebase";
+import firebaseConfig from "./config/firebase";
 import { setUsername } from "./features/user/userSlice";
-
 import { globalTheme } from "./globalTheme";
+import CollabPage from "./pages/CollabPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import PasswordResetPage from "./pages/PasswordResetPage";
@@ -19,8 +20,17 @@ import ProfilePage from "./pages/ProfilePage";
 import SignupPage from "./pages/SignupPage";
 
 const App = () => {
-	const [ user, loading ] = useAuthState(firebaseAuth);
+	const [ user, loading ] = useAuthState(firebase.default.auth());
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		if (!firebase.apps.length) {
+			firebase.initializeApp(firebaseConfig); 
+		} else {
+			firebase.app(); 
+		}
+	}, []);
+
 	if (loading) {
 		return <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}>
 			<ClipLoader color="teal" size="100"></ClipLoader>
@@ -28,6 +38,8 @@ const App = () => {
 	} else if (user) {
 		dispatch(setUsername({ username: user.displayName }));
 	}
+
+	// TODO: remove Collab from non-auth path when user auth works
 	return (
 		<div className="App">
 			<ThemeProvider theme={globalTheme}>
@@ -43,9 +55,9 @@ const App = () => {
 							:
 							<Routes>
 								<Route exact path="/" element={<Navigate replace to="/home" />}/>
-								<Route path="/home" element={<HomePage/>} />
-								<Route path="/signup" element={<SignupPage/>} />
 								<Route path="/profile" element={<ProfilePage/>} />
+								<Route path="/home" element={<HomePage/>} />
+								<Route path="/collab" element={<CollabPage/>} />
 							</Routes>
 						}
 					</Router>

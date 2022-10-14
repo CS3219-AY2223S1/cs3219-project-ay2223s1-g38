@@ -11,12 +11,11 @@ import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { signOut } from "firebase/auth";
+import firebase from "firebase";
 import { useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 
-import firebaseAuth from "../config/firebase";
 import { selectUsername } from "../features/user/userSlice";
 
 const settings = [ "Home", "Profile", "Logout" ];
@@ -36,7 +35,7 @@ const CustomAppBar = () => {
 
 	const handleMenuButton = (setting) => {
 		if (setting === "Logout") {
-			signOut(firebaseAuth).then(() => {
+			firebase.auth().signOut().then(() => {
 				console.debug("User signed out successfully");
 			}).catch((error) => {
 				console.debug(error);

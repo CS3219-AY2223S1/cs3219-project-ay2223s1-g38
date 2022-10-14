@@ -12,11 +12,10 @@ import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import firebase from "firebase";
 import { Link as RRLink, useNavigate } from "react-router-dom";
 
 import { URL_CREATE_USER_SVC } from "../config/config";
-import firebaseAuth from "../config/firebase";
 import { FIREBASE_EMAIL_IN_USE, MSG_EMAIL_IN_USE } from "../utils/constants";
 import { passwordValidate } from "../utils/validation";
 
@@ -61,9 +60,9 @@ export default function SignUp() {
 		let user;
 
 		try {
-			const userCredential = await createUserWithEmailAndPassword(firebaseAuth, email, password);
+			const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
 			user = userCredential.user;
-			updateProfile(user, {
+			firebase.auth().currentUser.updateProfile(user, {
 				displayName: username
 			});
 			await axios.post(URL_CREATE_USER_SVC, { uid: user.uid, username });

@@ -11,10 +11,10 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { sendPasswordResetEmail } from "firebase/auth";
+import firebase from "firebase";
 import { Link as RRLink, useNavigate } from "react-router-dom";
 
-import firebaseAuth from "../config/firebase";
+
 import { FIREBASE_NOT_FOUND, MSG_NOT_FOUND } from "../utils/constants";
 
 
@@ -33,7 +33,7 @@ export default function SignUp() {
 			return; 
 		}
 
-		sendPasswordResetEmail(firebaseAuth, email)
+		firebase.auth().sendPasswordResetEmail(email)
 			.then(() => {
 				navigate("/");
 			})
