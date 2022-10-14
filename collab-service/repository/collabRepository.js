@@ -12,9 +12,14 @@ let db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 export const addRoom = async (userId1, userId2, roomId, questionId) => {
-	const room = { userId1, userId2, roomId, questionId };
-	const newRoom = await new RoomModel(room).save();
-	return newRoom;
+	try {
+		const room = { userId1, userId2, roomId, questionId };
+		const newRoom = await new RoomModel(room).save();
+		return newRoom;
+	} catch (err) {
+		console.error(err);
+		return;
+	}
 };
 
 export const findRoomByUid = async (userId) => {

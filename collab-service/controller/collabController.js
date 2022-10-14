@@ -16,8 +16,9 @@ export const handleAddRoom = (req, res) => {
 
 		addRoomService(userId1, userId2, roomId, questionId).then((room) => {
 			if (!room) {
-				return res.status(400).json({ message: "Failed to add room" });
+				return res.status(400).json({ message: "Failed to add room. Room ID already exists" });
 			}
+			console.debug("Added room successfully");
 			return res.status(201).json({
 				message: "Added room successfully",
 				room: room,
@@ -39,8 +40,10 @@ export const handleFindRoomByUid = (req, res) => {
 
 		findRoomByUidService(userId).then((room) => {
 			if (!room) {
+				console.debug("No room found");
 				return res.status(200).json({ message: "No room found" });
 			}
+			console.debug("Found room");
 			return res.status(200).json({
 				message: "Found room",
 				room: room,
@@ -62,8 +65,10 @@ export const handleUpdateQuestionId =  (req, res) => {
 
 		updateQuestionIdService(roomId, newQuestionId).then((room) => {
 			if (!room) {
+				console.debug("Room does not exist");
 				return res.status(400).json({ message: "Room does not exist" });
 			}
+			console.debug("Updated question id successfully");
 			return res.status(200).json({
 				message: "Updated question id successfully",
 				room: room,
@@ -85,8 +90,10 @@ export const handleDeleteRoom =  (req, res) => {
 
 		deleteRoomService(roomId).then((room) => {
 			if (!room) {
+				console.debug("Room does not exist");
 				return res.status(400).json({ message: "Room does not exist" });
 			}
+			console.debug("Deleted room successfully");
 			return res.status(200).json({
 				message: "Deleted room successfully",
 			});
