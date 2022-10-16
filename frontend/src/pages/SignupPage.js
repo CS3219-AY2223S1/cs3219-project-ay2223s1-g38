@@ -62,7 +62,7 @@ export default function SignUp() {
 		try {
 			const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
 			user = userCredential.user;
-			firebase.auth().currentUser.updateProfile(user, {
+			firebase.auth().currentUser.updateProfile({
 				displayName: username
 			});
 			await axios.post(URL_CREATE_USER_SVC, { uid: user.uid, username });
