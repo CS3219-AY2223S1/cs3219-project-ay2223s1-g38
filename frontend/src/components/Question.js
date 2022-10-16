@@ -5,8 +5,8 @@ import { Box } from "@mui/system";
 import axios from "axios";
 
 
-import { URL_GET_QUESTION_SVC, URL_GET_QUESTION_WITH_BLACKLIST_SVC } from "../configs";
-import { STATUS_CODE_SUCCESS } from "../constants";
+import { URL_GET_QUESTION_SVC, URL_GET_QUESTION_WITH_BLACKLIST_SVC } from "../config/config";
+import { STATUS_CODE_SUCCESS } from "../utils/constants";
 
 
 const Question = () => {

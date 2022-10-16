@@ -1,6 +1,5 @@
-// eslint-disable-next-line no-undef
+/* eslint-disable no-undef */
 const URI_USER_SVC = process.env.URI_USER_SVC || "http://localhost:8000";
-// eslint-disable-next-line no-undef
 const URI_QUESTION_SVC = process.env.URI_QUESTION_SVC || "http://localhost:8081";
 
 // eslint-disable-next-line no-undef
