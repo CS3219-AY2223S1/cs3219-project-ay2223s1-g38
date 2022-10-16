@@ -29,17 +29,18 @@ const App = () => {
 	const [ user, loading ] = useAuthState(firebaseApp.auth());
 	const dispatch = useDispatch();
 
+	const socket = socketIO.connect(URI_MATCHING_SVC);
+
+	listen(socket);
+
 	if (loading) {
 		return <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}>
-			<ClipLoader color="teal" size="100"></ClipLoader>
+			<ClipLoader color="teal" size="100px"></ClipLoader>
 		</Box>;
 	} else if (user) {
 		dispatch(setUsername({ username: user.displayName }));
 		dispatch(setUserId({ userId: user.uid }));
 	}
-	const socket = socketIO.connect(URI_MATCHING_SVC);
-
-	listen(socket);
 
 	// TODO: remove Collab from non-auth path when user auth works
 	return (
