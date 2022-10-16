@@ -12,6 +12,8 @@ export const FIREBASE_MANY_REQ = "auth/too-many-request";
 export const MSG_MANY_REQ = "Too many attempts, please try again later";
 export const FIREBASE_EMAIL_IN_USE = "auth/email-already-in-use";
 export const MSG_EMAIL_IN_USE = "Email already in use";
+export const FIREBASE_BADLY_FORMATTED_EMAIL = "auth/invalid-email"; 
+export const MSG_BADLY_FORMATTED_EMAIL = "Email format is invalid.";
 export const MatchEvent = {
 	FIND: "match:find",
 	WAITING: "match:waiting",
