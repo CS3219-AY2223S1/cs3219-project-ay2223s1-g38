@@ -12,7 +12,7 @@ import socketIO from "socket.io-client";
 
 import { URI_MATCHING_SVC } from "./config/config";
 import firebaseApp from "./config/firebase";
-import { setUsername } from "./features/user/userSlice";
+import { setUserId, setUsername } from "./features/user/userSlice";
 
 import { globalTheme } from "./globalTheme";
 import CollabPage from "./pages/CollabPage";
@@ -35,6 +35,7 @@ const App = () => {
 		</Box>;
 	} else if (user) {
 		dispatch(setUsername({ username: user.displayName }));
+		dispatch(setUserId({ userId: user.uid }));
 	}
 	const socket = socketIO.connect(URI_MATCHING_SVC);
 
@@ -57,7 +58,7 @@ const App = () => {
 							<Routes>
 								<Route exact path="/" element={<Navigate replace to="/home" />}/>
 								<Route path="/profile" element={<ProfilePage/>} />
-								<Route path="/home" element={<HomePage/>} />
+								<Route path="/home" element={<HomePage socket={socket}/>} />
 								<Route path="/collab" element={<CollabPage/>} />
 							</Routes>
 						}
