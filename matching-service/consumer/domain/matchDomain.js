@@ -56,7 +56,7 @@ const handleDeleteAllMatchesBySocketId = async (socketId) => {
 		console.error("ERROR: Could not delete matches from database.");
 		return { err };
 	}
-}
+};
 
 module.exports = {
 	handleGetMatches,

@@ -71,7 +71,7 @@ const deleteMatchesOnDisconnect = (socketId) => {
 			error: "Database failure while deleting match."
 		};
 	}
-}
+};
 
 module.exports = {
 	createMatch,

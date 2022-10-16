@@ -63,7 +63,7 @@ const handleCancelMessage = (userId, difficulty, socketId) => {
 
 const handleDisconnect = (socketId) => {
 	deleteMatchesOnDisconnect(socketId);
-}
+};
 
 module.exports = {
 	handleFindMessage,

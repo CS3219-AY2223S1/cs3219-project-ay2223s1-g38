@@ -62,7 +62,7 @@ const deleteMatchBySocketId = async (socketId) => {
 			socketId: socketId,
 		}
 	});
-}
+};
 
 module.exports = {
 	getMatches,
