@@ -5,11 +5,15 @@ import Editor from "@monaco-editor/react";
 import { Box } from "@mui/system";
 import firebase from "firebase/app";
  
+import { useSelector } from "react-redux";
+
 import Question from "../components/Question";
+import { selectUsername } from "../features/user/userSlice";
 
 const CollabPage = () => {
 	const editorRef = useRef(null);
 	const [ editorLoaded, setEditorLoaded ] = useState(false); 
+	const username = useSelector(selectUsername);
     
 	// eslint-disable-next-line no-unused-vars
 	const handleEditorDidMount = (editor, _monaco) => {
@@ -28,8 +32,7 @@ const CollabPage = () => {
 		const dbRef = firebase.database().ref().child("pair001"); 
 		const firepad = fromMonaco(dbRef, editorRef.current); 
 
-		// TODO: set this as authenticated user's username 
-		firepad.setUserName("Hello world"); 
+		firepad.setUserName(username); 
 	}, [ editorLoaded ]);
 
 	return <div>
