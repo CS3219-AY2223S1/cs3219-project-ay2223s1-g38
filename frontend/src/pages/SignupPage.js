@@ -16,7 +16,7 @@ import firebase from "firebase";
 import { Link as RRLink, useNavigate } from "react-router-dom";
 
 import { URL_CREATE_USER_SVC } from "../config/config";
-import { FIREBASE_EMAIL_IN_USE, MSG_EMAIL_IN_USE } from "../utils/constants";
+import { FIREBASE_BADLY_FORMATTED_EMAIL, FIREBASE_EMAIL_IN_USE, MSG_BADLY_FORMATTED_EMAIL, MSG_EMAIL_IN_USE } from "../utils/constants";
 import { passwordValidate } from "../utils/validation";
 
 export default function SignUp() {
@@ -62,16 +62,18 @@ export default function SignUp() {
 		try {
 			const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
 			user = userCredential.user;
-			firebase.auth().currentUser.updateProfile(user, {
+			firebase.auth().currentUser.updateProfile({
 				displayName: username
 			});
 			await axios.post(URL_CREATE_USER_SVC, { uid: user.uid, username });
 			navigate("/");
 		} catch (err) {
 			const errorCode = err.code;
-			console.debug(err.message);
+			console.debug("Error occurred: " + err.message);
 			if (errorCode == FIREBASE_EMAIL_IN_USE) {
-				setGeneralError(MSG_EMAIL_IN_USE);
+				setEmailError(MSG_EMAIL_IN_USE);
+			} else if (errorCode == FIREBASE_BADLY_FORMATTED_EMAIL) {
+				setEmailError(MSG_BADLY_FORMATTED_EMAIL); 
 			} else {
 				setGeneralError(err.response.data.message);
 				await user.delete();
