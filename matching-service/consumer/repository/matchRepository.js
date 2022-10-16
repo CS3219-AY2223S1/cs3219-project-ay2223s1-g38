@@ -1,4 +1,4 @@
-const db = require("../models");
+const db = require("../../models");
 
 /**
  * Retrieves all matches in the database.
@@ -50,9 +50,25 @@ const deleteMatchByMatchInfo = async ({ user, difficulty, socketId }) => {
 	});
 };
 
+const findMatchByUser = async (user) => {
+	return await db.Match.findOne({
+		where: { user: user }
+	});
+};
+
+const deleteMatchBySocketId = async (socketId) => {
+	return await db.Match.destroy({
+		where: {
+			socketId: socketId,
+		}
+	});
+};
+
 module.exports = {
 	getMatches,
 	createMatch,
 	findOrCreateMatchByDifficulty,
 	deleteMatchByMatchInfo,
+	findMatchByUser,
+	deleteMatchBySocketId
 };

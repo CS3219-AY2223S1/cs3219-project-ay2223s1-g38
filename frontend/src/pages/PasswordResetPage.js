@@ -14,10 +14,7 @@ import Typography from "@mui/material/Typography";
 import firebase from "firebase";
 import { Link as RRLink, useNavigate } from "react-router-dom";
 
-
 import { FIREBASE_NOT_FOUND, MSG_NOT_FOUND } from "../utils/constants";
-
-
 
 export default function SignUp() {
 	const navigate = useNavigate(); 

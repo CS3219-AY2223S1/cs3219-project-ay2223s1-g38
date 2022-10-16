@@ -8,16 +8,22 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 
 import { ClipLoader } from "react-spinners";
 
+import socketIO from "socket.io-client";
+
+import { URI_MATCHING_SVC } from "./config/config";
 import firebaseApp from "./config/firebase";
 import { setUsername } from "./features/user/userSlice";
+
 import { globalTheme } from "./globalTheme";
 import CollabPage from "./pages/CollabPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import PasswordResetPage from "./pages/PasswordResetPage";
 import ProfilePage from "./pages/ProfilePage";
+
 import SignupPage from "./pages/SignupPage";
 
+import { listen } from "./utils/eventHandlers";
 
 const App = () => {
 	const [ user, loading ] = useAuthState(firebaseApp.auth());
@@ -30,6 +36,9 @@ const App = () => {
 	} else if (user) {
 		dispatch(setUsername({ username: user.displayName }));
 	}
+	const socket = socketIO.connect(URI_MATCHING_SVC);
+
+	listen(socket);
 
 	// TODO: remove Collab from non-auth path when user auth works
 	return (
