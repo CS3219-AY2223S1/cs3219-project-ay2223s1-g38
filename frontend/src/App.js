@@ -49,17 +49,25 @@ const App = () => {
 					<Router>
 						{ !user ?
 							<Routes>
+								<Route exact path="/" element={<Navigate replace to="/login" />}/>
 								<Route path="/signup" element={<SignupPage/>} />
 								<Route path="/login" element={<LoginPage/>} />
 								<Route path="/password-reset" element={<PasswordResetPage/>} />
-								<Route path="/" element={<Navigate replace to="/login" />}/>
+								<Route
+									path="*"
+									element={<Navigate to="/" replace />}
+								/>
 							</Routes>
 							:
 							<Routes>
+								<Route exact path="/" element={<Navigate replace to="/home" />}/>
 								<Route path="/profile" element={<ProfilePage/>} />
 								<Route path="/home" element={<HomePage socket={socket}/>} />
 								<Route path="/collab" element={<CollabPage/>} />
-								<Route path="/" element={<Navigate replace to="/home" />}/>
+								<Route
+									path="*"
+									element={<Navigate to="/" replace />}
+								/>
 							</Routes>
 						}
 					</Router>
