@@ -25,10 +25,7 @@
             "error",
             "double"
         ],
-        "semi": [
-            "error",
-            "always"
-        ],
+        "semi": 2,
         "object-curly-spacing": [
             "error",
             "always",
