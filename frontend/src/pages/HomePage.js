@@ -11,6 +11,7 @@ import CountdownTimer from "../components/CountdownTimer";
 import CustomAppBar from "../components/CustomAppBar";
 import QuestionCard from "../components/QuestionCard";
 import { selectRoomId } from "../features/match/matchSlice";
+import { selectUserId } from "../features/user/userSlice";
 import { cancelMatch, findMatch } from "../utils/socket";
 
 const HomePage = (props) => {
@@ -18,6 +19,7 @@ const HomePage = (props) => {
 	const { socket } = props;
 	
 	const roomId = useSelector(selectRoomId);
+	const userId = useSelector(selectUserId);
 	const navigate = useNavigate();
 
 	const [ open, setOpen ] = useState(false);
@@ -86,7 +88,7 @@ const HomePage = (props) => {
 							sm={6}
 							md={4}
 						>
-							<QuestionCard handleOpenCountdownModal={() => handleOpenCountdownModal(diff)} handleFindMatch={() => handleFindMatch(1, diff)}/>
+							<QuestionCard handleOpenCountdownModal={() => handleOpenCountdownModal(diff)} handleFindMatch={() => handleFindMatch(userId, diff)}/>
 						</Grid>);
 					})}
 				</Grid>

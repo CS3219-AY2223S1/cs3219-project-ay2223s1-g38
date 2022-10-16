@@ -2,7 +2,8 @@ import cors from "cors";
 import express from "express";
 
 // import { verifyToken } from "./middleware/auth.js";
-import { handleCreateUser, handleLogin, } from "./controller/userController.js";
+import { handleLogin, handleSignUp, } from "./controller/userController.js";
+import { verifyToken } from "./middleware/auth.js";
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -17,10 +18,7 @@ app.use("/api/user", router).all((_, res) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
 });
 
-router.post("/createUser", handleCreateUser);
-router.post("/login", handleLogin);
-
-// usage of JWT token 
-// router.post(route, verifyToken, controller method)
+router.post("/createUser", handleSignUp);
+router.post("/login", verifyToken, handleLogin);
 
 app.listen(8000, () => console.log("user-service is listening on port 8000"));
