@@ -10,6 +10,11 @@ export const findRoomByUidService = async (userId) => {
 	return room;
 };
 
+export const findRoomByRoomIdService = async (roomId) => {
+	const room = await findRoomByRoomId(roomId);
+	return room;
+}
+
 export const updateQuestionIdService = async (roomId, newQuestionId) => {
 	const room = await findRoomByRoomId(roomId);
 	console.debug(room);

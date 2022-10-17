@@ -10,11 +10,6 @@ export const socketConnection = (server, eventHandler) => {
 	});
 
 	io.on("connection", (socket) => {
-        socket.on('session:join', ({ roomId }) => {
-            console.info(`Client [id=${socket.id}] joined room [roomId=${roomId}].`);
-            socket.join(roomId);
-        })
-
 		console.info(`Client connected [id=${socket.id}]`);
 		eventHandler(io, socket);
 	});

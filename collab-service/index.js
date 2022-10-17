@@ -5,6 +5,8 @@ import { createServer } from "http";
 import { handleAddRoom, handleDeleteRoom, handleFindRoomByUid, handleUpdateQuestionId } from "./controller/collabController.js";
 
 import createSessionHandler from "./eventHandlers/createSessionHandler.js";
+import disconnectHandler from "./eventHandlers/disconnectHandler.js";
+import joinSessionHandler from "./eventHandlers/joinSessionHandler.js";
 import updateSessionQuestionHandler from "./eventHandlers/updateSessionQuestionHandler.js";
 import { socketConnection } from "./utils/socket.js";
 
@@ -29,8 +31,10 @@ router.delete("/deleteRoom", handleDeleteRoom);
 const httpServer = createServer(app);
 
 const onConnection = (io, socket) => {
+	joinSessionHandler(io, socket);
 	createSessionHandler(io, socket);
 	updateSessionQuestionHandler(io, socket)
+	disconnectHandler(io, socket)
 };
 
 socketConnection(httpServer, onConnection);
