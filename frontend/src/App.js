@@ -1,9 +1,8 @@
 import React from "react";
 
 import { Box, ThemeProvider } from "@mui/material";
-// import firebase from "firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import { ClipLoader } from "react-spinners";
@@ -12,7 +11,7 @@ import socketIO from "socket.io-client";
 
 import { URI_MATCHING_SVC } from "./config/config";
 import firebaseApp from "./config/firebase";
-import { setUserId, setUsername } from "./features/user/userSlice";
+import { selectUsername, setUserId, setUsername } from "./features/user/userSlice";
 
 import { globalTheme } from "./globalTheme";
 import CollabPage from "./pages/CollabPage";
@@ -28,6 +27,7 @@ import { listen } from "./utils/eventHandlers";
 const App = () => {
 	const [ user, loading ] = useAuthState(firebaseApp.auth());
 	const dispatch = useDispatch();
+	const username = useSelector(selectUsername);
 
 	const socket = socketIO.connect(URI_MATCHING_SVC);
 
@@ -38,7 +38,9 @@ const App = () => {
 			<ClipLoader color="teal" size="100px"></ClipLoader>
 		</Box>;
 	} else if (user) {
-		dispatch(setUsername({ username: user.displayName }));
+		if (!username) {
+			dispatch(setUsername({ username: user.displayName }));
+		}
 		dispatch(setUserId({ userId: user.uid }));
 	}
 
