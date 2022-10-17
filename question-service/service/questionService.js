@@ -8,6 +8,11 @@ export const getQuestionService = async () => {
 	return question;
 };
 
+export const getQuestionByIdService = async (qid) => {
+	let question = await getQuestionById(qid);
+	return question;
+};
+
 export const getQuestionServiceWithBlackList = async (list) => {
 	let rand = await numberGenerator(list, await getNumQuestions());
 	let question = await getQuestionById(rand);
