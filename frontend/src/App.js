@@ -8,9 +8,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 
 import { ClipLoader } from "react-spinners";
 
-import socketIO from "socket.io-client";
-
-import { URI_MATCHING_SVC } from "./config/config";
 import firebaseApp from "./config/firebase";
 import { setUserId, setUsername } from "./features/user/userSlice";
 
@@ -23,15 +20,9 @@ import ProfilePage from "./pages/ProfilePage";
 
 import SignupPage from "./pages/SignupPage";
 
-import { listen } from "./utils/eventHandlers";
-
 const App = () => {
 	const [ user, loading ] = useAuthState(firebaseApp.auth());
 	const dispatch = useDispatch();
-
-	const socket = socketIO.connect(URI_MATCHING_SVC);
-
-	listen(socket);
 
 	if (loading) {
 		return <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}>
@@ -63,7 +54,7 @@ const App = () => {
 							<Routes>
 								<Route exact path="/" element={<Navigate replace to="/home" />}/>
 								<Route path="/profile" element={<ProfilePage/>} />
-								<Route path="/home" element={<HomePage socket={socket}/>} />
+								<Route path="/home" element={<HomePage/>} />
 								<Route path="/collab" element={<CollabPage/>} />
 								<Route
 									path="*"

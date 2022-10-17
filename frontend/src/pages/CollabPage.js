@@ -7,10 +7,24 @@ import firebase from "firebase/app";
  
 import { useSelector } from "react-redux";
 
+import socketIO from "socket.io-client";
+
 import Question from "../components/Question";
+import { URI_SESSION_SVC } from "../config/config";
+import { selectRoomId } from "../features/session/sessionSlice";
+import { selectQuestionId } from "../features/session/sessionSlice";
 import { selectUsername } from "../features/user/userSlice";
 
+import { listen } from "../utils/eventHandlers";
+
 const CollabPage = () => {
+
+	const socket = socketIO.connect(URI_SESSION_SVC);
+	listen(socket);
+
+	const roomId = useSelector(selectRoomId);
+	const questionId = useSelector(selectQuestionId);
+
 	const editorRef = useRef(null);
 	const [ editorLoaded, setEditorLoaded ] = useState(false); 
 	const username = useSelector(selectUsername);
@@ -28,8 +42,9 @@ const CollabPage = () => {
 			return; 
 		} 
 
+		roomId;
 		// TODO: update this to fit MatchID 
-		const dbRef = firebase.database().ref().child("pair001"); 
+		const dbRef = firebase.database().ref().child("d"); 
 		const firepad = fromMonaco(dbRef, editorRef.current); 
 
 		firepad.setUserName(username); 
@@ -37,7 +52,7 @@ const CollabPage = () => {
 
 	return <div>
 		<Box sx={{ display: "flex", direction: "row", height:"100%" }}>
-			<Question />
+			<Question questionId={questionId}/>
 			<Box sx={{ width:"55%", height:"100vh" }}>
 				<Editor 
 					defaultLanguage="java"

@@ -7,16 +7,22 @@ import { PropTypes } from "prop-types";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+import socketIO from "socket.io-client";
+
 import CountdownTimer from "../components/CountdownTimer";
 import CustomAppBar from "../components/CustomAppBar";
 import QuestionCard from "../components/QuestionCard";
+import { URI_MATCHING_SVC } from "../config/config";
 import { selectRoomId } from "../features/match/matchSlice";
 import { selectUserId } from "../features/user/userSlice";
+import { listen } from "../utils/eventHandlers";
 import { cancelMatch, findMatch } from "../utils/socket";
 
-const HomePage = (props) => {
 
-	const { socket } = props;
+const HomePage = () => {
+
+	const socket = socketIO.connect(URI_MATCHING_SVC);
+	listen(socket);
 	
 	const roomId = useSelector(selectRoomId);
 	const userId = useSelector(selectUserId);
