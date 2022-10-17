@@ -18,6 +18,10 @@ let RoomModelSchema = new Schema({
 		type: Number,
 		required: true,
 	},
+	questions: {
+		type: Array,
+		"default": []
+	}
 }, {
 	timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
 });
