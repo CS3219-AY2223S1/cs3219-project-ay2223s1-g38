@@ -22,6 +22,21 @@ export const getQuestionById = async (id) => {
 	}
 };
 
+export const getQuestionByDifficulty = async (difficulty) => {
+	try {
+		console.debug("Retrieving " + difficulty + " question from the database");
+		let questionList = await db.collection("questionmodels").aggregate(
+			[ { $match : { "difficulty" : difficulty } }, { $sample : { size : 1 } } ]
+		).toArray();
+		let question = questionList[0];
+		console.debug(question);
+		return question;
+	} catch (err) {
+		console.error("ERROR: Could not retrieve questions", err);
+		throw err;
+	}
+};
+
 export const getNumQuestions = async () => {
 	try {
 		const numQuestions = await db.collection("questionmodels").countDocuments();
