@@ -1,32 +1,11 @@
-import bcryptjs from "bcryptjs";
-import jwt from "jsonwebtoken"; 
+import { createUser, getUser } from "../repository/userRepository.js";
 
-import { getUserByUsername } from "../repository/userRepository.js";
-
-export const handleUserLogin = async (username, password) => {
-	const user = await getUserByUsername(username); 
-	if (user) {
-		const isPasswordValid = await bcryptjs.compare(password, user.password); 
-
-		if (isPasswordValid) {
-			const token = await generateJwtToken(username); 
-			return token; 
-		} else {
-			return null; 
-		}
-	}
-	console.debug("No user found for username: " + username);
-	return null; 
-}; 
-
-const generateJwtToken = (username) => {
-	const token = jwt.sign({
-		username
-	// eslint-disable-next-line no-undef
-	}, process.env.TOKEN_KEY,
-	{
-		expiresIn: "2h"
-	}); 
-
-	return token; 
+export const handleUserCreate = async (uid, username) => {
+	const user = await createUser(uid, username);
+	return user;
 };
+
+export const handleUserLogin = async (uid) => {
+	const user = await getUser(uid); 
+	return user;
+}; 

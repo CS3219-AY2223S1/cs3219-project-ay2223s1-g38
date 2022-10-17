@@ -7,43 +7,76 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
+import firebase from "firebase";
 import { Link as RRLink, useNavigate } from "react-router-dom";
 
-import { URL_CREATE_USER_SVC } from "../configs";
-import { STATUS_CODE_CONFLICT, STATUS_CODE_CREATED } from "../constants";
+import { URL_CREATE_USER_SVC } from "../config/config";
+import { FIREBASE_BADLY_FORMATTED_EMAIL, FIREBASE_EMAIL_IN_USE, MSG_BADLY_FORMATTED_EMAIL, MSG_EMAIL_IN_USE } from "../utils/constants";
+import { passwordValidate } from "../utils/validation";
 
 export default function SignUp() {
 	const navigate = useNavigate(); 
-	const [ usernameError, setUsernameError ] = useState(null); 
+	const [ emailError, setEmailError ] = useState(null); 
 	const [ passwordError, setPasswordError ] = useState(null); 
+	const [ confirmPasswordError, setConfirmPasswordError ] = useState(null);
+	const [ usernameError, setUsernameError ] = useState(null);
+	const [ generalError, setGeneralError ] = useState(null);
 
 	const handleSignup = async (event) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
-		const username = data.get("username"); 
+		const email = data.get("email"); 
 		const password = data.get("password");
+		const confirmPassword = data.get("confirmPassword");
+		const username = data.get("username");
 
-		if (!username || !password) {
-			setUsernameError(!username ? "Username cannot be empty." : null); 
-			setPasswordError(!password ? "Password cannot be empty." : null);
+		const passwordError = passwordValidate(password);
+
+		if (!email) {
+			setEmailError("Email cannot be empty."); 
 			return; 
 		}
-		const res = await axios.post(URL_CREATE_USER_SVC, { username, password })
-			.catch((err) => {
-				if (err.response.status === STATUS_CODE_CONFLICT) {
-					setUsernameError("Username already exists.");
-				} else {
-					setUsernameError(""); 
-					setPasswordError("Something went wrong. Please try again later.");
-				}
+
+		if (passwordError) {
+			setPasswordError(passwordError);
+			return;
+		}
+
+		if (confirmPassword !== password) {
+			setConfirmPasswordError("Passwords must match.");
+			return;
+		}
+
+		if (!username) {
+			setUsernameError("Username cannot be empty.");
+			return;
+		}
+
+		let user;
+
+		try {
+			const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+			user = userCredential.user;
+			firebase.auth().currentUser.updateProfile({
+				displayName: username
 			});
-		if (res && res.status === STATUS_CODE_CREATED) {
-			navigate("/login");
+			await axios.post(URL_CREATE_USER_SVC, { uid: user.uid, username });
+			navigate("/");
+		} catch (err) {
+			const errorCode = err.code;
+			console.debug("Error occurred: " + err.message);
+			if (errorCode == FIREBASE_EMAIL_IN_USE) {
+				setEmailError(MSG_EMAIL_IN_USE);
+			} else if (errorCode == FIREBASE_BADLY_FORMATTED_EMAIL) {
+				setEmailError(MSG_BADLY_FORMATTED_EMAIL); 
+			} else {
+				setGeneralError(err.response.data.message);
+				await user.delete();
+			}
 		}
 	};
 
@@ -72,14 +105,15 @@ export default function SignUp() {
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
 							<TextField
-								error={usernameError != null}
-								helperText={usernameError}
+								error={emailError != null}
+								helperText={emailError}
 								required
 								fullWidth
-								id="username"
-								label="Username"
-								name="username"
-								autoComplete="username"
+								id="email"
+								label="Email"
+								name="email"
+								autoComplete="email"
+								onChange={() => setEmailError(null)}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -93,6 +127,34 @@ export default function SignUp() {
 								type="password"
 								id="password"
 								autoComplete="new-password"
+								onChange={() => setPasswordError(null)}
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<TextField
+								error={confirmPasswordError != null}
+								helperText={confirmPasswordError}
+								required
+								fullWidth
+								name="confirmPassword"
+								label="Confirm Password"
+								type="password"
+								id="confirmPassword"
+								onChange={() => setConfirmPasswordError(null)}
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<TextField
+								error={usernameError != null}
+								helperText={usernameError}
+								required
+								fullWidth
+								name="username"
+								label="Username"
+								type="username"
+								id="username"
+								autoComplete="username"
+								onChange={() => setUsernameError(null)}
 							/>
 						</Grid>
 					</Grid>
@@ -104,12 +166,13 @@ export default function SignUp() {
 					>
               Sign Up
 					</Button>
+					<Typography sx = {{ ml: 2 }} variant="body2" color={"error"}>{ generalError }</Typography>
 					<Grid container justifyContent="flex-end">
 						<Grid item>
 							<RRLink to='/login'>
-								<Link href="#" variant="body2">
+								<Typography variant="body2">
 					Already have an account? Sign in
-								</Link>
+								</Typography>
 							</RRLink>
 						</Grid>
 					</Grid>

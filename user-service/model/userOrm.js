@@ -11,11 +11,19 @@ mongoose.connect(mongoDB, { useNewUrlParser: true , useUnifiedTopology: true });
 let db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
-export const createUser = (params) => { 
-	return new UserModel(params);
+export const createUserOrm = async (uid, username) => { 
+	const user = new UserModel({ _id: uid, username });
+	const savedUser = await user.save();
+	return savedUser;
 };
 
-export const findUserByUsername = async (username) => {
-	let user = await db.collection("usermodels").findOne({ username });
+export const findUserByUsernameOrm = async (username) => {
+	// const user = await db.collection("usermodels").findOne({ username });
+	const user = await UserModel.findOne({ username });
+	return user;
+};
+
+export const findUserByUidOrm = async (uid) => {
+	const user = await UserModel.findById(uid);	
 	return user;
 };

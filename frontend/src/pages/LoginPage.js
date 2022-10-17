@@ -6,54 +6,62 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { Link as RRLink } from "react-router-dom";
+import firebase from "firebase";
+import { Link as RRLink, useNavigate } from "react-router-dom";
 
-import { URL_LOGIN_SVC } from "../configs";
-import { STATUS_CODE_SUCCESS, STATUS_CODE_UNAUTHORIZED } from "../constants";
-import { login } from "../features/user/userSlice";
+
+import { URL_LOGIN_SVC } from "../config/config";
 import backgroundImage from "../static/algohike.jpg";
-
-
+import { FIREBASE_INVALID_EMAIL, FIREBASE_MANY_REQ, FIREBASE_NOT_FOUND, MSG_INVALID_EMAIL, MSG_MANY_REQ, MSG_NOT_FOUND, MSG_WRONG_PASSWORD, FIREBASE_WRONG_PASSWORD } from "../utils/constants";
 
 // TODO: fix invalid DOM nesting
 const LoginPage = () => {
-	const dispatch = useDispatch(); 
-	const [ usernameError, setUsernameError ] = useState(null); 
+	const navigate = useNavigate();
+	const [ emailError, setEmailError ] = useState(null); 
 	const [ passwordError, setPasswordError ] = useState(null); 
+	const [ generalError, setGeneralError ] = useState(null);
 
-	// TODO: store JWT token in response into HTTP only cookie
 	const handleLogin = async (event) => {
 		event.preventDefault(); 
 		const data = new FormData(event.currentTarget);
-		const username = data.get("username");
+		const email = data.get("email");
 		const password = data.get("password");
-		if (!username || !password) {
-			setUsernameError(!username ? "Username cannot be empty." : null); 
+		if (!email || !password) {
+			setEmailError(!email ? "Username cannot be empty." : null); 
 			setPasswordError(!password ? "Password cannot be empty." : null);
 			return; 
 		}
-		const res = await axios.post(URL_LOGIN_SVC, { username, password }).catch(err => {
-			if (err.response.status === STATUS_CODE_UNAUTHORIZED) {
-				setUsernameError(""); 
-				setPasswordError("Invalid username or password."); 
-			} else {
-				setUsernameError(""); 
-				setPasswordError("Something went wrong. Please try again later.");
+
+		try {
+			const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+			const user = userCredential.user;
+			const token = await user.getIdToken();
+			await axios.post(URL_LOGIN_SVC, {}, { headers: { Authorization: `Bearer ${token}` } });
+			// const userData = res.data.user;
+			// dispatch(setUsername({ username: userData.username }));
+			console.debug(`User: ${user.displayName} logged in successfully`);
+			navigate("/home");
+		} catch (err) {
+			const errorCode = err.code;
+			console.debug(err.message);
+			if (errorCode == FIREBASE_WRONG_PASSWORD) {
+				setPasswordError(MSG_WRONG_PASSWORD);
+			} else if (errorCode == FIREBASE_INVALID_EMAIL) {
+				setEmailError(MSG_INVALID_EMAIL);
+			} else if (errorCode == FIREBASE_NOT_FOUND) {
+				setEmailError(MSG_NOT_FOUND);
+			} else if (errorCode == FIREBASE_MANY_REQ) {
+				setGeneralError(MSG_MANY_REQ);
 			}
-		}); 
-		if (res && res.status === STATUS_CODE_SUCCESS ) {
-			dispatch(login());
 		}
 	};
 
 	return (
-		<Grid container component="main" xs={{ height: "100vh" }} sx={{ height: "100vh", padding: "4rem" }}>
+		<Grid container component="main" sx={{ height: "100vh", padding: "4rem" }}>
 			<CssBaseline />
 			<Grid 
 				item
@@ -87,16 +95,16 @@ const LoginPage = () => {
 					</Typography>
 					<Box component="form" noValidate onSubmit={handleLogin} sx={{ mt: 1 }}>
 						<TextField
-							error={usernameError != null}
-							helperText={usernameError}
+							error={emailError != null}
+							helperText={emailError}
 							margin="normal"
 							required
 							fullWidth
-							id="username"
-							label="Username"
-							name="username"
-							autoComplete="username"
-							autoFocus
+							id="email"
+							label="Email"
+							name="email"
+							autoComplete="email"
+							onChange={() => setEmailError(null)}
 						/>
 						<TextField
 							error={passwordError != null}
@@ -109,6 +117,7 @@ const LoginPage = () => {
 							type="password"
 							id="password"
 							autoComplete="current-password"
+							onChange={() => setPasswordError(null)}
 						/>
 						<Button
 							type="submit"
@@ -118,17 +127,20 @@ const LoginPage = () => {
 						>
                 Sign In
 						</Button>
+						<Typography sx = {{ ml: 2 }} variant="body2" color={"error"}>{ generalError }</Typography>
 						<Grid container>
 							<Grid item xs>
-								{/* <Link href="#" variant="body2">
-                    Forgot password?
-									</Link> */}
+								<RRLink to='/password-reset'>
+									<Typography variant="body2">
+										{"Forgot password?"}
+									</Typography>
+								</RRLink>
 							</Grid>
 							<Grid item>
 								<RRLink to='/signup'>
-									<Link href="#" variant="body2">
+									<Typography variant="body2">
 										{"Don't have an account? Sign Up"}
-									</Link>
+									</Typography>
 								</RRLink>
 							</Grid>
 						</Grid>
