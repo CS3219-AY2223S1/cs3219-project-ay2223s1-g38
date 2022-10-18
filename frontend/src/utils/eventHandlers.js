@@ -4,7 +4,7 @@ import { setRoom } from "../features/match/matchSlice";
 import { setQuestionId } from "../features/session/sessionSlice";
 
 import { MatchEvent, SessionEvent } from "./constants";
-import {  extractRoomId } from "./utils";
+import {  extractQuestionId, extractRoomId } from "./utils";
 
 export const listenMatch = (socket) => {
 	const dispatch = useDispatch(); 
@@ -18,6 +18,7 @@ export const listenMatch = (socket) => {
 
 	socket.on(MatchEvent.FOUND, (msg) => {
 		dispatch(setRoom(extractRoomId(msg)));
+		dispatch(setQuestionId(extractQuestionId(msg)));
 	});
 };
 

@@ -8,6 +8,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 
 import { ClipLoader } from "react-spinners";
 
+import socketIO from "socket.io-client";
+
+import { URI_MATCHING_SVC } from "./config/config";
 import firebaseApp from "./config/firebase";
 import { setUserId, setUsername } from "./features/user/userSlice";
 
@@ -19,6 +22,7 @@ import PasswordResetPage from "./pages/PasswordResetPage";
 import ProfilePage from "./pages/ProfilePage";
 
 import SignupPage from "./pages/SignupPage";
+import { listenMatch } from "./utils/eventHandlers";
 
 const App = () => {
 	const [ user, loading ] = useAuthState(firebaseApp.auth());
@@ -32,6 +36,9 @@ const App = () => {
 		dispatch(setUsername({ username: user.displayName }));
 		dispatch(setUserId({ userId: user.uid }));
 	}
+
+	const socket = socketIO.connect(URI_MATCHING_SVC);
+	listenMatch(socket);
 
 	// TODO: remove Collab from non-auth path when user auth works
 	return (
@@ -54,7 +61,7 @@ const App = () => {
 							<Routes>
 								<Route exact path="/" element={<Navigate replace to="/home" />}/>
 								<Route path="/profile" element={<ProfilePage/>} />
-								<Route path="/home" element={<HomePage/>} />
+								<Route path="/home" element={<HomePage socket={socket} />} />
 								<Route path="/collab" element={<CollabPage/>} />
 								<Route
 									path="*"

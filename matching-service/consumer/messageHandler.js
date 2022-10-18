@@ -1,9 +1,9 @@
 const { Milliseconds } = require("../constants/types");
-const { sendMessage, sendToTwoUsers, isSocketConnected } = require("../utils/socket");
+const { sendMessage, sendToTwoUsers, isSocketConnected, createNewSession } = require("../utils/socket");
 const { generateRandomRoomId, generateCronJobName, isValidMatch } = require("../utils/utils");
 const schedule = require("node-schedule");
 const { findMatch, deleteMatch, deleteMatchesOnDisconnect } = require("./controller/matchController");
-const MatchEvent = require("../constants/events");
+const { MatchEvent } = require("../constants/events");
 const { findMatchByUser } = require("./repository/matchRepository");
 
 const cancelFindMatchJob = async (user, difficulty, socketId) => {
@@ -19,7 +19,7 @@ const handleFindMessage = async (userId, difficulty, socketId) => {
 	}
 
 	findMatch(userId, difficulty, socketId)
-		.then((resp) => {
+		.then(async (resp) => {
 			if (resp.created) {
 			// If a new Match object got created, schedule a cron job to delete the object if no match found in 30 seconds
 				const startTime = new Date(Date.now() + Milliseconds.IN_THIRTY_SECONDS);
@@ -38,10 +38,13 @@ const handleFindMessage = async (userId, difficulty, socketId) => {
 				deleteMatch(resp.match.user, resp.match.difficulty, resp.match.socketId);
 			
 				if (isSocketConnected(resp.match.socketId) && isValidMatch(userId, resp.match.user, socketId, resp.match.socketId)) {
-				// If the other user is still connected, then we send both users the roomId
+					// If the other user is still connected, then we create the room in CollabService and emit the roomId to both users.
 					const roomId = generateRandomRoomId();
-					const roomString = `Room: ${roomId}`;
-					sendToTwoUsers(socketId, resp.match.socketId, MatchEvent.FOUND, roomString);
+					const callback = (data) => sendToTwoUsers(socketId, resp.match.socketId, MatchEvent.FOUND, data);
+					const uid1 = userId;
+					const uid2 = resp.match.user;
+					const difficulty = resp.match.difficulty;
+					await createNewSession(uid1, uid2, roomId, difficulty, callback);
 				} else {
 				// If the other user is no longer connected, we repeat the function to try and find another match
 					handleFindMessage(userId, difficulty, socketId);

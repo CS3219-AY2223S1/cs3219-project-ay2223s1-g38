@@ -45,7 +45,6 @@ const QuestionCard = (props) => {
 			</CardContent>
 			<CardActions>
 				<Button fullWidth sx={{ color: "black" }} onClick={() => {
-					console.log("click match");
 					handleFindMatch();
 					handleOpenCountdownModal();
 				}}>

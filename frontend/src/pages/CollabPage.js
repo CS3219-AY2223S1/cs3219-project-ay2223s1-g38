@@ -49,7 +49,7 @@ const CollabPage = () => {
 		} 
 
 		// TODO: update this to fit MatchID
-		const dbRef = firebase.database().ref().child("test"); 
+		const dbRef = firebase.database().ref().child(roomId); 
 		const firepad = fromMonaco(dbRef, editorRef.current); 
 
 		firepad.setUserName(username); 

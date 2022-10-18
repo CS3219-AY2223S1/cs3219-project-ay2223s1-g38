@@ -3,7 +3,11 @@ export const generatePayload = (user, difficulty) => {
 };
 
 export const extractRoomId = (message) => {
-	return message.split(" ")[1];
+	return message.roomId;
+};
+
+export const extractQuestionId = (message) => {
+	return message.questionId;
 };
 
 export const generateSessionJoinPayload = (roomId) => {

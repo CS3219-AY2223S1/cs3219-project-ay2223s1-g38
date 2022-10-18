@@ -1,6 +1,14 @@
 const { Server } = require("socket.io");
+const ioClient = require('socket.io-client');
+const { SessionEvent } = require("../constants/events");
 
 let io;
+let clientSocket;
+exports.connectToCollabService = () => {
+	const namespace = process.env.URI_COLLAB_SVC || "localhost:8088"
+	clientSocket = ioClient.connect(`ws://${namespace}`);
+};
+
 exports.socketConnection = (server, eventHandler) => {
 	io = new Server(server, {
 		cors: {
@@ -25,6 +33,11 @@ exports.sendToTwoUsers = (socketId1, socketId2, key, message) => {
 	io.to(socketId1).emit(key, message);
 	io.to(socketId2).emit(key, message);
 };
+
+exports.createNewSession = async (uid1, uid2, roomId, difficulty, callback) => {
+	clientSocket.emit(SessionEvent.CREATE, { uid1, uid2, roomId, difficulty });
+	await clientSocket.on(SessionEvent.CREATE, (data) => callback(data));
+}
 
 exports.getRooms = () => io.sockets.adapter.rooms;
 
