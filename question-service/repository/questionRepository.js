@@ -46,3 +46,17 @@ export const getNumQuestions = async () => {
 		throw err;
 	}
 };
+
+export const getQuestionWithBlacklist = async (list, difficulty) => {
+	try {
+		let questionList = await db.collection("questionmodels").aggregate(
+			[ { $match : { "difficulty" : difficulty, "questionId" : { "$nin" : list } } }, { $sample : { size : 1 } } ]
+		).toArray();
+		let question = questionList[0];
+		console.debug(question);
+		return question;
+	} catch (err) {
+		console.error("ERROR: Could not retrieve questions", err);
+		throw err;
+	}
+};
