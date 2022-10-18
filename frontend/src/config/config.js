@@ -2,8 +2,8 @@
 const URI_USER_SVC = process.env.URI_USER_SVC || "http://localhost:8000";
 const URI_QUESTION_SVC = process.env.URI_QUESTION_SVC || "http://localhost:8081";
 
-// eslint-disable-next-line no-undef
 export const URI_MATCHING_SVC = process.env.URI_MATCHING_SVC || "http://localhost:8001";
+export const URI_CHAT_SVC = process.env.REACT_APP_URI_CHAT_SVC || "http://localhost:9000"; 
 
 const PREFIX_USER_SVC = "/api/user";
 

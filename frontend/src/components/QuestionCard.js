@@ -11,7 +11,6 @@ import { PropTypes } from "prop-types";
 
 
 const QuestionCard = (props) => {
-	// let navigate = useNavigate();
 
 	const { handleFindMatch, handleOpenCountdownModal } = props;
 	return (
