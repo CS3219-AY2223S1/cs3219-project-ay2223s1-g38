@@ -2,6 +2,10 @@ export const generatePayload = (user, difficulty) => {
 	return { user, difficulty };
 };
 
+export const extractDifficulty = (message) => {
+	return message.difficulty;
+};
+
 export const extractRoomId = (message) => {
 	return message.roomId;
 };

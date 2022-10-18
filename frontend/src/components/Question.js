@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 
 import { URL_GET_QUESTION_BY_ID_SVC, URL_GET_QUESTION_SVC, URL_GET_QUESTION_WITH_BLACKLIST_SVC } from "../config/config";
 import { selectRoomId } from "../features/match/matchSlice";
+import { selectDifficulty } from "../features/session/sessionSlice";
 import { STATUS_CODE_SUCCESS } from "../utils/constants";
 import { updateQuestion } from "../utils/socket";
 
@@ -24,6 +25,7 @@ const Question = (props) => {
 	// eslint-disable-next-line react/prop-types
 	const { questionId, socket } = props;
 	const roomId = useSelector(selectRoomId);
+	const difficulty = useSelector(selectDifficulty);
 
 	console.log("QID: " + questionId );
 	console.log("Room ID: " + roomId);
@@ -85,7 +87,7 @@ const Question = (props) => {
 		<Paper sx={{ width:"45%", height:"100%" }}>
 			<CardHeader
 				action={
-					<Button variant="outlined" aria-label="settings" sx={{ borderRadius: "5px",color: "lightgreen",  borderColor: "lightgreen" }} onClick={ socket === null ? () => getQuestionWithBlackList(list) : () => updateQuestion(socket, "test", "EASY")}>
+					<Button variant="outlined" aria-label="settings" sx={{ borderRadius: "5px",color: "lightgreen",  borderColor: "lightgreen" }} onClick={ socket === null ? () => getQuestionWithBlackList(list) : () => updateQuestion(socket, roomId, difficulty)}>
 						Next Question
 					</Button>
 				}

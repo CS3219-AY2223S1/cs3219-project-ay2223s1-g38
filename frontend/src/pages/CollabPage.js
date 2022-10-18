@@ -28,7 +28,7 @@ const CollabPage = () => {
 	const roomId = useSelector(selectRoomId);
 	const questionId = useSelector(selectQuestionId);
 	
-	joinSession(socket, "test");
+	joinSession(socket, roomId);
 
 	const editorRef = useRef(null);
 	const [ editorLoaded, setEditorLoaded ] = useState(false); 

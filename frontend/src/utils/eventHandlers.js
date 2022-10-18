@@ -1,10 +1,10 @@
 import { useDispatch } from "react-redux";
 
 import { setRoom } from "../features/match/matchSlice";
-import { setQuestionId } from "../features/session/sessionSlice";
+import { setDifficulty, setQuestionId } from "../features/session/sessionSlice";
 
 import { MatchEvent, SessionEvent } from "./constants";
-import {  extractQuestionId, extractRoomId } from "./utils";
+import {  extractDifficulty, extractQuestionId, extractRoomId } from "./utils";
 
 export const listenMatch = (socket) => {
 	const dispatch = useDispatch(); 
@@ -17,6 +17,8 @@ export const listenMatch = (socket) => {
 	socket.on(MatchEvent.CANCELLED, () => console.log("CANCELLED"));
 
 	socket.on(MatchEvent.FOUND, (msg) => {
+		console.log(msg);
+		dispatch(setDifficulty(extractDifficulty(msg)));
 		dispatch(setRoom(extractRoomId(msg)));
 		dispatch(setQuestionId(extractQuestionId(msg)));
 	});

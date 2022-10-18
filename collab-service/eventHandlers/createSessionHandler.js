@@ -13,7 +13,6 @@ const createSessionHandler = (io, socket) => {
             io.to(socket.id).emit(SessionEvent.CREATE, "Invalid data provided.");
             return;
         }
-        
         const question = await getQuestion(difficulty);
         if (question === undefined) {
             io.to(socket.id).emit(SessionEvent.CREATE, "Something went wrong with the Question Service.")
