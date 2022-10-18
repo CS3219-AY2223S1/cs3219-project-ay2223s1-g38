@@ -50,9 +50,9 @@ export const handleGetQuestionWithBlackList = (req, res) => {
 		if (error) {
 			return res.status(400).json({ message: error.message });
 		}
-		const { list } = value;
+		const { list, difficulty } = value;
 
-		getQuestionServiceWithBlackList(list).then((question) => {
+		getQuestionServiceWithBlackList(list, difficulty).then((question) => {
 			if (!question) {
 				return res.status(400).json({ message: "Failed to retrieve question" });
 			}
