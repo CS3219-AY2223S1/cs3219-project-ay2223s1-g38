@@ -44,7 +44,7 @@ const handleFindMessage = async (userId, difficulty, socketId) => {
 					const uid1 = userId;
 					const uid2 = resp.match.user;
 					const difficulty = resp.match.difficulty;
-					await createNewSession(uid1, uid2, roomId, difficulty, callback);
+					createNewSession(uid1, uid2, roomId, difficulty, callback);
 				} else {
 				// If the other user is no longer connected, we repeat the function to try and find another match
 					handleFindMessage(userId, difficulty, socketId);

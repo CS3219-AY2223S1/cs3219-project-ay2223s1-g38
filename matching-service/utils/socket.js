@@ -34,9 +34,9 @@ exports.sendToTwoUsers = (socketId1, socketId2, key, message) => {
 	io.to(socketId2).emit(key, message);
 };
 
-exports.createNewSession = async (uid1, uid2, roomId, difficulty, callback) => {
+exports.createNewSession = (uid1, uid2, roomId, difficulty, callback) => {
 	clientSocket.emit(SessionEvent.CREATE, { uid1, uid2, roomId, difficulty });
-	await clientSocket.on(SessionEvent.CREATE, (data) => callback(data));
+	clientSocket.on(SessionEvent.CREATE, (data) => callback({ ...data, difficulty}));
 }
 
 exports.getRooms = () => io.sockets.adapter.rooms;
