@@ -15,14 +15,14 @@ import QuestionCard from "../components/QuestionCard";
 import { URI_MATCHING_SVC } from "../config/config";
 import { selectRoomId } from "../features/match/matchSlice";
 import { selectUserId } from "../features/user/userSlice";
-import { listen } from "../utils/eventHandlers";
+import { listenMatch } from "../utils/eventHandlers";
 import { cancelMatch, findMatch } from "../utils/socket";
 
 
 const HomePage = () => {
 
 	const socket = socketIO.connect(URI_MATCHING_SVC);
-	listen(socket);
+	listenMatch(socket);
 	
 	const roomId = useSelector(selectRoomId);
 	const userId = useSelector(selectUserId);

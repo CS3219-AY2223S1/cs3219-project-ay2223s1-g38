@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 
-import { Button, CardHeader, CircularProgress, IconButton, Paper, Typography } from "@mui/material";
+import { Button, CardHeader, CircularProgress, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 
 
+import { useSelector } from "react-redux";
+
 import { URL_GET_QUESTION_BY_ID_SVC, URL_GET_QUESTION_SVC, URL_GET_QUESTION_WITH_BLACKLIST_SVC } from "../config/config";
+import { selectRoomId } from "../features/match/matchSlice";
 import { STATUS_CODE_SUCCESS } from "../utils/constants";
+import { updateQuestion } from "../utils/socket";
 
 
 const Question = (props) => {
@@ -18,7 +22,11 @@ const Question = (props) => {
 	let list = [];
 
 	// eslint-disable-next-line react/prop-types
-	const { questionId } = props;
+	const { questionId, socket } = props;
+	const roomId = useSelector(selectRoomId);
+
+	console.log("QID: " + questionId );
+	console.log("Room ID: " + roomId);
 
 	const getQuestion = async () => {
 		setIsQuestionLoading(true);
@@ -37,7 +45,7 @@ const Question = (props) => {
 
 	const getQuestionById = async (qid) => {
 		setIsQuestionLoading(true);
-		const res = await axios.post(URL_GET_QUESTION_BY_ID_SVC, qid)
+		const res = await axios.post(URL_GET_QUESTION_BY_ID_SVC, { "questionId" : qid })
 			.catch(() => {
 				setQuestionError("Error retrieving question, please try again later");
 			});
@@ -72,14 +80,14 @@ const Question = (props) => {
 		} else {
 			getQuestionById(questionId);
 		}
-	}, []);
+	}, [ questionId ]);
 	return (
 		<Paper sx={{ width:"45%", height:"100%" }}>
 			<CardHeader
 				action={
-					<IconButton aria-label="settings" sx={{ borderRadius: "5px" }} onClick={() => getQuestionWithBlackList(list)}>
-						<Button variant="outlined" sx={{ color: "lightgreen",  borderColor: "lightgreen" }}>Next Question</Button>
-					</IconButton>
+					<Button variant="outlined" aria-label="settings" sx={{ borderRadius: "5px",color: "lightgreen",  borderColor: "lightgreen" }} onClick={ socket === null ? () => getQuestionWithBlackList(list) : () => updateQuestion(socket, "test", "EASY")}>
+						Next Question
+					</Button>
 				}
 				title={questionTitle}
 				subheader={questionDifficulty}
@@ -99,7 +107,7 @@ const Question = (props) => {
 						{questionError}
 					</Typography>
 					<Typography style={{ whiteSpace: "pre-line" }} sx={{ margin: "10px" }}>
-						<div dangerouslySetInnerHTML={{ __html: question }} />
+						<span dangerouslySetInnerHTML={{ __html: question }} />
 					</Typography>
 				</Box>
 			}
