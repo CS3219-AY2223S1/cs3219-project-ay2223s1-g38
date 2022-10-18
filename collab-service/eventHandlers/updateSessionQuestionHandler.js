@@ -1,6 +1,6 @@
 import { SessionEvent } from "../constants/events.js";
 import { findRoomBlacklistService, updateQuestionIdService } from "../service/collabService.js";
-import { getQuestion } from "../utils/request.js";
+import { getQuestion, getQuestionWithBlacklist } from "../utils/request.js";
 
 const updateSessionQuestionHandler = (io, socket) => {
 	const handleUpdateQuestion = async (data) => {
@@ -13,8 +13,7 @@ const updateSessionQuestionHandler = (io, socket) => {
 
         const blacklist = await findRoomBlacklistService(roomId);
 
-        // TODO: Send blacklist of questions (i.e. encountered questions) in each session to QuestionService.
-        const question = await getQuestion(difficulty);
+        const question = await getQuestionWithBlacklist(difficulty, blacklist);
         if (question === undefined) {
             io.to(socket.id).emit(SessionEvent.CREATE, "Something went wrong with the Question Service.")
             return;
