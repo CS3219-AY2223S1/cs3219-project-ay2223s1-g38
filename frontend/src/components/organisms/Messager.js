@@ -18,7 +18,8 @@ const Messager = ({ chatSocket }) => {
 	const [ messages, setMessages ] = useState([]); 
 
 	useEffect(() => {
-
+		// TODO: add defensive check
+		joinChatRoom();
 		chatSocket.on("receive_message", (data) => {
 			const { message, username, date } = data;  
 			const isLeft = username !== currUsername; 
@@ -39,10 +40,6 @@ const Messager = ({ chatSocket }) => {
 		};
 	}, [ chatSocket ]);
 
-	useEffect(() => {
-		joinChatRoom(); 
-	}, []);
-
 	const emitMessage = (msg) => { 
 		if (msg && msg.length > 0) {
 			chatSocket.emit("send_message", { msg, username: currUsername, roomId });
@@ -53,7 +50,7 @@ const Messager = ({ chatSocket }) => {
 		chatSocket.emit("join_chatroom", { username: currUsername, roomId }); 
 	};
 
-	return <Grid container direction="column">
+	return <Grid container direction="column" sx={{ overflowY: "scroll" }}>
 		<Grid item>
 			<MessageList messages={messages} /> 
 		</Grid>
