@@ -14,9 +14,8 @@ import { selectRoomId } from "../features/match/matchSlice";
 import { selectUserId } from "../features/user/userSlice";
 import { cancelMatch, findMatch } from "../utils/socket";
 
-const HomePage = (props) => {
 
-	const { socket } = props;
+const HomePage = ({ socket }) => {
 	
 	const roomId = useSelector(selectRoomId);
 	const userId = useSelector(selectUserId);
@@ -48,7 +47,7 @@ const HomePage = (props) => {
 	};
 
 	const handleCancel = () => {
-		cancelMatch(socket, 1, chosen);
+		cancelMatch(socket, userId, chosen);
 	};
 
 	return (

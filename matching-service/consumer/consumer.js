@@ -1,5 +1,5 @@
 const amqp = require("amqplib");
-const MatchEvent = require("../constants/events");
+const { MatchEvent } = require("../constants/events");
 
 const { handleFindMessage, handleCancelMessage, handleDisconnect } = require("./messageHandler");
 

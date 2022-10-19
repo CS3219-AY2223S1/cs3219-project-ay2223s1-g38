@@ -37,10 +37,25 @@ export const findRoomByRoomId = async (roomId) => {
 };
 
 export const updateQuestionId = async (room, newQuestionId) => {
-	await db.collection("roommodels").updateOne(room, { $set: { "questionId": newQuestionId } });
-	return { "userId1": room.userId1, "userId2": room.userId2, "roomId" : room.roomId, "questionId" : newQuestionId };
+	await db.collection("roommodels").updateOne(
+		{ 
+			roomId: room.roomId
+		},
+		{ 
+			$set: { "questionId": newQuestionId },
+		});
+	return room;
 };
 
 export const deleteRoom = async (roomId) => {
 	await db.collection("roommodels").deleteOne({ "roomId" : roomId });
 };
+
+export const addQuestionToQuestionBlacklistByRoom = async (room) => {
+	await db.collection("roommodels").updateOne(room,
+	{
+		$push: {
+			"questions": room.questionId
+		}
+	})
+}
