@@ -84,7 +84,7 @@ const Question = (props) => {
 		}
 	}, [ questionId ]);
 	return (
-		<Paper sx={{ width:"45%", height:"100%" }}>
+		<Paper>
 			<CardHeader
 				action={
 					<Button variant="outlined" aria-label="settings" sx={{ borderRadius: "5px",color: "lightgreen",  borderColor: "lightgreen" }} onClick={ socket === null ? () => getQuestionWithBlackList(list) : () => updateQuestion(socket, roomId, difficulty)}>
