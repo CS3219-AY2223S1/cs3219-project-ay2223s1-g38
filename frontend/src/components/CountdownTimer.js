@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Button, Grid, Typography } from "@mui/material";
 
@@ -6,8 +6,17 @@ import { PropTypes } from "prop-types";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 const CountdownTimer = (props) => {
+	const [ complete, setComplete ] = useState(false);
 
 	const { handleCloseCountdownModal, handleCancel } = props;
+
+	const handleTimerEnd = () => {
+		setComplete(true);
+		setTimeout(() => {
+			handleCloseCountdownModal();
+			setComplete(false);
+		}, 2000);	
+	};
 
 	const renderTime = ({ remainingTime }) => {
 		return (<Grid container sx={{ flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
@@ -28,7 +37,7 @@ const CountdownTimer = (props) => {
 		<>
 			<Grid container component="main" sx={{ alignItems: "center", justifyContent: "center", flexDirection: "column" }} >
 				<Typography sx={{ mx: "auto", my: "5rem" }} variant="h3" align="center">
-					Finding a match...
+					{complete ? "No match found!" : "Finding a match..."}
 				</Typography>
 				<Grid sx={{ fontSize: "100px" }}>
 					<CountdownCircleTimer
@@ -37,7 +46,7 @@ const CountdownTimer = (props) => {
 						colors={[ "#A4C3B2", "#F7B801", "#A30000", "#A30000" ]}
 						size={400}
 						colorsTime={[ 7, 5, 2, 0 ]}
-						onComplete={handleCloseCountdownModal}
+						onComplete={handleTimerEnd}
 					>
 						{renderTime}
 					</CountdownCircleTimer>

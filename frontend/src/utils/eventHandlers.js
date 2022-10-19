@@ -24,8 +24,7 @@ export const listenMatch = (socket) => {
 	});
 };
 
-export const listenSession = (socket) => {
-	const dispatch = useDispatch();
+export const listenSession = (socket, dispatch) => {
 
 	socket.on(SessionEvent.JOIN, (msg) => {
 		dispatch(setQuestionId(msg.questionId));

@@ -14,10 +14,9 @@ const QuestionCard = (props) => {
 
 	const { handleFindMatch, handleOpenCountdownModal } = props;
 	return (
-		<Card sx={{ borderRadius: 8 }}>
+		<Card sx={{ borderRadius: 8, }}>
 			<CardHeader
-				title={"Difficulty"}
-				subheader={"Time?"}
+				title={props.diff}
 				titleTypographyProps={{ align: "center", color: "white" }}
 				subheaderTypographyProps={{
 					align: "center",
@@ -38,7 +37,7 @@ const QuestionCard = (props) => {
 					}}
 				>
 					<Typography color="text.primary">
-                      Description
+						{props.desc}
 					</Typography>
 				</Box>
 			</CardContent>
@@ -55,6 +54,8 @@ const QuestionCard = (props) => {
 };
 
 QuestionCard.propTypes = {
+	diff: PropTypes.string,
+	desc: PropTypes.string,
 	handleOpenCountdownModal: PropTypes.func,
 	handleFindMatch: PropTypes.func
 };

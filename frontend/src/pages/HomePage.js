@@ -30,7 +30,20 @@ const HomePage = ({ socket }) => {
 		}
 	}, [ roomId ]);
 
-	const difficulties = [ "EASY", "MEDIUM", "HARD" ];
+	const difficulties = [ 
+		{
+			diff: "EASY",
+			description: "Good for practicing your basics. You should aim to complete within 15 minutes."
+		}, 
+		{
+			diff: "MEDIUM",
+			description: "A good indicator of the toughness of interview questions. You should aim to complete within 30 minutes."
+		}, 
+		{
+			diff: "HARD",
+			description: "These questions are meant to be difficult. You should aim to complete within 45 minutes."
+		} 
+	];
 
 	const handleOpenCountdownModal = (difficulty) => {
 		setChosen(difficulty);
@@ -78,16 +91,16 @@ const HomePage = ({ socket }) => {
 				<Typography sx={{ mx: "auto", my: "5rem" }} variant="h2" align="center">
 					Pick a Difficulty!
 				</Typography>
-				<Grid container spacing={5} sx={{ mt: "2rem", paddingX: "2rem", alignItems: "center", justifyContent: "center", direction: "row" }}>
-					{difficulties.map((diff) => {
+				<Grid container spacing={5} sx={{ mt: "2rem", paddingX: "2rem", justifyContent: "center", direction: "row" }}>
+					{difficulties.map((elem) => {
 						return (<Grid
-							key={`difficulty-box-${diff}}`}
+							key={`difficulty-box-${elem.diff}}`}
 							item
 							xs={12}
 							sm={6}
 							md={4}
 						>
-							<QuestionCard handleOpenCountdownModal={() => handleOpenCountdownModal(diff)} handleFindMatch={() => handleFindMatch(userId, diff)}/>
+							<QuestionCard diff={elem.diff} desc={elem.description} handleOpenCountdownModal={() => handleOpenCountdownModal(elem.diff)} handleFindMatch={() => handleFindMatch(userId, elem.diff)}/>
 						</Grid>);
 					})}
 				</Grid>
