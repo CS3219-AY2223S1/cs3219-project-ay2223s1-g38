@@ -52,7 +52,7 @@ const Question = () => {
 		getQuestion();
 	}, []);
 	return (
-		<Paper sx={{ width:"45%", height:"100%" }}>
+		<Paper>
 			<CardHeader
 				action={
 					<IconButton aria-label="settings" sx={{ borderRadius: "5px" }} onClick={() => getQuestionWithBlackList(list)}>

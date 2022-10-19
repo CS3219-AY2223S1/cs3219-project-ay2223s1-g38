@@ -2,15 +2,17 @@ import React, { useState, useRef, useEffect } from "react";
 
 import { fromMonaco } from "@hackerrank/firepad"; 
 import Editor from "@monaco-editor/react"; 
-import { Box } from "@mui/system";
+import { Grid, Paper } from "@mui/material";
 import firebase from "firebase/app";
  
 import { useSelector } from "react-redux";
 
+import Messager from "../components/organisms/Messager";
 import Question from "../components/Question";
 import { selectUsername } from "../features/user/userSlice";
 
-const CollabPage = () => {
+// eslint-disable-next-line react/prop-types
+const CollabPage = ({ chatSocket }) => {
 	const editorRef = useRef(null);
 	const [ editorLoaded, setEditorLoaded ] = useState(false); 
 	const username = useSelector(selectUsername);
@@ -35,19 +37,28 @@ const CollabPage = () => {
 		firepad.setUserName(username); 
 	}, [ editorLoaded ]);
 
-	return <div>
-		<Box sx={{ display: "flex", direction: "row", height:"100%" }}>
-			<Question />
-			<Box sx={{ width:"55%", height:"100vh" }}>
-				<Editor 
-					defaultLanguage="java"
-					theme="vs-dark"
-					defaultValue="// Begin your Algohike here!"
-					onMount={handleEditorDidMount}
-				/>
-			</Box>
-		</Box>
-	</div>;
+	return <>
+		<Grid container direction="row" alignItems="stretch" justifyContent="center">
+			<Grid item xs={3} style={{ padding: 5 }}>
+				<Question />
+			</Grid>
+			<Grid item xs={6} style={{ padding: 5 }}>
+				<Paper elevation={10} style={{ height: "100vh" }}>
+					<Editor 
+						defaultLanguage="java"
+						theme="vs-light"
+						defaultValue="// Begin your Algohike here!"
+						onMount={handleEditorDidMount}
+					/>
+				</Paper>
+			</Grid>
+			<Grid item xs={3}>
+				<Paper style={{ height: "100vh" }}>
+					<Messager chatSocket={chatSocket} />
+				</Paper>
+			</Grid>
+		</Grid>
+	</>;
 };
 
 export default CollabPage;
