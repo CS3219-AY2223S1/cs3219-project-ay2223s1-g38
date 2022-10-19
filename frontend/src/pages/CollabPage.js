@@ -66,7 +66,7 @@ const CollabPage = ({ chatSocket }) => {
 	return <>
 		<Grid container direction="row" alignItems="stretch" justifyContent="center">
 			<Grid item xs={3} style={{ padding: 5 }}>
-			<Question questionId={questionId} socket={socket}/>
+				<Question questionId={questionId} socket={socket}/>
 			</Grid>
 			<Grid item xs={6} style={{ padding: 5 }}>
 				<Paper elevation={10} style={{ height: "100vh" }}>
