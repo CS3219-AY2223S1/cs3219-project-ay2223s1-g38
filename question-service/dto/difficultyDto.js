@@ -1,6 +1,5 @@
 import Joi from "joi";
 
-export const blackListSchema = Joi.object({
-	list: Joi.array().items(Joi.number()).required(),
+export const difficultySchema = Joi.object({
 	difficulty: Joi.string().valid("EASY", "MEDIUM", "HARD").required(),
 });

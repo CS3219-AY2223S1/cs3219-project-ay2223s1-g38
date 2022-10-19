@@ -7,7 +7,6 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -171,9 +170,9 @@ export default function SignUp() {
 					<Grid container justifyContent="flex-end">
 						<Grid item>
 							<RRLink to='/login'>
-								<Link href="#" variant="body2">
+								<Typography variant="body2">
 					Already have an account? Sign in
-								</Link>
+								</Typography>
 							</RRLink>
 						</Grid>
 					</Grid>

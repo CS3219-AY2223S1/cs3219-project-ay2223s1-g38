@@ -6,7 +6,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -62,7 +61,7 @@ const LoginPage = () => {
 	};
 
 	return (
-		<Grid container component="main" xs={{ height: "100vh" }} sx={{ height: "100vh", padding: "4rem" }}>
+		<Grid container component="main" sx={{ height: "100vh", padding: "4rem" }}>
 			<CssBaseline />
 			<Grid 
 				item
@@ -132,16 +131,16 @@ const LoginPage = () => {
 						<Grid container>
 							<Grid item xs>
 								<RRLink to='/password-reset'>
-									<Link href="#" variant="body2">
+									<Typography variant="body2">
 										{"Forgot password?"}
-									</Link>
+									</Typography>
 								</RRLink>
 							</Grid>
 							<Grid item>
 								<RRLink to='/signup'>
-									<Link href="#" variant="body2">
+									<Typography variant="body2">
 										{"Don't have an account? Sign Up"}
-									</Link>
+									</Typography>
 								</RRLink>
 							</Grid>
 						</Grid>
