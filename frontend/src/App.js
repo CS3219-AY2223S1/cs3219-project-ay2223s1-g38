@@ -12,6 +12,7 @@ import { io } from "socket.io-client";
 
 import socketIO from "socket.io-client";
 
+import VideoPlayer from "./components/VideoPlayer";
 import { URI_MATCHING_SVC, URI_CHAT_SVC } from "./config/config";
 import firebaseApp from "./config/firebase";
 import { setUserId, setUsername } from "./features/user/userSlice";
@@ -67,6 +68,7 @@ const App = () => {
 								<Route path="/profile" element={<ProfilePage/>} />
 								<Route path="/home" element={<HomePage socket={matchSocket}/>} />
 								<Route path="/collab" element={<CollabPage chatSocket={chatSocket} />} />
+								<Route path="/video" element={<VideoPlayer chatSocket={chatSocket} />} />
 								<Route
 									path="*"
 									element={<Navigate to="/" replace />}
