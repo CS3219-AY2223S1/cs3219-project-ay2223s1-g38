@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 
 import Messager from "../components/organisms/Messager";
 import Question from "../components/Question";
+import VideoPlayer from "../components/VideoPlayer";
 import { selectUsername } from "../features/user/userSlice";
 
 // eslint-disable-next-line react/prop-types
@@ -53,9 +54,16 @@ const CollabPage = ({ chatSocket }) => {
 				</Paper>
 			</Grid>
 			<Grid item xs={3}>
-				<Paper style={{ height: "100vh" }}>
-					<Messager chatSocket={chatSocket} />
-				</Paper>
+				<Grid container direction="column">
+					<Grid item xs={6}>
+						<VideoPlayer chatSocket={chatSocket} />
+					</Grid>
+					<Grid item xs={6}>
+						<Paper style={{ height: "50vh" }}>
+							<Messager chatSocket={chatSocket} />
+						</Paper>
+					</Grid>
+				</Grid>
 			</Grid>
 		</Grid>
 	</>;
