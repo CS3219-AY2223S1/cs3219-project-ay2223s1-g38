@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
 
-import { Button, CardHeader, CircularProgress, IconButton, Paper, Typography } from "@mui/material";
+import { Button, CardHeader, CircularProgress, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 
 
-import { URL_GET_QUESTION_SVC, URL_GET_QUESTION_WITH_BLACKLIST_SVC } from "../config/config";
+import { useSelector } from "react-redux";
+
+import { URL_GET_QUESTION_BY_ID_SVC, URL_GET_QUESTION_SVC, URL_GET_QUESTION_WITH_BLACKLIST_SVC } from "../config/config";
+import { selectRoomId } from "../features/match/matchSlice";
+import { selectDifficulty } from "../features/session/sessionSlice";
 import { STATUS_CODE_SUCCESS } from "../utils/constants";
+import { updateQuestion } from "../utils/socket";
 
 
-const Question = () => {
+const Question = (props) => {
 	const [ question, setQuestion ] = useState(null); 
 	const [ questionTitle, setQuestionTitle ] = useState(null);
 	const [ questionDifficulty, setQuestionDifficulty ] = useState("");
@@ -17,9 +22,32 @@ const Question = () => {
 	const [ isQuestionLoading, setIsQuestionLoading ] = useState(false);
 	let list = [];
 
+	// eslint-disable-next-line react/prop-types
+	const { questionId, socket } = props;
+	const roomId = useSelector(selectRoomId);
+	const difficulty = useSelector(selectDifficulty);
+
+	console.log("QID: " + questionId );
+	console.log("Room ID: " + roomId);
+
 	const getQuestion = async () => {
 		setIsQuestionLoading(true);
 		const res = await axios.get(URL_GET_QUESTION_SVC)
+			.catch(() => {
+				setQuestionError("Error retrieving question, please try again later");
+			});
+		if (res && res.status === STATUS_CODE_SUCCESS) {
+			setQuestionError(null);
+			setQuestionTitle(res.data.question.title);
+			setQuestion(res.data.question.content);
+			setQuestionDifficulty(res.data.question.difficulty);
+		}
+		setIsQuestionLoading(false);
+	};
+
+	const getQuestionById = async (qid) => {
+		setIsQuestionLoading(true);
+		const res = await axios.post(URL_GET_QUESTION_BY_ID_SVC, { "questionId" : qid })
 			.catch(() => {
 				setQuestionError("Error retrieving question, please try again later");
 			});
@@ -49,15 +77,19 @@ const Question = () => {
 	};
 
 	useEffect(() => {
-		getQuestion();
-	}, []);
+		if (questionId===null) {
+			getQuestion();
+		} else {
+			getQuestionById(questionId);
+		}
+	}, [ questionId ]);
 	return (
 		<Paper>
 			<CardHeader
 				action={
-					<IconButton aria-label="settings" sx={{ borderRadius: "5px" }} onClick={() => getQuestionWithBlackList(list)}>
-						<Button variant="outlined" sx={{ color: "lightgreen",  borderColor: "lightgreen" }}>Next Question</Button>
-					</IconButton>
+					<Button variant="outlined" aria-label="settings" sx={{ borderRadius: "5px",color: "lightgreen",  borderColor: "lightgreen" }} onClick={ socket === null ? () => getQuestionWithBlackList(list) : () => updateQuestion(socket, roomId, difficulty)}>
+						Next Question
+					</Button>
 				}
 				title={questionTitle}
 				subheader={questionDifficulty}
@@ -77,7 +109,7 @@ const Question = () => {
 						{questionError}
 					</Typography>
 					<Typography style={{ whiteSpace: "pre-line" }} sx={{ margin: "10px" }}>
-						<div dangerouslySetInnerHTML={{ __html: question }} />
+						<span dangerouslySetInnerHTML={{ __html: question }} />
 					</Typography>
 				</Box>
 			}

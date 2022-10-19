@@ -22,8 +22,6 @@ const publishToQueue = async (queueName, data, priority) => {
 		persistent: true,
 		priority: priority,
 	});
-
-	console.log("Sent data to MQ");
 };
 
 process.on("exit", () => {

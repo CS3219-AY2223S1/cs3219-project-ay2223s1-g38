@@ -23,17 +23,12 @@ import PasswordResetPage from "./pages/PasswordResetPage";
 import ProfilePage from "./pages/ProfilePage";
 
 import SignupPage from "./pages/SignupPage";
-
-import { listen } from "./utils/eventHandlers";
+import { listenMatch } from "./utils/eventHandlers";
 
 const App = () => {
 	const [ user, loading ] = useAuthState(firebaseApp.auth());
 	const dispatch = useDispatch();
 	const username = useSelector(selectUsername);
-
-	const socket = socketIO.connect(URI_MATCHING_SVC);
-
-	listen(socket);
 
 	if (loading) {
 		return <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}>
@@ -46,10 +41,10 @@ const App = () => {
 		dispatch(setUserId({ userId: user.uid }));
 	}
 
-	const matchSocket = socketIO.connect(URI_MATCHING_SVC);
+	const socket = socketIO.connect(URI_MATCHING_SVC);
+	listenMatch(socket);
 	const chatSocket = io(URI_CHAT_SVC);
 
-	listen(matchSocket);
 
 	// TODO: remove Collab from non-auth path when user auth works
 	return (
@@ -72,7 +67,7 @@ const App = () => {
 							<Routes>
 								<Route exact path="/" element={<Navigate replace to="/home" />}/>
 								<Route path="/profile" element={<ProfilePage/>} />
-								<Route path="/home" element={<HomePage socket={matchSocket}/>} />
+								<Route path="/home" element={<HomePage socket={socket} />} />
 								<Route path="/collab" element={<CollabPage chatSocket={chatSocket} />} />
 								<Route
 									path="*"

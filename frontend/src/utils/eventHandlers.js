@@ -1,11 +1,12 @@
 import { useDispatch } from "react-redux";
 
 import { setRoom } from "../features/match/matchSlice";
+import { setDifficulty, setQuestionId } from "../features/session/sessionSlice";
 
-import { MatchEvent } from "./constants";
-import { extractRoomId } from "./utils";
+import { MatchEvent, SessionEvent } from "./constants";
+import {  extractDifficulty, extractQuestionId, extractRoomId } from "./utils";
 
-export const listen = (socket) => {
+export const listenMatch = (socket) => {
 	const dispatch = useDispatch(); 
 
 	// TODO: Set meaningful functions to run when these events are received from server.
@@ -16,6 +17,22 @@ export const listen = (socket) => {
 	socket.on(MatchEvent.CANCELLED, () => console.log("CANCELLED"));
 
 	socket.on(MatchEvent.FOUND, (msg) => {
+		console.log(msg);
+		dispatch(setDifficulty(extractDifficulty(msg)));
 		dispatch(setRoom(extractRoomId(msg)));
+		dispatch(setQuestionId(extractQuestionId(msg)));
 	});
+};
+
+export const listenSession = (socket) => {
+	const dispatch = useDispatch();
+
+	socket.on(SessionEvent.JOIN, (msg) => {
+		dispatch(setQuestionId(msg.questionId));
+	});
+
+	socket.on(SessionEvent.QUESTION_UPDATE, (msg) => {
+		console.log("Received reply" + JSON.stringify(msg));
+		dispatch(setQuestionId(msg.questionId));
+	}); 
 };

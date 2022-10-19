@@ -1,4 +1,4 @@
-const MatchEvent = require("../../constants/events");
+const { MatchEvent } = require("../../constants/events");
 const { Priority } = require("../../constants/types");
 const { publishToQueue } = require("../../utils/mq-service");
 const { MQ_NAME } = require("../../constants/const");
