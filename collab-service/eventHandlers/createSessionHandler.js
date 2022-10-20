@@ -15,7 +15,7 @@ const createSessionHandler = (io, socket) => {
         }
         const question = await getQuestion(difficulty);
         if (question === undefined) {
-            io.to(socket.id).emit(SessionEvent.CREATE, "Something went wrong with the Question Service.")
+            io.to(socket.id).emit(SessionEvent.CREATE, { error: "Something went wrong with the Question Service." })
             return;
         }
         

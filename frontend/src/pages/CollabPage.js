@@ -27,8 +27,6 @@ const CollabPage = ({ chatSocket, sessionSocket }) => {
 	const roomId = useSelector(selectRoomId);
 	const questionId = useSelector(selectQuestionId);
 	
-	
-
 	const editorRef = useRef(null);
 	const [ editorLoaded, setEditorLoaded ] = useState(false); 
 	const username = useSelector(selectUsername);

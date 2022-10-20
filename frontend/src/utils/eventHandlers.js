@@ -17,7 +17,10 @@ export const listenMatch = (socket) => {
 	socket.on(MatchEvent.CANCELLED, () => console.log("CANCELLED"));
 
 	socket.on(MatchEvent.FOUND, (msg) => {
-		console.log(msg);
+		if (msg.error) {
+			return;
+		}
+		
 		dispatch(setDifficulty(extractDifficulty(msg)));
 		dispatch(setRoom(extractRoomId(msg)));
 		dispatch(setQuestionId(extractQuestionId(msg)));
