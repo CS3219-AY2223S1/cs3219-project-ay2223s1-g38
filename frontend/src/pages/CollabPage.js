@@ -83,7 +83,6 @@ const CollabPage = ({ chatSocket, sessionSocket }) => {
 				<Editor 
 					defaultLanguage="java"
 					theme="vs-dark"
-					defaultValue="// Begin your Algohike here!"
 					onMount={handleEditorDidMount}
 				/>
 				<Box 
