@@ -26,6 +26,7 @@ const leaveHandler = (io, socket) => {
     }
 
     socket.on(SessionEvent.LEAVE, handleLeave);
+    socket.on(SessionEvent.DISCONNECTING, handleLeave);
 };
 
 export default leaveHandler;
