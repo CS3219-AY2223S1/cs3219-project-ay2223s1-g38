@@ -24,7 +24,8 @@ const createSessionHandler = (io, socket) => {
         const room = await addRoomService(uid1, uid2, roomId, questionId);
         
         // Schedule cron job that deletes session after a certain amount of time.
-        const startTime = new Date(Date.now() + Milliseconds.IN_ONE_HOUR);
+        const startTime = new Date(Date.now() + Milliseconds.IN_TEN_SECONDS);
+        console.log("schedule job on create");
         schedule.scheduleJob(generateCronJobName(roomId), startTime,
         () => deleteRoomService(roomId));
 

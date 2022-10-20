@@ -13,7 +13,7 @@ const joinSessionHandler = (io, socket) => {
         }
 
         const job = schedule.scheduledJobs[generateCronJobName(roomId)];
-        if (job !== undefined) {
+        if (!job) {
             job.cancel();
         }
 
