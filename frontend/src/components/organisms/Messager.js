@@ -55,7 +55,7 @@ const Messager = ({ chatSocket }) => {
 
 	return <Box container sx={{ height: "calc(30% - 6px)", paddingTop: "5px", backgroundColor: "white", borderTop: "1px solid black" }}>
 		<Grid container height={"calc(100% - 55px)"}>
-			<Grid item sx={{ height: "100%", width: "100%", overflowY: "auto" }}>
+			<Grid item sx={{ height: "100%", width: "100%", overflowY: "auto", display: "flex", flexDirection: "column-reverse" }}>
 				<ChatBox messages={messages} /> 
 			</Grid>
 			<Grid item sx={{ height: "50px", width: "100%" }}>
