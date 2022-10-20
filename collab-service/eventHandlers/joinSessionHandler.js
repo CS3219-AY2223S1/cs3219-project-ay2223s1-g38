@@ -14,7 +14,7 @@ const joinSessionHandler = (io, socket) => {
 
         const job = schedule.scheduledJobs[generateCronJobName(roomId)];
         if (!job) {
-            job.cancel();
+            job?.cancel();
         }
 
         // When client emits session:join event, put client's socket inside Room [roomId].

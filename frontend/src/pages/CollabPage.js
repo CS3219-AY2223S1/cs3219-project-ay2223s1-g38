@@ -16,7 +16,7 @@ import { resetRoom, selectRoomId } from "../features/match/matchSlice";
 import { selectQuestionId } from "../features/session/sessionSlice";
 import { selectUsername } from "../features/user/userSlice";
 import { listenSession } from "../utils/eventHandlers";
-import { joinSession } from "../utils/socket";
+import { joinSession, leaveSession } from "../utils/socket";
 
 
 
@@ -44,6 +44,8 @@ const CollabPage = ({ chatSocket, sessionSocket }) => {
 	};
 
 	const handleLeaveRoom = () => {
+		console.log("Leave the room");
+		leaveSession(sessionSocket);
 		dispatch(resetRoom());
 		navigate("/home");
 	};
