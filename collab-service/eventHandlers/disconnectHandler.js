@@ -10,7 +10,7 @@ const leaveHandler = (io, socket) => {
         socket.rooms.forEach(room => {
             const numClientsInRoom = io.sockets.adapter.rooms.get(room).size;
             if (room !== socket.id && numClientsInRoom === 1) {
-                const startTime = new Date(Date.now() + Milliseconds.IN_TEN_SECONDS);
+                const startTime = new Date(Date.now() + Milliseconds.IN_ONE_HOUR);
                 schedule.scheduleJob(generateCronJobName(room), startTime,
                 () => {
                     deleteRoomService(room)
