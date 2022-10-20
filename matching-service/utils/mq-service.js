@@ -26,7 +26,6 @@ const publishToQueue = async (queueName, data, priority) => {
 
 process.on("exit", () => {
 	ch.close();
-	console.log("Closing rabbitmq channel");
 });
 
 module.exports = {

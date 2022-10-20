@@ -15,7 +15,7 @@ import { selectUserId } from "../features/user/userSlice";
 import { cancelMatch, findMatch } from "../utils/socket";
 
 
-const HomePage = ({ socket }) => {
+const HomePage = ({ connectMatchSocket }) => {
 	
 	const roomId = useSelector(selectRoomId);
 	const userId = useSelector(selectUserId);
@@ -23,6 +23,8 @@ const HomePage = ({ socket }) => {
 
 	const [ open, setOpen ] = useState(false);
 	const [ chosen, setChosen ] = useState("");
+
+	const [ matchSocket, setMatchSocket ] = useState(null);
 
 	useEffect(() => {
 		if (roomId != "") {
@@ -56,11 +58,14 @@ const HomePage = ({ socket }) => {
 	};
 
 	const handleFindMatch = (userId, difficulty) => {
+		const socket = connectMatchSocket();
 		findMatch(socket, userId, difficulty);
+		setMatchSocket(socket);
 	};
 
 	const handleCancel = () => {
-		cancelMatch(socket, userId, chosen);
+		cancelMatch(matchSocket, userId, chosen);
+		matchSocket.disconnect();
 	};
 
 	return (
@@ -109,8 +114,8 @@ const HomePage = ({ socket }) => {
 	);
 };
 
-HomePage.propTypes ={
-	socket: PropTypes.any,
+HomePage.propTypes = {
+	connectMatchSocket: PropTypes.func,
 };
 
 export default HomePage;

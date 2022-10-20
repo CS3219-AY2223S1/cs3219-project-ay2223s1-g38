@@ -42,7 +42,6 @@ const CollabPage = ({ chatSocket, sessionSocket }) => {
 	};
 
 	const handleLeaveRoom = () => {
-		console.log("Leave the room");
 		leaveSession(sessionSocket);
 		dispatch(resetRoom());
 		navigate("/home");

@@ -27,9 +27,6 @@ const Question = (props) => {
 	const roomId = useSelector(selectRoomId);
 	const difficulty = useSelector(selectDifficulty);
 
-	console.log("QID: " + questionId );
-	console.log("Room ID: " + roomId);
-
 	const getQuestion = async () => {
 		setIsQuestionLoading(true);
 		const res = await axios.get(URL_GET_QUESTION_SVC)
