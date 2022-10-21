@@ -53,9 +53,9 @@ export const deleteRoom = async (roomId) => {
 
 export const addQuestionToQuestionBlacklistByRoom = async (room) => {
 	await db.collection("roommodels").updateOne(room,
-	{
-		$push: {
-			"questions": room.questionId
-		}
-	})
-}
+		{
+			$push: {
+				"questions": room.questionId
+			}
+		});
+};
