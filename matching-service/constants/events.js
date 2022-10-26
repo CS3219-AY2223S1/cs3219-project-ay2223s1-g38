@@ -9,4 +9,8 @@ const MatchEvent = {
 	DISCONNECT: "disconnect"
 };
 
-module.exports = MatchEvent;
+const SessionEvent = {
+	CREATE: "session:create"
+}
+
+module.exports = { MatchEvent, SessionEvent };

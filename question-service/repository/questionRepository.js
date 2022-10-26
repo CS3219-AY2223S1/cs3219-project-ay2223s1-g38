@@ -22,12 +22,41 @@ export const getQuestionById = async (id) => {
 	}
 };
 
+export const getQuestionByDifficulty = async (difficulty) => {
+	try {
+		console.debug("Retrieving " + difficulty + " question from the database");
+		let questionList = await db.collection("questionmodels").aggregate(
+			[ { $match : { "difficulty" : difficulty } }, { $sample : { size : 1 } } ]
+		).toArray();
+		let question = questionList[0];
+		console.debug(question);
+		return question;
+	} catch (err) {
+		console.error("ERROR: Could not retrieve questions", err);
+		throw err;
+	}
+};
+
 export const getNumQuestions = async () => {
 	try {
 		const numQuestions = await db.collection("questionmodels").countDocuments();
 		return numQuestions;
 	} catch (err) {
 		console.error("ERROR: Could not retrieve question count", err);
+		throw err;
+	}
+};
+
+export const getQuestionWithBlacklist = async (list, difficulty) => {
+	try {
+		let questionList = await db.collection("questionmodels").aggregate(
+			[ { $match : { "difficulty" : difficulty, "questionId" : { "$nin" : list } } }, { $sample : { size : 1 } } ]
+		).toArray();
+		let question = questionList[0];
+		console.debug(question);
+		return question;
+	} catch (err) {
+		console.error("ERROR: Could not retrieve questions", err);
 		throw err;
 	}
 };

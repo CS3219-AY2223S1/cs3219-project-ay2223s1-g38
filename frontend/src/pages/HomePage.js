@@ -14,9 +14,8 @@ import { selectRoomId } from "../features/match/matchSlice";
 import { selectUserId } from "../features/user/userSlice";
 import { cancelMatch, findMatch } from "../utils/socket";
 
-const HomePage = (props) => {
 
-	const { socket } = props;
+const HomePage = ({ connectMatchSocket }) => {
 	
 	const roomId = useSelector(selectRoomId);
 	const userId = useSelector(selectUserId);
@@ -25,13 +24,28 @@ const HomePage = (props) => {
 	const [ open, setOpen ] = useState(false);
 	const [ chosen, setChosen ] = useState("");
 
+	const [ matchSocket, setMatchSocket ] = useState(null);
+
 	useEffect(() => {
 		if (roomId != "") {
 			setTimeout(() => navigate("/collab"), 1000);
 		}
 	}, [ roomId ]);
 
-	const difficulties = [ "EASY", "MEDIUM", "HARD" ];
+	const difficulties = [ 
+		{
+			diff: "EASY",
+			description: "Good for practicing your basics. You should aim to complete within 15 minutes."
+		}, 
+		{
+			diff: "MEDIUM",
+			description: "A good indicator of the toughness of interview questions. You should aim to complete within 30 minutes."
+		}, 
+		{
+			diff: "HARD",
+			description: "These questions are meant to be difficult. You should aim to complete within 45 minutes."
+		} 
+	];
 
 	const handleOpenCountdownModal = (difficulty) => {
 		setChosen(difficulty);
@@ -44,11 +58,14 @@ const HomePage = (props) => {
 	};
 
 	const handleFindMatch = (userId, difficulty) => {
+		const socket = connectMatchSocket();
 		findMatch(socket, userId, difficulty);
+		setMatchSocket(socket);
 	};
 
 	const handleCancel = () => {
-		cancelMatch(socket, 1, chosen);
+		cancelMatch(matchSocket, userId, chosen);
+		matchSocket.disconnect();
 	};
 
 	return (
@@ -79,16 +96,16 @@ const HomePage = (props) => {
 				<Typography sx={{ mx: "auto", my: "5rem" }} variant="h2" align="center">
 					Pick a Difficulty!
 				</Typography>
-				<Grid container spacing={5} sx={{ mt: "2rem", paddingX: "2rem", alignItems: "center", justifyContent: "center", direction: "row" }}>
-					{difficulties.map((diff) => {
+				<Grid container spacing={5} sx={{ mt: "2rem", paddingX: "2rem", justifyContent: "center", direction: "row" }}>
+					{difficulties.map((elem) => {
 						return (<Grid
-							key={`difficulty-box-${diff}}`}
+							key={`difficulty-box-${elem.diff}}`}
 							item
 							xs={12}
 							sm={6}
 							md={4}
 						>
-							<QuestionCard handleOpenCountdownModal={() => handleOpenCountdownModal(diff)} handleFindMatch={() => handleFindMatch(userId, diff)}/>
+							<QuestionCard diff={elem.diff} desc={elem.description} handleOpenCountdownModal={() => handleOpenCountdownModal(elem.diff)} handleFindMatch={() => handleFindMatch(userId, elem.diff)}/>
 						</Grid>);
 					})}
 				</Grid>
@@ -97,8 +114,8 @@ const HomePage = (props) => {
 	);
 };
 
-HomePage.propTypes ={
-	socket: PropTypes.any,
+HomePage.propTypes = {
+	connectMatchSocket: PropTypes.func,
 };
 
 export default HomePage;

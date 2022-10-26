@@ -8,7 +8,6 @@ const ChatBox = (props) => {
 
 	return <MessageList 
 		className="message-list"
-		lockable={true}
 		toBottomHeight={"100%"}
 		dataSource={messages} />;
 };

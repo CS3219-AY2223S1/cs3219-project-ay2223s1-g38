@@ -1,4 +1,4 @@
-import { handleUserCreate, handleUserLogin } from "../domain/userDomain.js";
+import { handleUserCreate, handleUserLogin, handleCheckUsername } from "../domain/userDomain.js";
 
 export async function handleSignUp(req, res) {
 	const { uid, username } = req.body;
@@ -13,6 +13,20 @@ export async function handleSignUp(req, res) {
 	} catch (err) {
 		console.debug(err.message);
 		return res.status(409).json({ message: err.message });
+	}
+}
+
+export async function handleUniqueUsername(req, res) {
+	const { username } = req.body;
+	if (!username) {
+		return res.status(400).json({ message: "Missing username field" });
+	}
+	try {
+		const hasUser = await handleCheckUsername(username);
+		return res.status(200).send(hasUser);
+	} catch (err) {
+		console.debug(err.message);
+		return res.status(400).json({ message: err.message });
 	}
 }
 

@@ -14,10 +14,9 @@ const QuestionCard = (props) => {
 
 	const { handleFindMatch, handleOpenCountdownModal } = props;
 	return (
-		<Card sx={{ borderRadius: 8 }}>
+		<Card sx={{ borderRadius: 8, marginBottom: "30px" }}>
 			<CardHeader
-				title={"Difficulty"}
-				subheader={"Time?"}
+				title={props.diff}
 				titleTypographyProps={{ align: "center", color: "white" }}
 				subheaderTypographyProps={{
 					align: "center",
@@ -38,17 +37,16 @@ const QuestionCard = (props) => {
 					}}
 				>
 					<Typography color="text.primary">
-                      Description
+						{props.desc}
 					</Typography>
 				</Box>
 			</CardContent>
-			<CardActions>
-				<Button fullWidth sx={{ color: "black" }} onClick={() => {
-					console.log("click match");
+			<CardActions flex sx={{ justifyContent: "center" }}>
+				<Button variant="contained" sx={{ color: "black" }} onClick={() => {
 					handleFindMatch();
 					handleOpenCountdownModal();
 				}}>
-					{"Start"}
+					Find Match
 				</Button>
 			</CardActions>
 		</Card>
@@ -56,6 +54,8 @@ const QuestionCard = (props) => {
 };
 
 QuestionCard.propTypes = {
+	diff: PropTypes.string,
+	desc: PropTypes.string,
 	handleOpenCountdownModal: PropTypes.func,
 	handleFindMatch: PropTypes.func
 };

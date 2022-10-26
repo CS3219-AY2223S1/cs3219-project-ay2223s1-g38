@@ -7,20 +7,22 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 import firebase from "firebase";
+import { useDispatch } from "react-redux";
 import { Link as RRLink, useNavigate } from "react-router-dom";
 
-import { URL_CREATE_USER_SVC } from "../config/config";
+import { URL_CREATE_USER_SVC, URL_UNIQUE_USERNAME_SVC } from "../config/config";
+import { setUsername } from "../features/user/userSlice";
 import { FIREBASE_BADLY_FORMATTED_EMAIL, FIREBASE_EMAIL_IN_USE, MSG_BADLY_FORMATTED_EMAIL, MSG_EMAIL_IN_USE } from "../utils/constants";
 import { passwordValidate } from "../utils/validation";
 
 export default function SignUp() {
 	const navigate = useNavigate(); 
+	const dispatch = useDispatch();
 	const [ emailError, setEmailError ] = useState(null); 
 	const [ passwordError, setPasswordError ] = useState(null); 
 	const [ confirmPasswordError, setConfirmPasswordError ] = useState(null);
@@ -60,15 +62,23 @@ export default function SignUp() {
 		let user;
 
 		try {
+			const isUsernameExist = await (await axios.post(URL_UNIQUE_USERNAME_SVC, { username })).data;
+			if (isUsernameExist) {
+				console.debug("Error: Username already exists");
+				setUsernameError("This username has already been taken");
+				return;
+			}
+			dispatch(setUsername({ username }));
 			const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
 			user = userCredential.user;
-			firebase.auth().currentUser.updateProfile({
+			await firebase.auth().currentUser.updateProfile({
 				displayName: username
 			});
 			await axios.post(URL_CREATE_USER_SVC, { uid: user.uid, username });
 			navigate("/");
 		} catch (err) {
 			const errorCode = err.code;
+			console.debug(err);
 			console.debug("Error occurred: " + err.message);
 			if (errorCode == FIREBASE_EMAIL_IN_USE) {
 				setEmailError(MSG_EMAIL_IN_USE);
@@ -171,9 +181,9 @@ export default function SignUp() {
 					<Grid container justifyContent="flex-end">
 						<Grid item>
 							<RRLink to='/login'>
-								<Link href="#" variant="body2">
+								<Typography variant="body2">
 					Already have an account? Sign in
-								</Link>
+								</Typography>
 							</RRLink>
 						</Grid>
 					</Grid>

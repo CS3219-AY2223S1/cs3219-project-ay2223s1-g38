@@ -22,13 +22,10 @@ const publishToQueue = async (queueName, data, priority) => {
 		persistent: true,
 		priority: priority,
 	});
-
-	console.log("Sent data to MQ");
 };
 
 process.on("exit", () => {
 	ch.close();
-	console.log("Closing rabbitmq channel");
 });
 
 module.exports = {

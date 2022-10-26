@@ -4,7 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const registerMatchHandlers = require("./producer/eventHandlers/matchHandler");
 const registerDisconnectHandler = require("./producer/eventHandlers/disconnectHandler");
-const { socketConnection } = require("./utils/socket");
+const { socketConnection, connectToCollabService } = require("./utils/socket");
 const connect = require("./consumer/consumer");
 
 const app = express();
@@ -23,6 +23,7 @@ const onConnection = (io, socket) => {
 };
 
 socketConnection(httpServer, onConnection);
+connectToCollabService();
 connect();
 
 

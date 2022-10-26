@@ -31,3 +31,9 @@ export const MatchState = {
 	MATCH_NOT_FOUND: "MATCH_NOT_FOUND",
 	NONE: "",
 };
+
+export const SessionEvent = {
+	JOIN: "session:join",
+	QUESTION_UPDATE: "session:update_question",
+	LEAVE: "session:leave",
+};
