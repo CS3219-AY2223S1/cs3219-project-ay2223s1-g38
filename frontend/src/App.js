@@ -9,9 +9,7 @@ import { ClipLoader } from "react-spinners";
 
 import { io } from "socket.io-client";
 
-import socketIO from "socket.io-client";
-
-import { URI_MATCHING_SVC, URI_CHAT_SVC } from "./config/config";
+import { URI_MATCHING_SVC, URI_CHAT_SVC, URI_SESSION_SVC } from "./config/config";
 import firebaseApp from "./config/firebase";
 import { selectUsername, setUserId, setUsername } from "./features/user/userSlice";
 
@@ -41,16 +39,19 @@ const App = () => {
 		dispatch(setUserId({ userId: user.uid }));
 	}
 
-	const socket = socketIO.connect(URI_MATCHING_SVC);
-	listenMatch(socket);
+	const connectMatchSocket = () => {
+		const socket = io(URI_MATCHING_SVC);
+		listenMatch(socket, dispatch);
+		return socket;
+	};
+	
 	const chatSocket = io(URI_CHAT_SVC);
+	const sessionSocket = io(URI_SESSION_SVC);
 
-
-	// TODO: remove Collab from non-auth path when user auth works
 	return (
-		<div className="App">
+		<Box className="App">
 			<ThemeProvider theme={globalTheme}>
-				<Box display={"flex"} flexDirection={"column"}>
+				<Box display={"flex"} flexDirection={"column"} width="100vw">
 					<Router>
 						{ !user ?
 							<Routes>
@@ -67,8 +68,8 @@ const App = () => {
 							<Routes>
 								<Route exact path="/" element={<Navigate replace to="/home" />}/>
 								<Route path="/profile" element={<ProfilePage/>} />
-								<Route path="/home" element={<HomePage socket={socket} />} />
-								<Route path="/collab" element={<CollabPage chatSocket={chatSocket} />} />
+								<Route path="/home" element={<HomePage connectMatchSocket={connectMatchSocket} />} />
+								<Route path="/collab" element={<CollabPage chatSocket={chatSocket} sessionSocket={sessionSocket}/>} />
 								<Route
 									path="*"
 									element={<Navigate to="/" replace />}
@@ -78,7 +79,7 @@ const App = () => {
 					</Router>
 				</Box>
 			</ThemeProvider>
-		</div>
+		</Box>
 	);
 };
 

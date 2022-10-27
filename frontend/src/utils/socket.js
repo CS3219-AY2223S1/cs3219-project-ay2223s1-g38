@@ -16,3 +16,7 @@ export const joinSession = (socket, roomId) => {
 export const updateQuestion = (socket, roomId, difficulty) => {
 	socket.emit(SessionEvent.QUESTION_UPDATE, generateUpdateQuestionPayload(roomId, difficulty));
 };
+
+export const leaveSession = (socket) => {
+	socket.emit(SessionEvent.LEAVE);
+};

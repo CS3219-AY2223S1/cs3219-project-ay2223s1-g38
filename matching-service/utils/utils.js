@@ -1,7 +1,8 @@
 const { MatchEvent } = require("../constants/events");
+const uuid4 = require("uuid4");
 
 const generateRandomRoomId = () => {
-	return Math.random().toString(36).substring(3,10);
+	return uuid4();
 };
 
 const generateCronJobName = (userId, socketId, difficulty) => {

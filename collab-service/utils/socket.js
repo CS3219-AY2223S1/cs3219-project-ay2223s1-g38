@@ -1,4 +1,4 @@
-import { Server } from "socket.io"
+import { Server } from "socket.io";
 
 let io;
 export const socketConnection = (server, eventHandler) => {

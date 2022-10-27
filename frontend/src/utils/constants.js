@@ -35,4 +35,5 @@ export const MatchState = {
 export const SessionEvent = {
 	JOIN: "session:join",
 	QUESTION_UPDATE: "session:update_question",
+	LEAVE: "session:leave",
 };

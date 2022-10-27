@@ -1,5 +1,5 @@
 const amqp = require("amqplib/callback_api");
-require('dotenv').config();
+require("dotenv").config();
 
 const CONN_URL = process.env.ENV === "dev" ? "amqp://localhost:5672" : process.env.MQ_CONN_URL;
 
@@ -27,7 +27,6 @@ const publishToQueue = async (queueName, data, priority) => {
 
 process.on("exit", () => {
 	ch.close();
-	console.log("Closing rabbitmq channel");
 });
 
 module.exports = {

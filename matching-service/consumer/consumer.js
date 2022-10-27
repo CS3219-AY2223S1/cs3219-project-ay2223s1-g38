@@ -1,6 +1,6 @@
 const amqp = require("amqplib");
 const { MatchEvent } = require("../constants/events");
-require('dotenv').config();
+require("dotenv").config();
 
 const { handleFindMessage, handleCancelMessage, handleDisconnect } = require("./messageHandler");
 
