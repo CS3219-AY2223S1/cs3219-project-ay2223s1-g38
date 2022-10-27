@@ -46,7 +46,6 @@ const App = () => {
 	};
 	
 	const chatSocket = io(URI_CHAT_SVC);
-	console.log(URI_SESSION_SVC);
 	const sessionSocket = io(URI_SESSION_SVC);
 
 	return (

@@ -7,9 +7,7 @@ import { getQuestion } from "../utils/request.js";
 import { generateCronJobName } from "../utils/utils.js";
 
 const createSessionHandler = (io, socket) => {
-	console.log("Received create event")
 	const handleCreateSession = async (data) => {
-		console.log("Inside handleCreateSession", data)
 		const { roomId, uid1, uid2, difficulty } = data;
         
 		if (roomId === undefined || uid1 === undefined || uid2 === undefined || difficulty === undefined) {
