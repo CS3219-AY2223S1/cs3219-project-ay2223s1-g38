@@ -12,7 +12,6 @@ const cancelFindMatchJob = async (user, difficulty, socketId) => {
 };
 
 const handleFindMessage = async (userId, difficulty, socketId) => {
-	console.log("FIND MESSAGE CONSUMED")
 	const userMatch = await findMatchByUser(userId);
 	if (userMatch) {
 		sendMessage(socketId, MatchEvent.ALREADY_IN_QUEUE, "Already in matchmaking queue.");

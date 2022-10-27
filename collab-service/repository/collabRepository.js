@@ -4,7 +4,7 @@ import RoomModel from "./roomModel.js";
 import "dotenv/config.js";
 
 // eslint-disable-next-line no-undef
-let mongoDB = process.env.ENV == "PROD" ? process.env.DB_CLOUD_URI : process.env.DB_LOCAL_URI;
+let mongoDB = process.env.ENV == "production" ? process.env.DB_LOCAL_URI : process.env.DB_CLOUD_URI;
 
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 

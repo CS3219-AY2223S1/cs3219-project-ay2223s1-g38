@@ -2,6 +2,7 @@ version: "3"
 
 services:
   question-service:
+    container_name: question-service 
     build:
       context: ./question-service
     command: npm start
@@ -9,30 +10,89 @@ services:
       - "8081:8081"
     
   matching-service:
+    container_name: matching-service
     build:
       context: ./matching-service
-    command: npm start
+    command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- npm start'
     ports:
       - "8001:8001"
     environment:
       ENV: production
       MQ_CONN_URL: amqp://guest:guest@rabbitmq:5672
+      URI_COLLAB_SVC: collab-service:8080
     depends_on:
-      - "rabbitmq"
+      - rabbitmq
+      - collab-service
+  
+  user-service:
+    container_name: user-service
+    build:
+      context: ./user-service
+    command: npm start
+    ports:
+      - "8000:8000"
+    environment:
+      ENV: production
+      DB_LOCAL_URI: mongodb://mongo:27017/user
+    depends_on:
+      - mongo
+  
+  collab-service:
+    container_name: collab-service
+    build:
+      context: ./collab-service
+    command: npm start
+    ports:
+      - "8080:8080"
+    environment:
+      ENV: production
+      DB_LOCAL_URI: mongodb://mongo:27017/collab
+    depends_on:
+      - mongo
+      - question-service
+
+  communication-service:
+    container_name: communication-service
+    build:
+      context: ./communication-service
+    command: npm start
+    ports:
+      - "9000:9000"
+  
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+    command: npm run build
+    ports:
+      - "3000:3000"
+    environment:
+      URI_CHAT_SVC: http://communication-service:9000
+      URI_SESSION_SVC: http://collab-service:8080
+      URI_MATCHING_SVC: http://matching-service:8001
+      URI_QUESTION_SVC: http://question-service:8081
+      URI_USER_SVC: http://user-service:8000
+    depends_on:
+      - question-service
+      - matching-service
+      - user-service 
+      - collab-service
+      - communication-service
+  
 
   mongo:
-    container_name: "mongo-node"
+    container_name: mongo-node
     platform: linux/amd64
     image: mongo:4.4.14
     ports:
-      - "8082:8082"
+      - "27017:27017"
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: 12345
   
   rabbitmq:
     image: rabbitmq:3-management-alpine
-    container_name: 'rabbitmq'
+    container_name: rabbitmq
     ports:
         - 5672:5672
         - 15672:15672
