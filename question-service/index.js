@@ -22,6 +22,6 @@ router.post("/getQuestionWithBlackList", handleGetQuestionWithBlackList);
 router.post("/getQuestionByDifficulty", handleGetQuestionByDifficulty);
 
 // eslint-disable-next-line no-undef
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8081;
 
 app.listen(PORT, () => console.log("question-service is listening on port ", PORT));
