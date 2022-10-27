@@ -53,16 +53,14 @@ io.on("connection", (socket) => {
 			username: CHAT_BOT,
 			date: new Date()
 		});
+		socket.to(roomId).emit("user-disconnected");
 		console.debug(`${username} has left the room`); 
 	});
 
 	socket.on("join_video_room", (data) => {
 		const { userId, roomId } = data;
 		socket.join(roomId);
-		socket.broadcast.emit("user-connected", userId);
-		socket.on("disconnect", () => {
-			socket.broadcast.emit("user-disconnected", userId);
-		});
+		socket.to(roomId).emit("user-connected", userId);
 	});
 
 });

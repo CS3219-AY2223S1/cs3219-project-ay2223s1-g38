@@ -21,14 +21,14 @@ const handleFindMessage = async (userId, difficulty, socketId) => {
 	findMatch(userId, difficulty, socketId)
 		.then(async (resp) => {
 			if (resp.created) {
-			// If a new Match object got created, schedule a cron job to delete the object if no match found in 30 seconds
+				// If a new Match object got created, schedule a cron job to delete the object if no match found in 30 seconds
 				const startTime = new Date(Date.now() + Milliseconds.IN_THIRTY_SECONDS);
 				schedule.scheduleJob(generateCronJobName(userId, socketId, difficulty), startTime,
 					() => cancelFindMatchJob(userId, difficulty, socketId),
 				);
 				sendMessage(socketId, MatchEvent.WAITING, "Waiting for another user to join...");
 			} else {
-			// If a Match object was found, generate a room id and send to both socket ids
+				// If a Match object was found, generate a room id and send to both socket ids
 				const job = schedule.scheduledJobs[generateCronJobName(resp.match.user, resp.match.socketId, resp.match.difficulty)];
 				if (job !== undefined) {
 					job.cancel();
@@ -36,7 +36,8 @@ const handleFindMessage = async (userId, difficulty, socketId) => {
 
 				// Deletes the match that was found in the database
 				deleteMatch(resp.match.user, resp.match.difficulty, resp.match.socketId);
-			
+				console.log(isSocketConnected(resp.match.socketId));
+				console.log(isValidMatch(userId, resp.match.user, socketId, resp.match.socketId));
 				if (isSocketConnected(resp.match.socketId) && isValidMatch(userId, resp.match.user, socketId, resp.match.socketId)) {
 					// If the other user is still connected, then we create the room in CollabService and emit the roomId to both users.
 					const roomId = generateRandomRoomId();
