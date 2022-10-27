@@ -1,10 +1,12 @@
 const amqp = require("amqplib/callback_api");
+require('dotenv').config();
 
-const CONN_URL = "amqp://localhost:5672";
+const CONN_URL = process.env.ENV === "dev" ? "amqp://localhost:5672" : process.env.MQ_CONN_URL;
 
 let ch = null;
 
 amqp.connect(CONN_URL, function (err, conn) {
+	console.log(CONN_URL)
 	conn.createChannel(function (err, channel) {
 		ch = channel;
 	});

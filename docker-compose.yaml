@@ -14,8 +14,11 @@ services:
     command: npm start
     ports:
       - "8001:8001"
+    environment:
+      ENV: production
+      MQ_CONN_URL: amqp://guest:guest@rabbitmq:5672
     depends_on:
-      - rabbitmq
+      - "rabbitmq"
 
   mongo:
     container_name: "mongo-node"
