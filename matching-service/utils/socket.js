@@ -5,8 +5,9 @@ const { SessionEvent } = require("../constants/events");
 let io;
 let clientSocket;
 exports.connectToCollabService = () => {
-	const namespace = process.env.URI_COLLAB_SVC || "localhost:8088";
+	const namespace = process.env.URI_COLLAB_SVC || "localhost:8080";
 	clientSocket = ioClient.connect(`ws://${namespace}`);
+	console.log(namespace)
 };
 
 exports.socketConnection = (server, eventHandler) => {
