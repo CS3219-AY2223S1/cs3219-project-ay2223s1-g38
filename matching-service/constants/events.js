@@ -11,6 +11,6 @@ const MatchEvent = {
 
 const SessionEvent = {
 	CREATE: "session:create"
-}
+};
 
 module.exports = { MatchEvent, SessionEvent };

@@ -36,7 +36,7 @@ const handleFindMessage = async (userId, difficulty, socketId) => {
 
 				// Deletes the match that was found in the database
 				deleteMatch(resp.match.user, resp.match.difficulty, resp.match.socketId);
-			
+				
 				if (isSocketConnected(resp.match.socketId) && isValidMatch(userId, resp.match.user, socketId, resp.match.socketId)) {
 					// If the other user is still connected, then we create the room in CollabService and emit the roomId to both users.
 					const roomId = generateRandomRoomId();
@@ -46,7 +46,7 @@ const handleFindMessage = async (userId, difficulty, socketId) => {
 					const difficulty = resp.match.difficulty;
 					createNewSession(uid1, uid2, roomId, difficulty, callback);
 				} else {
-				// If the other user is no longer connected, we repeat the function to try and find another match
+					// If the other user is no longer connected, we repeat the function to try and find another match
 					handleFindMessage(userId, difficulty, socketId);
 				}
 			}

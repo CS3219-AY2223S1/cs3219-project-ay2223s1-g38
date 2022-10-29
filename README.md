@@ -3,8 +3,14 @@
 # AlgoHike
 This is our CS3219 project.
 
-# First time developer set up guide
+# Running application locally
+1. Ensure you have Docker installed.
+2. Pull the repository to your local device and `cd` into the directory.
+3. Ensure that you have the necessary .env files for the different services.
+4. Run docker-compose up -d
+5. Go to localhost:3000.
 
+# First time developer set up guide
 ### Software Prerequisites: 
 1. MongoDB
 

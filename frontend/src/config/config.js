@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
-const URI_USER_SVC = process.env.URI_USER_SVC || "http://localhost:8000";
-const URI_QUESTION_SVC = process.env.URI_QUESTION_SVC || "http://localhost:8081";
+const URI_USER_SVC = process.env.REACT_APP_URI_USER_SVC || "http://localhost:8000";
+const URI_QUESTION_SVC = process.env.REACT_APP_URI_QUESTION_SVC || "http://localhost:8081";
 
-export const URI_MATCHING_SVC = process.env.URI_MATCHING_SVC || "http://localhost:8001";
-export const URI_SESSION_SVC = process.env.URI_SESSION_SVC || "http://localhost:8088";
+export const URI_MATCHING_SVC = process.env.REACT_APP_URI_MATCHING_SVC || "http://localhost:8001";
+export const URI_SESSION_SVC = process.env.REACT_APP_URI_SESSION_SVC || "http://localhost:8080";
 export const URI_CHAT_SVC = process.env.REACT_APP_URI_CHAT_SVC || "http://localhost:9000"; 
 
 const PREFIX_USER_SVC = "/api/user";
