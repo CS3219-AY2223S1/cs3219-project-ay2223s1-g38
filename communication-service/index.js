@@ -18,10 +18,11 @@ const io = new Server(server, {
 ); 
 
 const CHAT_BOT = "AlgoBot";
-const __dirname = "/Users/kevin9foong/Desktop/y3s1/cs3219/project/cs3219-project-ay2223s1-g38/communication-service";
+// const __dirname = "/Users/kevin9foong/Desktop/y3s1/cs3219/project/cs3219-project-ay2223s1-g38/communication-service";
 
 app.get("/", (req, res) => {
-	res.sendFile(__dirname + "/index.html"); 
+	// res.sendFile(__dirname + "/index.html"); 
+	res.send("hi");
 });
 
 io.on("connection", (socket) => {
@@ -52,8 +53,16 @@ io.on("connection", (socket) => {
 			username: CHAT_BOT,
 			date: new Date()
 		});
+		socket.to(roomId).emit("user-disconnected");
 		console.debug(`${username} has left the room`); 
 	});
+
+	socket.on("join_video_room", (data) => {
+		const { userId, roomId } = data;
+		socket.join(roomId);
+		socket.to(roomId).emit("user-connected", userId);
+	});
+
 });
 
 server.listen(9000, () => console.log("communication-server listening on port " + server.address().port)); 

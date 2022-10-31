@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useRef, useEffect } from "react";
 
 import { fromMonaco } from "@hackerrank/firepad"; 
@@ -12,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 import Messager from "../components/organisms/Messager";
 import Question from "../components/Question";
+import VideoPlayer from "../components/VideoPlayer";
 import { resetRoom, selectRoomId } from "../features/match/matchSlice";
 import { selectQuestionId } from "../features/session/sessionSlice";
 import { selectUsername } from "../features/user/userSlice";
@@ -20,7 +22,6 @@ import { joinSession, leaveSession } from "../utils/socket";
 
 
 
-// eslint-disable-next-line react/prop-types
 const CollabPage = ({ chatSocket, sessionSocket }) => {
 
 	// eslint-disable-next-line no-unused-vars
@@ -43,6 +44,7 @@ const CollabPage = ({ chatSocket, sessionSocket }) => {
 
 	const handleLeaveRoom = () => {
 		leaveSession(sessionSocket);
+		chatSocket.emit("leave_chatroom", { username, roomId });
 		dispatch(resetRoom());
 		navigate("/home");
 	};
@@ -85,6 +87,16 @@ const CollabPage = ({ chatSocket, sessionSocket }) => {
 					theme="vs-dark"
 					onMount={handleEditorDidMount}
 				/>
+				<Box 
+					sx={{ 
+						position: "absolute",  
+						top: "0",
+						right: "30px"
+					}}
+					py={2}
+				>
+					<VideoPlayer chatSocket={chatSocket}></VideoPlayer>
+				</Box>
 				<Box 
 					sx={{ 
 						position: "absolute",  

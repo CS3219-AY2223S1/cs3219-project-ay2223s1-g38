@@ -41,7 +41,7 @@ const QuestionCard = (props) => {
 					</Typography>
 				</Box>
 			</CardContent>
-			<CardActions flex sx={{ justifyContent: "center" }}>
+			<CardActions sx={{ justifyContent: "center" }}>
 				<Button variant="contained" sx={{ color: "black" }} onClick={() => {
 					handleFindMatch();
 					handleOpenCountdownModal();
