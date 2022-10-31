@@ -1,11 +1,13 @@
 const amqp = require("amqplib");
 const { MatchEvent } = require("../constants/events");
+require("dotenv").config();
 
 const { handleFindMessage, handleCancelMessage, handleDisconnect } = require("./messageHandler");
 
 async function connect() {
 	try {
-		const connection = await amqp.connect("amqp://localhost:5672");
+		const CONN_URL = process.env.ENV === "dev" ? "amqp://localhost:5672" : process.env.MQ_CONN_URL;
+		const connection = await amqp.connect(CONN_URL);
 		const channel = await connection.createChannel();
         
 		await channel.assertQueue("match-mq", {

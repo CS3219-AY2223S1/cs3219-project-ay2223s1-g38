@@ -66,7 +66,6 @@ const Question = (props) => {
 		if (res && res.status === STATUS_CODE_SUCCESS) {
 			setQuestionError(null);
 			setQuestionTitle(res.data.question.title);
-			console.log(res.data.question.content);
 			setQuestion(res.data.question.content);
 			setQuestionDifficulty(res.data.question.difficulty);
 		}
