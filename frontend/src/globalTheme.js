@@ -11,7 +11,7 @@ export const globalTheme = createTheme({
 		}
 	},
 	typography: {
-		"fontFamily": "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+		"fontFamily": "\"Roboto Mono\", monospace",
 		"fontWeightLight": 300,
 		"fontWeightRegular": 400,
 		"fontWeightMedium": 500
