@@ -1,6 +1,7 @@
+import { createServer } from "http";
+
 import cors from "cors";
 import express from "express";
-import { createServer } from "http";
 
 import { handleAddRoom, handleDeleteRoom, handleFindRoomByUid, handleUpdateQuestionId } from "./controller/collabController.js";
 
@@ -42,4 +43,4 @@ socketConnection(httpServer, onConnection);
 // eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 8080;
 
-httpServer.listen(PORT, () => console.log("CollabService listening on port", PORT))
+httpServer.listen(PORT, () => console.log("CollabService listening on port", PORT));

@@ -5,7 +5,7 @@ import UserModel from "./userModel.js";
 
 // eslint-disable-next-line no-undef
 let mongoDB = process.env.ENV == "production" ? process.env.DB_LOCAL_URI: process.env.DB_CLOUD_URI;
-console.log(mongoDB)
+console.log(mongoDB);
 
 mongoose.connect(mongoDB, { useNewUrlParser: true , useUnifiedTopology: true });
 

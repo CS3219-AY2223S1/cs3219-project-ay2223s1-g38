@@ -1,6 +1,6 @@
 import cors from "cors";
 import express from "express";
-import { handleAddHistory, handleGetHistory, handleUpdateHistory } from "./controller/historyController.js";
+import { handleAddHistory, handleGetHistory, handleUpdateHistory, handleUpdateHistoryByRoomId } from "./controller/historyController.js";
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -17,7 +17,8 @@ app.use("/api/history", router).all((_, res) => {
 
 router.post("/getHistory", handleGetHistory);
 router.post("/addHistory", handleAddHistory);
-router.post("/updateHistory", handleUpdateHistory);
+router.put("/updateHistory", handleUpdateHistory);
+router.put("/updateHistoryByRoomId", handleUpdateHistoryByRoomId);
 
 // eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 8003;

@@ -27,9 +27,9 @@ export const getHistory = async (uid) => {
 	}
 };
 
-export const addHistory = async (uid1, uid2, qid, difficulty) => {
+export const addHistory = async (uid1, uid2, roomId, qid, difficulty) => {
 	try {
-		const history = new HistoryModel({ uid1, uid2, qids: [qid], difficulty })
+		const history = new HistoryModel({ uid1, uid2, roomId, qids: [qid], difficulty })
 		const savedHistory = await history.save();
 		return savedHistory;
 	} catch (err) {
@@ -48,6 +48,23 @@ export const updateHistory = async (uid1, uid2, qid) => {
 		ohqids.push(qid)
 
 		const history = await db.collection("historymodels").findOneAndUpdate({"uid1" : ohuid1, "uid2" : ohuid2, "createdAt" : ohcreatedAt}, 
+				{$set : { "qids" : ohqids }}, { returnDocument: 'after' } )
+		return history.value
+	} catch (err) {
+		console.error("ERROR: Could not update history", err);
+		throw err;
+	}
+};
+
+export const updateHistoryByRoomId = async (roomId, qid) => {
+	try {
+		const oldHistory = await db.collection("historymodels").find({ roomId }).sort({ createdAt: -1 }).limit(1).toArray()
+		const ohroomId = oldHistory[0].roomId
+		const ohcreatedAt = oldHistory[0].createdAt
+		const ohqids = oldHistory[0].qids
+		ohqids.push(qid)
+
+		const history = await db.collection("historymodels").findOneAndUpdate({"roomId" : ohroomId, "createdAt" : ohcreatedAt}, 
 				{$set : { "qids" : ohqids }}, { returnDocument: 'after' } )
 		return history.value
 	} catch (err) {

@@ -13,7 +13,7 @@ export const findRoomByUidService = async (userId) => {
 export const findRoomByRoomIdService = async (roomId) => {
 	const room = await findRoomByRoomId(roomId);
 	return room;
-}
+};
 
 export const updateQuestionIdService = async (roomId, newQuestionId) => {
 	const room = await findRoomByRoomId(roomId);
@@ -42,4 +42,4 @@ export const findRoomBlacklistService = async (roomId) => {
 	}
 
 	return room.questions;
-}
+};

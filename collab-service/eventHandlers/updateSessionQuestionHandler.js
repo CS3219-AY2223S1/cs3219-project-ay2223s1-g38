@@ -1,6 +1,6 @@
 import { SessionEvent } from "../constants/events.js";
 import { findRoomBlacklistService, updateQuestionIdService } from "../service/collabService.js";
-import { getQuestionWithBlacklist } from "../utils/request.js";
+import { getQuestionWithBlacklist, updateHistory } from "../utils/request.js";
 
 const updateSessionQuestionHandler = (io, socket) => {
 	const handleUpdateQuestion = async (data) => {
@@ -22,6 +22,7 @@ const updateSessionQuestionHandler = (io, socket) => {
 		const questionId = question.data.question.questionId;
 
 		const result = await updateQuestionIdService(roomId, questionId);
+		await updateHistory(roomId, questionId);
         
 		io.to(roomId).emit(SessionEvent.UPDATE_QUESTION, result);
 	};
