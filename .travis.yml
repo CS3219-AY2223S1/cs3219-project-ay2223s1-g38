@@ -3,27 +3,39 @@ language: generic
 services:
   - docker
 
-before_install:
-  - docker build -t taubar/algohike-test -f ./frontend/Dockerfile.dev ./frontend
+jobs:
+  include:
+    - stage: build
+      name: "PR Build"
+      before_install:
+        - docker build -t taubar/algohike-test -f ./frontend/Dockerfile.dev ./frontend
+      script:
+        - docker run -e CI=true taubar/algohike-test npm test
+      after_success:
+        - docker build -t taubar/algohike-frontend ./frontend
+        - docker build -t taubar/algohike-nginx ./nginx
+        - docker build -t taubar/algohike-matching-service ./matching-service
+        - docker build -t taubar/algohike-collab-service ./collab-service
+        - docker build -t taubar/algohike-communication-service ./communication-service
+        - docker build -t taubar/algohike-question-service ./question-service
+        - docker build -t taubar/algohike-user-service ./user-service
+      if : type = pull_request
 
-script:
-  - docker run -e CI=true taubar/algohike-test npm test
+    - stage: dockerhub
+      name: "Push to Dockerhub"
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+        # Push images to docker hub
+        - docker push taubar/algohike-frontend
+        - docker push taubar/algohike-nginx
+        - docker push taubar/algohike-matching-service
+        - docker push taubar/algohike-collab-service
+        - docker push taubar/algohike-communication-service 
+        - docker push taubar/algohike-question-service
+        - docker push taubar/algohike-user-service
+      if: branch = main AND type = push
+        
 
-after_success:
-  - docker build -t taubar/algohike-frontend ./frontend
-  - docker build -t taubar/algohike-nginx ./nginx
-  - docker build -t taubar/algohike-matching-service ./matching-service
-  - docker build -t taubar/algohike-collab-service ./collab-service
-  - docker build -t taubar/algohike-communication-service ./communication-service
-  - docker build -t taubar/algohike-question-service ./question-service
-  - docker build -t taubar/algohike-user-service ./user-service
+
+  stages:
   # Login to Docker CLI
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  # Push images to docker hub
-  - docker push taubar/algohike-frontend
-  - docker push taubar/algohike-nginx
-  - docker push taubar/algohike-matching-service
-  - docker push taubar/algohike-collab-service
-  - docker push taubar/algohike-communication-service 
-  - docker push taubar/algohike-question-service
-  - docker push taubar/algohike-user-service 
