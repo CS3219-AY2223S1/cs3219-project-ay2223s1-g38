@@ -5,6 +5,7 @@ const URI_QUESTION_SVC = process.env.REACT_APP_URI_QUESTION_SVC || "http://local
 export const URI_MATCHING_SVC = process.env.REACT_APP_URI_MATCHING_SVC || "http://localhost:8001";
 export const URI_SESSION_SVC = process.env.REACT_APP_URI_SESSION_SVC || "http://localhost:8080";
 export const URI_CHAT_SVC = process.env.REACT_APP_URI_CHAT_SVC || "http://localhost:9000"; 
+export const URI_VIDEO_SVC = process.env.REACT_APP_URI_VIDEO_SVC || "http://localhost:9001";
 
 const PREFIX_USER_SVC = "/api/user";
 
