@@ -19,7 +19,6 @@ jobs:
         - docker build -t taubar/algohike-communication-service ./communication-service
         - docker build -t taubar/algohike-question-service ./question-service
         - docker build -t taubar/algohike-user-service ./user-service
-      if : type = pull_request
 
     - stage: dockerhub
       name: "Push to Dockerhub"
@@ -33,7 +32,7 @@ jobs:
         - docker push taubar/algohike-communication-service 
         - docker push taubar/algohike-question-service
         - docker push taubar/algohike-user-service
-      if: branch = main AND type = push
+      if : branch = main AND type = push
         
 
 
