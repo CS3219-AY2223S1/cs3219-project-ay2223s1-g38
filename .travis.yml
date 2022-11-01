@@ -7,7 +7,7 @@ before_install:
   - docker build -t taubar/algohike-test -f ./frontend/Dockerfile.dev ./frontend
 
 script:
-  - docker run -e CI=true taubar/algohike-test npm test
+  - docker run -e CI=true taubar/algohike-test npm test --passWithNoTests
 
 after_success:
   - docker build -t taubar/algohike-frontend ./frontend
