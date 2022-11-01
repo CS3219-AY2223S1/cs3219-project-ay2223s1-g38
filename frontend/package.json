@@ -38,7 +38,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --passWithNoTests",
     "lint": "npx eslint .",
     "lint-fix": "npx eslint . --fix",
     "prepare": "cd ../ && husky install ./frontend/.husky"
