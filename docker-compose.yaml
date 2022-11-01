@@ -4,6 +4,7 @@ services:
   question-service:
     container_name: question-service 
     build:
+      dockerfile: Dockerfile.dev
       context: ./question-service
     command: npm start
     ports:
@@ -12,6 +13,7 @@ services:
   matching-service:
     container_name: matching-service
     build:
+      dockerfile: Dockerfile.dev
       context: ./matching-service
     command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- npm start'
     ports:
@@ -27,6 +29,7 @@ services:
   user-service:
     container_name: user-service
     build:
+      dockerfile: Dockerfile.dev
       context: ./user-service
     command: npm start
     ports:
@@ -40,6 +43,7 @@ services:
   collab-service:
     container_name: collab-service
     build:
+      dockerfile: Dockerfile.dev
       context: ./collab-service
     command: npm start
     ports:
@@ -56,6 +60,7 @@ services:
   communication-service:
     container_name: communication-service
     build:
+      dockerfile: Dockerfile.dev
       context: ./communication-service
     command: npm start
     ports:
@@ -64,6 +69,7 @@ services:
   frontend:
     container_name: frontend
     build:
+      dockerfile: Dockerfile.dev
       context: ./frontend
     command: npm start
     ports:

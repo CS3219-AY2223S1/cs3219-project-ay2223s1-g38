@@ -3,7 +3,4 @@ WORKDIR /usr/app
 COPY package*.json ./
 RUN npm install --force
 COPY . . 
-# RUN npm install -g serve
-# RUN chmod +x ./run.sh
-# # CMD ["/usr/app/run"]
 CMD ["npm", "start"]

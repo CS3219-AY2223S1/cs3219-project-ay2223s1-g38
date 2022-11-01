@@ -48,8 +48,10 @@ const VideoPlayer = ({ chatSocket }) => {
 
 		return () => {
 			myPeer.destroy();
-			temp.getVideoTracks()[0].stop();
-			temp.getAudioTracks()[0].stop();
+			if (temp) {
+				temp.getVideoTracks()[0].stop();
+				temp.getAudioTracks()[0].stop();
+			}
 		};
 	}, [ chatSocket ]);
 
