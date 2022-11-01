@@ -17,3 +17,13 @@ after_success:
   - docker build -t taubar/algohike-communication-service ./communication-service
   - docker build -t taubar/algohike-question-service ./question-service
   - docker build -t taubar/algohike-user-service ./user-service
+  # Login to Docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push images to docker hub
+  - docker push taubar/algohike-frontend
+  - docker push taubar/algohike-nginx
+  - docker push taubar/algohike-matching-service
+  - docker push taubar/algohike-collab-service
+  - docker push taubar/algohike-communication-service 
+  - docker push taubar/algohike-question-service
+  - docker push taubar/algohike-user-service 
