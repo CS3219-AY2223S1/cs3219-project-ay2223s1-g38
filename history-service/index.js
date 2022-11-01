@@ -10,7 +10,7 @@ app.options("*", cors());
 
 const router = express.Router();
 
-app.use("/api/question", router).all((_, res) => {
+app.use("/api/history", router).all((_, res) => {
 	res.setHeader("content-type", "application/json");
 	res.setHeader("Access-Control-Allow-Origin", "*");
 });
@@ -22,4 +22,4 @@ router.post("/updateHistory", handleUpdateHistory);
 // eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 8003;
 
-app.listen(PORT, () => console.log("question-service is listening on port ", PORT));
+app.listen(PORT, () => console.log("history-service is listening on port ", PORT));
