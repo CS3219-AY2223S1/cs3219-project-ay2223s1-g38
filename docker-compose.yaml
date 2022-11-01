@@ -84,7 +84,6 @@ services:
 
   mongo:
     container_name: mongo-node
-    platform: linux/amd64
     image: mongo:4.4.14
     ports:
       - "27017:27017"
@@ -101,3 +100,12 @@ services:
     volumes:
         - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
         - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    
+  nginx:
+    restart: always
+    build:
+      context: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - frontend
