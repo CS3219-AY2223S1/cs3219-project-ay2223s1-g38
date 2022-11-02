@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matching-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: matching
+  template:
+    metadata:
+      labels:
+        app: matching
+    spec:
+      containers:
+        - name: matching
+          image: taubar/algohike-matching-service
+          ports:
+            - name: http
+              containerPort: 8001
+          env:
+            - name: ENV
+              value: production
+            - name: MQ_CONN_URL
+              value: amqp://guest:guest@rabbitmq:5672
+            - name: URI_COLLAB_SVC
+              value: http://collab-cluster-ip-service:8080
+            - name: PORT
+              value: '8001'
+            

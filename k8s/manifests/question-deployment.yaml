@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: question-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: question
+  template:
+    metadata:
+      labels:
+        app: question
+    spec:
+      containers:
+        - name: question
+          image: taubar/algohike-question-service
+          ports:
+            - name: http
+              containerPort: 8081
+          env:
+            - name: ENV
+              value: PRODUCTION
+            - name: DB_LOCAL_URI
+              value: 'mongodb+srv://root:12345@cluster0.ggvbacw.mongodb.net/test'
+            - name: DB_CLOUD_URI
+              value: 'mongodb+srv://root:12345@cluster0.ggvbacw.mongodb.net/test'
+            - name: PORT
+              value: '8081'

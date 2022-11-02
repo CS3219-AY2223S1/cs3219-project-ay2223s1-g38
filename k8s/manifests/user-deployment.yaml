@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user
+  template:
+    metadata:
+      labels:
+        app: user
+    spec:
+      containers:
+        - name: user
+          image: taubar/algohike-user-service
+          ports:
+            - name: http
+              containerPort: 8000
+          env:
+            - name: DB_LOCAL_URI
+              value: mongodb://mongo-cluster-ip-service:27017/user
+            - name: ENV
+              value: production
+            - name: PORT
+              value: '8000'
+            - name: TOKEN_KEY
+              value: test
+          envFrom:
+            - secretRef:
+                name: firebase-secret
+          resources:
+            requests:
+              cpu: 5m
+              memory: 100Mi

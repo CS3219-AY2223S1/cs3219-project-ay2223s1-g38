@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: communication-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: communication
+  template:
+    metadata:
+      labels:
+        app: communication
+    spec:
+      containers:
+        - name: communication
+          image: taubar/algohike-communication-service
+          ports:
+            - name: http
+              containerPort: 9000
+          env:
+            - name: ENV
+              value: production
+            - name: PORT
+              value: '9000'
+            
