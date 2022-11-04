@@ -6,6 +6,8 @@ const ChatBox = (props) => {
 	// eslint-disable-next-line react/prop-types
 	const { messages } = props; 
 
+	// eslint-disable-next-line react/prop-types
+
 	return <MessageList 
 		className="message-list"
 		toBottomHeight={"100%"}

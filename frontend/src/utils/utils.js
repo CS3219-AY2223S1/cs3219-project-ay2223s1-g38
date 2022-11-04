@@ -21,3 +21,13 @@ export const generateSessionJoinPayload = (roomId) => {
 export const generateUpdateQuestionPayload = (roomId, difficulty) => {
 	return { roomId, difficulty };
 };
+
+export const convertToMessageBoxFields = (messageInfo, currUsername) => {
+	return {
+		position: currUsername === messageInfo.username ? "right" : "left",
+		title: messageInfo.username,
+		type: "text", 
+		text: messageInfo.message,
+		date: messageInfo.date
+	};
+};
