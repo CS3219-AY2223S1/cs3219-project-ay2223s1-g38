@@ -9,7 +9,7 @@ import { ClipLoader } from "react-spinners";
 
 import { io } from "socket.io-client";
 
-import { URI_MATCHING_SVC, URI_CHAT_SVC, URI_SESSION_SVC } from "./config/config";
+import { URI_MATCHING_SVC, URI_CHAT_SVC, URI_SESSION_SVC, URI_VIDEO_SVC } from "./config/config";
 import firebaseApp from "./config/firebase";
 import { selectUsername, setUserId, setUsername } from "./features/user/userSlice";
 
@@ -46,6 +46,7 @@ const App = () => {
 	};
 	
 	const chatSocket = io(URI_CHAT_SVC);
+	const videoSocket = io(URI_VIDEO_SVC);
 	const sessionSocket = io(URI_SESSION_SVC);
 
 	return (
@@ -69,7 +70,7 @@ const App = () => {
 								<Route exact path="/" element={<Navigate replace to="/home" />}/>
 								<Route path="/profile" element={<ProfilePage/>} />
 								<Route path="/home" element={<HomePage connectMatchSocket={connectMatchSocket} />} />
-								<Route path="/collab" element={<CollabPage chatSocket={chatSocket} sessionSocket={sessionSocket}/>} />
+								<Route path="/collab" element={<CollabPage chatSocket={chatSocket} videoSocket={videoSocket} sessionSocket={sessionSocket}/>} />
 								<Route
 									path="*"
 									element={<Navigate to="/" replace />}

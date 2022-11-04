@@ -60,6 +60,14 @@ services:
     command: npm start
     ports:
       - "9000:9000"
+
+  video-service:
+    container_name: video-service
+    build:
+      context: ./video-service
+    command: npm start
+    ports:
+      - "9001:9001"
   
   frontend:
     container_name: frontend
@@ -74,12 +82,14 @@ services:
       REACT_APP_URI_MATCHING_SVC: http://localhost:8001
       REACT_APP_URI_QUESTION_SVC: http://localhost:8081
       REACT_APP_URI_USER_SVC: http://localhost:8000
+      REACT_APP_URI_VIDEO_SVC: http://localhost:9001
     depends_on:
       - question-service
       - matching-service
       - user-service 
       - collab-service
       - communication-service
+      - video-service
   
 
   mongo:
