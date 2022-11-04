@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { selectRoomId } from "../../features/match/matchSlice";
 import { selectUsername } from "../../features/user/userSlice";
 
+import { convertToMessageBoxFields } from "../../utils/utils";
 import MessageInput from "../molecules/MessageInput";
  
 import ChatBox from "../molecules/MessageList"; 
@@ -22,18 +23,16 @@ const Messager = ({ chatSocket }) => {
 	useEffect(() => {
 		if (chatSocket) {
 			joinChatRoom();
+			
+			chatSocket.on("load_room_history", (data) => { 
+				const pastMessages = data.map((msgInfo) => convertToMessageBoxFields(msgInfo, currUsername));
+				setMessages(messages => messages.concat(pastMessages));
+			});
+
 			chatSocket.on("receive_message", (data) => {
-				const { message, username, date } = data;  
-				const isLeft = username !== currUsername; 
 				setMessages(state => [
 					...state, 
-					{
-						position:isLeft ? "left" : "right",
-						title: username,
-						type: "text", 
-						text: message,
-						date: date
-					},
+					convertToMessageBoxFields(data, currUsername)
 				]);
 			});
 
