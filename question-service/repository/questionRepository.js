@@ -63,7 +63,7 @@ export const getQuestionWithBlacklist = async (list, difficulty) => {
 
 export const getAllQuestions = async () => {
 	try {
-		let questionList = await db.collection("questionmodels").find().map(r => { return { title : r.title, difficulty : r.difficulty };}).toArray();
+		let questionList = await db.collection("questionmodels").find().map(r => { return { questionId : r.questionId, title : r.title, difficulty : r.difficulty };}).toArray();
 		console.debug(questionList);
 		return questionList;
 	} catch (err) {
