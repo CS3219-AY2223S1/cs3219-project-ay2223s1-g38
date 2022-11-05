@@ -1,7 +1,7 @@
 import { blackListSchema } from "../dto/blacklistDto.js";
 import { difficultySchema } from "../dto/difficultyDto.js";
 import { qidSchema } from "../dto/qidDto.js";
-import { getQuestionService, getQuestionByIdService, getQuestionServiceWithBlackList, getQuestionByDifficultyService } from "../service/questionService.js";
+import { getQuestionService, getQuestionByIdService, getQuestionServiceWithBlackList, getQuestionByDifficultyService, getAllQuestionsService } from "../service/questionService.js";
 
 export const handleGetQuestion = (req, res) => {
 	try {
@@ -83,6 +83,23 @@ export const handleGetQuestionByDifficulty = (req, res) => {
 			return res.status(200).json({
 				message: "Retrieved question successfully",
 				question: question,
+			});
+		});
+	} catch (err) {
+		console.error("Error: ", err);
+		return res.status(500).json({ message: "An error occured, please try again later." });
+	}
+};
+
+export const handleGetAllQuestions = (req, res) => {
+	try {
+		getAllQuestionsService().then((questionList) => {
+			if (!questionList) {
+				return res.status(400).json({ message: "Failed to retrieve question" });
+			}
+			return res.status(200).json({
+				message: "Retrieved question successfully",
+				questions: questionList,
 			});
 		});
 	} catch (err) {

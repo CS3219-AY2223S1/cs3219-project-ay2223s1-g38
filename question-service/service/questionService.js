@@ -1,4 +1,4 @@
-import { getNumQuestions, getQuestionByDifficulty, getQuestionById, getQuestionWithBlacklist } from "../repository/questionRepository.js";
+import { getAllQuestions, getNumQuestions, getQuestionByDifficulty, getQuestionById, getQuestionWithBlacklist } from "../repository/questionRepository.js";
 import { numberGenerator } from "../utils/numberGenerator.js";
 
 export const getQuestionService = async () => {
@@ -21,4 +21,9 @@ export const getQuestionByDifficultyService = async (difficulty) => {
 export const getQuestionServiceWithBlackList = async (list, difficulty) => {
 	let question = await getQuestionWithBlacklist(list, difficulty);
 	return question;
+};
+
+export const getAllQuestionsService = async () => {
+	let questionList = await getAllQuestions();
+	return questionList;
 };
