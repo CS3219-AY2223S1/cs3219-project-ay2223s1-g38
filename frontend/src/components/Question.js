@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { URL_GET_QUESTION_BY_ID_SVC, URL_GET_QUESTION_SVC, URL_GET_QUESTION_WITH_BLACKLIST_SVC } from "../config/config";
 import { selectRoomId } from "../features/match/matchSlice";
 import { selectDifficulty } from "../features/session/sessionSlice";
+import { selectUserId } from "../features/user/userSlice";
 import { STATUS_CODE_SUCCESS } from "../utils/constants";
 import { updateQuestion } from "../utils/socket";
 
@@ -26,6 +27,7 @@ const Question = (props) => {
 	const { questionId, socket } = props;
 	const roomId = useSelector(selectRoomId);
 	const difficulty = useSelector(selectDifficulty);
+	const uid = useSelector(selectUserId);
 
 	const getQuestion = async () => {
 		setIsQuestionLoading(true);
@@ -43,6 +45,8 @@ const Question = (props) => {
 	};
 
 	const getQuestionById = async (qid) => {
+		console.log(uid);
+
 		setIsQuestionLoading(true);
 		const res = await axios.post(URL_GET_QUESTION_BY_ID_SVC, { "questionId" : qid })
 			.catch(() => {
@@ -109,7 +113,7 @@ const Question = (props) => {
 					<Typography sx={{ margin: "10px", color: "red" }} variant="h6">
 						{questionError}
 					</Typography>
-					<Typography style={{ whiteSpace: "pre-line" }} sx={{ margin: "10px" }}>
+					<Typography sx={{ margin: "14px" }}>
 						<span dangerouslySetInnerHTML={{ __html: question }} />
 					</Typography>
 				</Box>
