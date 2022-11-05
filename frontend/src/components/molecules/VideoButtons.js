@@ -12,7 +12,6 @@ const VideoButtons = (props) => {
 	const [ micEnabled, setMicEnabled ] = useState(true);
 
 	const handleMicButtonPressed = () => {
-		console.log(localStream.getAudioTracks());
 		localStream.getAudioTracks()[0].enabled = !micEnabled;
 		setMicEnabled(!micEnabled);
 	};

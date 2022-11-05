@@ -61,7 +61,7 @@ const LoginPage = () => {
 	};
 
 	return (
-		<Grid container component="main" sx={{ height: "100vh", padding: "4rem" }}>
+		<Grid container component="main" sx={{ height: "100vh" }}>
 			<CssBaseline />
 			<Grid 
 				item
@@ -74,10 +74,10 @@ const LoginPage = () => {
 					backgroundColor: (t) => 
 						t.palette.mode === "light" ? t.palette.grey[50] : t.palette.grey[900],
 					backgroundSize: "cover", 
-					backgroundPosition: "center"
+					backgroundPosition: "left"
 				}}
 			/>
-			<Grid item borderRadius={8} xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+			<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
 				<Box
 					sx={{
 						my: 8,

@@ -10,24 +10,23 @@ import { selectUserId } from "../features/user/userSlice";
 
 import VideoButtons from "./molecules/VideoButtons";
 
-const VideoPlayer = ({ chatSocket }) => {
+const VideoPlayer = ({ videoSocket }) => {
 	const myVideo = useRef();
 	const peerVideo = useRef();
 	const roomId = useSelector(selectRoomId);
 	const userId = useSelector(selectUserId);
 	const [ localStream, setLocalStream ] = useState(null);
-	let myPeer;
+	const myPeer = new Peer(userId);
 
 	useEffect(() => {
 		let temp;
-		myPeer = new Peer(userId);
 		navigator.mediaDevices.getUserMedia({ video: true, audio: true })
 			.then((stream) => {
 				temp = stream;
 				setLocalStream(stream);
 				myVideo.current.srcObject = stream;
 				myVideo.current.play();
-				chatSocket.emit("join_video_room",{ roomId, userId });
+				videoSocket.emit("join_video_room",{ roomId, userId });
 				myPeer.on("call", call => {
 					call.answer(stream);
 					call.on("stream", userVideoStream => { // When we recieve their stream
@@ -36,11 +35,11 @@ const VideoPlayer = ({ chatSocket }) => {
 					});
 				});
   
-				chatSocket.on("user-connected", userId => { // If a new user connect
+				videoSocket.on("user-connected-video", userId => { // If a new user connect
 					connectToNewUser(userId, stream); 
 				});
 				
-				chatSocket.on("user-disconnected", () => {
+				videoSocket.on("user-disconnected-video", () => {
 					peerVideo.current.srcObject = null;
 				});
 
@@ -48,10 +47,12 @@ const VideoPlayer = ({ chatSocket }) => {
 
 		return () => {
 			myPeer.destroy();
-			temp.getVideoTracks()[0].stop();
-			temp.getAudioTracks()[0].stop();
+			if (temp) {
+				temp.getVideoTracks()[0].stop();
+				temp.getAudioTracks()[0].stop();
+			}
 		};
-	}, [ chatSocket ]);
+	}, [ videoSocket ]);
 
 	function connectToNewUser(userId, stream) {
 		const call = myPeer.call(userId, stream);
@@ -75,7 +76,7 @@ const VideoPlayer = ({ chatSocket }) => {
 };
 
 VideoPlayer.propTypes = {
-	chatSocket: PropTypes.any
+	videoSocket: PropTypes.any
 };
 
 export default VideoPlayer;

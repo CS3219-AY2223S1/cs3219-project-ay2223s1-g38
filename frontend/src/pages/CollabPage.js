@@ -22,7 +22,7 @@ import { joinSession, leaveSession } from "../utils/socket";
 
 
 
-const CollabPage = ({ chatSocket, sessionSocket }) => {
+const CollabPage = ({ chatSocket, sessionSocket, videoSocket }) => {
 
 	// eslint-disable-next-line no-unused-vars
 	const roomId = useSelector(selectRoomId);
@@ -45,6 +45,7 @@ const CollabPage = ({ chatSocket, sessionSocket }) => {
 	const handleLeaveRoom = () => {
 		leaveSession(sessionSocket);
 		chatSocket.emit("leave_chatroom", { username, roomId });
+		videoSocket.emit("leave_video_room", { username, roomId });
 		dispatch(resetRoom());
 		navigate("/home");
 	};
@@ -95,7 +96,7 @@ const CollabPage = ({ chatSocket, sessionSocket }) => {
 					}}
 					py={2}
 				>
-					<VideoPlayer chatSocket={chatSocket}></VideoPlayer>
+					<VideoPlayer videoSocket={videoSocket}></VideoPlayer>
 				</Box>
 				<Box 
 					sx={{ 
