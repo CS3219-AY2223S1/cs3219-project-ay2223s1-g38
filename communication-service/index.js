@@ -23,7 +23,9 @@ const io = new Server(server, {
 
 
 // eslint-disable-next-line no-undef
-let mongoDB = process.env.ENV == "PROD" ? process.env.DB_CLOUD_URI : process.env.DB_LOCAL_URI;
+let mongoDB = process.env.ENV == "production" ? process.env.DB_LOCAL_URI : process.env.DB_CLOUD_URI;
+console.log("TESTING")
+console.log(mongoDB);
 mongoose.connect(mongoDB, { useNewUrlParser: true , useUnifiedTopology: true });
 
 const Room = mongoose.model("Room", roomSchema);

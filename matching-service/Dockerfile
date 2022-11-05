@@ -8,6 +8,6 @@ RUN chmod +x /bin/wait-for-it.sh
 
 RUN npm install 
 COPY . . 
-EXPOSE 8001
+# EXPOSE 8001
 RUN npm run migrate
 CMD ["npm", "start"]

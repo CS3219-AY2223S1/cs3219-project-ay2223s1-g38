@@ -3,7 +3,7 @@ WORKDIR /usr/app
 COPY package*.json ./
 RUN npm install --force
 COPY . . 
-EXPOSE 3000
+# EXPOSE 3000
 # RUN npm install -g serve
 # RUN chmod +x ./run.sh
 # # CMD ["/usr/app/run"]

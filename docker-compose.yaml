@@ -60,6 +60,9 @@ services:
     command: npm start
     ports:
       - "9000:9000"
+    environment:
+      ENV: production
+      DB_LOCAL_URI: mongodb://mongo:27017/collab
 
   video-service:
     container_name: video-service
