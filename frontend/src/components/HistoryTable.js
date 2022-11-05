@@ -47,7 +47,7 @@ export const HistoryTable = ({ history }) => {
 								<TableCell component="th" scope="row">
 									{row.createdAt}
 								</TableCell>
-								<TableCell sx={{ maxWidth: "50%", flexWrap: "wrap" }}>{formatQns(row.qids)}</TableCell>
+								<TableCell sx={{ flexWrap: "wrap", display: "flex" }}>{formatQns(row.qids)}</TableCell>
 								<TableCell align="right"><p className={`difficulty-cell ${row.difficulty}`}>{row.difficulty}</p></TableCell>
 							</TableRow>
 						);

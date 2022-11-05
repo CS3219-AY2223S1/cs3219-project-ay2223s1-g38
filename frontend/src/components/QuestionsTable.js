@@ -23,13 +23,13 @@ const generateRows = (questions) => {
 
 const QuestionsTable = ({ questions }) => {
 	return (
-		<div style={{ height: 400, width: 800 }}>
+		<div style={{ height: 800, width: 800 }}>
 			<DataGrid
 				rows={generateRows(questions)}
 				columns={columns}
-				pageSize={5}
+				pageSize={50}
 				disableSelectionOnClick
-				rowsPerPageOptions={[ 5 ]}
+				rowsPerPageOptions={[ 50 ]}
 			/>
 		</div>
 	);
