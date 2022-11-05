@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 
 import axios from "axios";
@@ -41,10 +41,10 @@ const ProfilePage = () => {
 		<>
 			<CustomAppBar />
 			<Container sx={{ paddingTop: 5 }}>
-				<Typography component="h1" variant="h2">{`Hello, ${username}`}</Typography>
-				{ isHistoryLoading && <p>Loading history</p> }
+				<Typography component="h1" variant="h2">{`${username}'s History`}</Typography>
 				{ historyError }
 				<HistoryTable history={history}/>
+				{ isHistoryLoading && <Box sx={{ marginLeft: "50%" }}><CircularProgress sx={{ py: 2 }} /></Box> }
 			</ Container>
 		</>
 	);

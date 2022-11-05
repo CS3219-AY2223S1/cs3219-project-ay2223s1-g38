@@ -25,9 +25,8 @@ const formatQns = (qids) => {
 };
 
 export const HistoryTable = ({ history }) => {
-	console.log(history);
 	return (
-		<TableContainer component={Paper}>
+		<TableContainer sx={{ my: 5 }} component={Paper}>
 			<Table sx={{ minWidth: 400 }} aria-label="simple table">
 				<TableHead>
 					<TableRow>

@@ -11,17 +11,45 @@ import { useNavigate } from "react-router-dom";
 
 import CustomAppBar from "../components/CustomAppBar";
 import QuestionsTable from "../components/QuestionsTable";
-import { URL_GET_QUESTION_BY_ID_SVC } from "../config/config";
+import { URL_GET_ALL_QUESTIONS, URL_GET_QUESTION_BY_ID_SVC } from "../config/config";
 import { STATUS_CODE_SUCCESS } from "../utils/constants";
 
 
 import "./pages.scss";
 
 const AllQuestions = () => {
+	const [ allQuestionsLoading, setAllQuestionsLoading ] = useState(false);
+	const [ questionError, setQuestionError ] = useState(null);
+	const [ allQuestions, setAllQuestions ] = useState([]);
+
+	const getAllQuestions = async () => {
+		setAllQuestionsLoading(true);
+		const res = await axios.get(URL_GET_ALL_QUESTIONS)
+			.catch(() => {
+				setQuestionError("Error retrieving questions, please try again later");
+			});
+		if (res && res.status === STATUS_CODE_SUCCESS) {
+			setQuestionError(null);
+			setAllQuestions(res.data.questions);
+		}
+		setAllQuestionsLoading(false);
+	};
+
+	useEffect(() => {
+		getAllQuestions();
+	}, [ ]);
+
 	return (
-		<Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", my: 2 }}>
+		<Box sx={{ my: 2 }}>
 			<Typography sx={{ my: 5 }}  variant="h3" align="center">All Questions</Typography>
-			<QuestionsTable />
+			{questionError && <Typography sx={{ margin: "10px", color: "red" }} variant="h6">
+				{questionError}
+			</Typography>}
+			{allQuestionsLoading 
+				? <Box sx={{ marginLeft: "50%" }}><CircularProgress sx={{ py: 2 }} /></Box> 
+				: <QuestionsTable questions={allQuestions}/>
+			}
+			
 		</Box>
 	);
 };
@@ -97,7 +125,6 @@ BigQuestion.propTypes = {
 const QuestionPage = () => {
 
 	let { qid } = useParams();
-	console.log(qid);
 
 	return (
 		<Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>

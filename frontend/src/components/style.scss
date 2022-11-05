@@ -5,6 +5,7 @@
     font-family: Roboto Mono, monospace; 
     padding: 10px;
     transition: 0.1s linear;
+    text-overflow: ellipsis;
     
     &.selected {
         color: white;
