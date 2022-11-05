@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 
-import { handleGetQuestion, handleGetQuestionByDifficulty, handleGetQuestionById, handleGetQuestionWithBlackList } from "./controller/questionController.js";
+import { handleGetAllQuestions, handleGetQuestion, handleGetQuestionByDifficulty, handleGetQuestionById, handleGetQuestionWithBlackList } from "./controller/questionController.js";
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -17,6 +17,7 @@ app.use("/api/question", router).all((_, res) => {
 });
 
 router.get("/getQuestion", handleGetQuestion);
+router.get("/getAllQuestions", handleGetAllQuestions);
 router.post("/getQuestionById", handleGetQuestionById);
 router.post("/getQuestionWithBlackList", handleGetQuestionWithBlackList);
 router.post("/getQuestionByDifficulty", handleGetQuestionByDifficulty);

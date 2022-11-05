@@ -60,3 +60,14 @@ export const getQuestionWithBlacklist = async (list, difficulty) => {
 		throw err;
 	}
 };
+
+export const getAllQuestions = async () => {
+	try {
+		let questionList = await db.collection("questionmodels").find().map(r => { return { questionId : r.questionId, title : r.title, difficulty : r.difficulty };}).toArray();
+		console.debug(questionList);
+		return questionList;
+	} catch (err) {
+		console.error("ERROR: Could not retrieve questions", err);
+		throw err;
+	}
+};
