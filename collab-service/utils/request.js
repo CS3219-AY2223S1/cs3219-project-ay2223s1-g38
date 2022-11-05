@@ -32,7 +32,7 @@ export const addHistory = (uid1, uid2, roomId, qid, difficulty) => axios.post(`$
 		console.log(error);
 	});
 
-export const updateHistory = (roomId, qid) => axios.post(`${URI_HISTORY_SVC}/api/history/updateHistoryByRoomId`, { roomId, qid })
+export const updateHistory = (roomId, qid) => axios.put(`${URI_HISTORY_SVC}/api/history/updateHistoryByRoomId`, { roomId, qid })
 	.then(response => {
 		return response;
 	})
