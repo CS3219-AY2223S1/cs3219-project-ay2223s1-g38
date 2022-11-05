@@ -5,6 +5,8 @@ import { Button, Grid, Typography } from "@mui/material";
 import { PropTypes } from "prop-types";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
+import animation from "../static/hike.gif";
+
 const CountdownTimer = (props) => {
 	const [ complete, setComplete ] = useState(false);
 
@@ -20,7 +22,8 @@ const CountdownTimer = (props) => {
 
 	const renderTime = ({ remainingTime }) => {
 		return (<Grid container sx={{ flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-			<Typography sx={{ mx: "auto", my: "3rem" }} variant="h1" align="center">
+			<img width="200" height="200" src={animation} />
+			<Typography sx={{ mx: "auto", my: 1 }} variant="h6" align="center">
 				{remainingTime}
 			</Typography>
 			<Button variant="outlined" sx={{ color: "black", backgroundColor: "#FFA5A5", fontWeight: "bold" }} onClick={() => {

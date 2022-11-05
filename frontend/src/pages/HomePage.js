@@ -12,7 +12,9 @@ import CustomAppBar from "../components/CustomAppBar";
 import QuestionCard from "../components/QuestionCard";
 import { selectRoomId } from "../features/match/matchSlice";
 import { selectUserId } from "../features/user/userSlice";
+import mountain from "../static/mountain.png";
 import { cancelMatch, findMatch } from "../utils/socket";
+
 
 
 const HomePage = ({ connectMatchSocket }) => {
@@ -94,8 +96,9 @@ const HomePage = ({ connectMatchSocket }) => {
 			</Modal>
 			<Container>
 				<Typography sx={{ mx: "auto", my: "5rem" }} variant="h2" align="center">
-					Pick a Difficulty!
+					Begin your AlgoHike! <img height="50px" src={mountain} />
 				</Typography>
+
 				<Grid container spacing={5} sx={{ mt: "2rem", paddingX: "2rem", justifyContent: "center", direction: "row" }}>
 					{difficulties.map((elem) => {
 						return (<Grid
@@ -104,7 +107,7 @@ const HomePage = ({ connectMatchSocket }) => {
 							xs={12}
 							sm={6}
 							md={4}
-						>
+						>	
 							<QuestionCard diff={elem.diff} desc={elem.description} handleOpenCountdownModal={() => handleOpenCountdownModal(elem.diff)} handleFindMatch={() => handleFindMatch(userId, elem.diff)}/>
 						</Grid>);
 					})}
