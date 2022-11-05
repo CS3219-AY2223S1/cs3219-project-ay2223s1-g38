@@ -1,0 +1,21 @@
+.nav-link {
+    margin: 10px;
+    color: black;
+    display: block;
+    text-decoration:none;
+    font-family: Roboto Mono, monospace; 
+    padding: 10px;
+    transition: 0.1s linear;
+    
+    &.selected {
+        color: white;
+        background-color: #00695f;
+        border-radius: 5px;
+    }
+
+    &:hover {
+        background-color: #009688;
+        border-radius: 5px;
+        transition: 0.1s linear;
+    }
+}

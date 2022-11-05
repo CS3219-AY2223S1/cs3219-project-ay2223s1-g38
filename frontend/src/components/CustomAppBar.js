@@ -1,6 +1,5 @@
 import React from "react";
 
-import { Button } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
@@ -11,18 +10,36 @@ import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import firebase from "firebase";
 import { useSelector } from "react-redux";
 
-import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import { selectUsername } from "../features/user/userSlice";
 
-const settings = [ "Home", "Profile", "Logout" ];
+import "./style.scss";
+
+const pages = [ 
+	{
+		name: "Home",
+		url: "/home"
+	}, 
+	{
+		name: "My History",
+		url: "/history"
+	}, 
+	{
+		name: "Questions",
+		url: "/questions"
+	},
+	{
+		name: "Logout",
+		url: "/logout"
+	} 
+];
 
 const CustomAppBar = () => {
 	const [ anchorElUser, setAnchorElUser ] = React.useState(null);
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 	const username = useSelector(selectUsername);
 
 	const handleOpenUserMenu = (event) => {
@@ -33,20 +50,20 @@ const CustomAppBar = () => {
 		setAnchorElUser(null);
 	};
 
-	const handleMenuButton = (setting) => {
-		if (setting === "Logout") {
-			firebase.auth().signOut().then(() => {
-				console.debug("User signed out successfully");
-			}).catch((error) => {
-				console.debug(error);
-			});
-			navigate("/login");
-		} else if (setting === "Profile") {
-			navigate("/profile");
-		} else if (setting === "Home") {
-			navigate("/");
-		}
-	};
+	// const handleMenuButton = (setting) => {
+	// 	if (setting === "Logout"firebase.auth().signOut().then(() => {
+	// 			console.debug("User signed out successfully");
+	// 		}).catch((error) => {
+	// 			console.debug(error);
+	// 		});
+	// 		navigate("/login");) {
+	// 		
+	// 	} else if (setting === "Profile") {
+	// 		navigate("/profile");
+	// 	} else if (setting === "Home") {
+	// 		navigate("/");
+	// 	}
+	// };
 
 	return (
 		<AppBar position="static">
@@ -57,18 +74,29 @@ const CustomAppBar = () => {
 						variant="h6"
 						noWrap
 						component="a"
-						href="/"
+						href="/home"
 						sx={{
 							display: { xs: "none", md: "flex" },
 							fontWeight: 700,
 							letterSpacing: ".3rem",
 							color: "inherit",
 							textDecoration: "none",
-							flexGrow: 1
 						}}
 					>
             AlgoHike
 					</Typography>
+					<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, justifyContent:"center" }}>
+						{pages.map((page) => (
+							<NavLink
+								key={page.name}
+								end
+								to={page.url}
+								className={({ isActive }) => `nav-link${isActive ? " selected" : ""}`}
+							>
+								{page.name}
+							</NavLink>
+						))}
+					</Box>
 
 					<Box sx={{ flexGrow: 0 }}>
 						<Tooltip title="Open settings">
@@ -92,11 +120,11 @@ const CustomAppBar = () => {
 							open={Boolean(anchorElUser)}
 							onClose={handleCloseUserMenu}
 						>
-							{settings.map((setting) => (
-								<MenuItem key={setting} onClick={handleCloseUserMenu}>
-									<Button onClick={() => handleMenuButton(setting)}>
-										<Typography textAlign="center">{setting}</Typography>
-									</Button>
+							{pages.map((page) => (
+								<MenuItem key={page.name} sx={{ margin: "10px" }}>
+									<NavLink to={page.url} sx={{ textDecoration: "none" }}>
+										<Typography textAlign="center">{page.name}</Typography>
+									</NavLink>
 								</MenuItem>
 							))}
 						</Menu>

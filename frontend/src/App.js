@@ -17,11 +17,12 @@ import { globalTheme } from "./globalTheme";
 import CollabPage from "./pages/CollabPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
+import LogoutPage from "./pages/LogoutPage";
 import PasswordResetPage from "./pages/PasswordResetPage";
 import ProfilePage from "./pages/ProfilePage";
-
 import SignupPage from "./pages/SignupPage";
 import { listenMatch } from "./utils/eventHandlers";
+
 
 const App = () => {
 	const [ user, loading ] = useAuthState(firebaseApp.auth());
@@ -68,7 +69,8 @@ const App = () => {
 							:
 							<Routes>
 								<Route exact path="/" element={<Navigate replace to="/home" />}/>
-								<Route path="/profile" element={<ProfilePage/>} />
+								<Route path="/logout" element={<LogoutPage />}/>
+								<Route path="/history" element={<ProfilePage/>} />
 								<Route path="/home" element={<HomePage connectMatchSocket={connectMatchSocket} />} />
 								<Route path="/collab" element={<CollabPage chatSocket={chatSocket} videoSocket={videoSocket} sessionSocket={sessionSocket}/>} />
 								<Route
