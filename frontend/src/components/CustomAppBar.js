@@ -50,21 +50,6 @@ const CustomAppBar = () => {
 		setAnchorElUser(null);
 	};
 
-	// const handleMenuButton = (setting) => {
-	// 	if (setting === "Logout"firebase.auth().signOut().then(() => {
-	// 			console.debug("User signed out successfully");
-	// 		}).catch((error) => {
-	// 			console.debug(error);
-	// 		});
-	// 		navigate("/login");) {
-	// 		
-	// 	} else if (setting === "Profile") {
-	// 		navigate("/profile");
-	// 	} else if (setting === "Home") {
-	// 		navigate("/");
-	// 	}
-	// };
-
 	return (
 		<AppBar position="static">
 			<Container maxWidth="xl">
@@ -122,7 +107,7 @@ const CustomAppBar = () => {
 						>
 							{pages.map((page) => (
 								<MenuItem key={page.name} sx={{ margin: "10px" }}>
-									<NavLink to={page.url} sx={{ textDecoration: "none" }}>
+									<NavLink to={page.url} className={({ isActive }) => `nav-link-menu${isActive ? " selected" : ""}`}>
 										<Typography textAlign="center">{page.name}</Typography>
 									</NavLink>
 								</MenuItem>

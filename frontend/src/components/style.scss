@@ -19,3 +19,12 @@
         transition: 0.1s linear;
     }
 }
+
+.nav-link-menu {
+    text-decoration: none;
+    color: black;
+    
+    &.selected {
+        color: #00695f;
+    }
+}
