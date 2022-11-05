@@ -1,7 +1,6 @@
 .nav-link {
     margin: 10px;
     color: black;
-    display: block;
     text-decoration:none;
     font-family: Roboto Mono, monospace; 
     padding: 10px;
@@ -26,5 +25,23 @@
     
     &.selected {
         color: #00695f;
+    }
+}
+
+.difficulty-cell {
+    padding: 5px;
+    width: min-content;
+    border-radius: 5px;
+
+    &.EASY {
+        background-color: rgb(0, 179, 0);
+    }
+
+    &.MEDIUM {
+        background-color: rgb(196, 196, 0);
+    }
+
+    &.HARD {
+        background-color: rgb(255, 58, 58);
     }
 }
