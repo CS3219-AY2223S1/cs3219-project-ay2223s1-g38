@@ -32,7 +32,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      ENV: production
+      ENV: productionc
       DB_LOCAL_URI: mongodb://mongo:27017/user
     depends_on:
       - mongo
@@ -76,6 +76,12 @@ services:
     command: npm start
     ports:
       - "9000:9000"
+    environment:
+      ENV: production
+      DB_LOCAL_URI: mongodb://mongo:27017/collab
+      PORT: 9000
+    depends_on:
+      - mongo
 
   video-service:
     container_name: video-service
