@@ -3,7 +3,7 @@ import schedule from "node-schedule";
 import { SessionEvent } from "../constants/events.js";
 import { Milliseconds } from "../constants/types.js";
 import { addRoomService, deleteRoomService } from "../service/collabService.js";
-import { getQuestion } from "../utils/request.js";
+import { addHistory, getQuestion } from "../utils/request.js";
 import { generateCronJobName } from "../utils/utils.js";
 
 const createSessionHandler = (io, socket) => {
@@ -23,7 +23,8 @@ const createSessionHandler = (io, socket) => {
 		const questionId = question.data.question.questionId;
 
 		const room = await addRoomService(uid1, uid2, roomId, questionId);
-        
+		await addHistory(uid1, uid2, roomId, questionId, difficulty);
+		
 		// Schedule cron job that deletes session after a certain amount of time.
 		const startTime = new Date(Date.now() + Milliseconds.IN_ONE_HOUR);
 		schedule.scheduleJob(generateCronJobName(roomId), startTime,
