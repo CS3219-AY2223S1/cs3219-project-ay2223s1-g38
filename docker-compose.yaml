@@ -32,7 +32,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      ENV: productionc
+      ENV: production
       DB_LOCAL_URI: mongodb://mongo:27017/user
     depends_on:
       - mongo
