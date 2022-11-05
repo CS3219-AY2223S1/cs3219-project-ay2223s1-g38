@@ -49,9 +49,25 @@ services:
       DB_LOCAL_URI: mongodb://mongo:27017/collab
       PORT: 8080
       URI_QUESTION_SVC: http://question-service:8081
+      URI_HISTORY_SVC: http://history-service:8003
     depends_on:
       - mongo
       - question-service
+      - history-service
+
+  history-service:
+    container_name: history-service
+    build:
+      context: ./history-service
+    command: npm start
+    ports:
+      - "8003:8003"
+    environment:
+      ENV: production
+      DB_LOCAL_URI: mongodb://mongo:27017/collab
+      PORT: 8003
+    depends_on:
+      - mongo
 
   communication-service:
     container_name: communication-service

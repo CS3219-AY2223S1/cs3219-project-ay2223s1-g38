@@ -21,7 +21,7 @@ export const getQuestionWithBlacklist = (difficulty, list) => axios.post(`${URI_
 		console.log(error);
 	});
 
-export const addHistory = (uid1, uid2, qid, difficulty) => axios.post(`${URI_HISTORY_SVC}/api/history/addHistory`, { uid1, uid2, qid, difficulty })
+export const addHistory = (uid1, uid2, roomId, qid, difficulty) => axios.post(`${URI_HISTORY_SVC}/api/history/addHistory`, { uid1, uid2, roomId, qid, difficulty })
 	.then(response => {
 		return response;
 	})

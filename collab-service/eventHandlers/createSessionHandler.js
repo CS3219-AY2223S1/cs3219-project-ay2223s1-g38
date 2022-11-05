@@ -23,7 +23,7 @@ const createSessionHandler = (io, socket) => {
 		const questionId = question.data.question.questionId;
 
 		const room = await addRoomService(uid1, uid2, roomId, questionId);
-		await addHistory(uid1, uid2, questionId, difficulty);
+		await addHistory(uid1, uid2, roomId, questionId, difficulty);
 		
 		// Schedule cron job that deletes session after a certain amount of time.
 		const startTime = new Date(Date.now() + Milliseconds.IN_ONE_HOUR);

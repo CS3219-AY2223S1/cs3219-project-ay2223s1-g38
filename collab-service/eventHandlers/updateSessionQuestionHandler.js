@@ -22,6 +22,7 @@ const updateSessionQuestionHandler = (io, socket) => {
 		const questionId = question.data.question.questionId;
 
 		const result = await updateQuestionIdService(roomId, questionId);
+		console.log(roomId, questionId);
 		await updateHistory(roomId, questionId);
         
 		io.to(roomId).emit(SessionEvent.UPDATE_QUESTION, result);

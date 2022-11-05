@@ -9,14 +9,14 @@ export const getHistoryService = async (uid) => {
 export const addHistoryService = async (uid1, uid2, roomId, qid, difficulty) => {
 	let history = await addHistory(uid1, uid2, roomId, qid, difficulty);
 	return history;
-}
+};
 
 export const updateHistoryService = async (uid1, uid2, qid) => {
 	let history = await updateHistory(uid1, uid2, qid);
 	return history;
-}
+};
 
 export const updateHistoryByRoomIdService = async (roomId, qid) => {
 	let history = await updateHistoryByRoomId(roomId, qid);
 	return history;
-}
+};
