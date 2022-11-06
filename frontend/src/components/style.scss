@@ -1,0 +1,48 @@
+.nav-link {
+    margin: 10px;
+    color: black;
+    text-decoration:none;
+    font-family: Roboto Mono, monospace; 
+    padding: 10px;
+    transition: 0.1s linear;
+    text-overflow: ellipsis;
+    
+    &.selected {
+        color: white;
+        background-color: #00695f;
+        border-radius: 5px;
+    }
+
+    &:hover {
+        background-color: #009688;
+        border-radius: 5px;
+        transition: 0.1s linear;
+    }
+}
+
+.nav-link-menu {
+    text-decoration: none;
+    color: black;
+    
+    &.selected {
+        color: #00695f;
+    }
+}
+
+.difficulty-cell {
+    padding: 5px;
+    width: min-content;
+    border-radius: 5px;
+
+    &.EASY {
+        background-color: rgb(0, 179, 0);
+    }
+
+    &.MEDIUM {
+        background-color: rgb(196, 196, 0);
+    }
+
+    &.HARD {
+        background-color: rgb(255, 58, 58);
+    }
+}
