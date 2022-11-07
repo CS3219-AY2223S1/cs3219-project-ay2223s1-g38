@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { selectRoomId } from "../features/match/matchSlice";
 import { selectUserId } from "../features/user/userSlice";
 
-import VideoButtons from "./molecules/VideoButtons";
+import VideoButtons from "./VideoButtons";
 
 const VideoPlayer = ({ videoSocket }) => {
 	const myVideo = useRef();

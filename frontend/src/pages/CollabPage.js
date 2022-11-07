@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 
-import Messager from "../components/organisms/Messager";
+import Messager from "../components/Messager";
 import Question from "../components/Question";
 import VideoPlayer from "../components/VideoPlayer";
 import { resetRoom, selectRoomId } from "../features/match/matchSlice";
