@@ -5,6 +5,8 @@ import express from "express";
 import mongoose from "mongoose";
 import { Server } from "socket.io";
 
+import { ChatEvent } from "./constant.js";
+
 import "dotenv/config.js";
 
 import { roomSchema } from "./repo/messageSchema.js";
@@ -40,14 +42,14 @@ var history =  {};
 io.on("connection", (socket) => {
 	console.debug("A user connected!"); 
 
-	socket.on("join_chatroom", async ({ username, roomId }) => {
+	socket.on(ChatEvent.JOIN, async ({ username, roomId }) => {
 		console.debug(username + "joined room " + roomId); 
 		socket.join(roomId); 
 
 		Room.findOne({ roomId: roomId }, (err, room) => {
 			// load past room message history if exists
 			if (room) {
-				io.to(socket.id).emit("load_room_history", room.messages); 
+				io.to(socket.id).emit(ChatEvent.LOAD_HISTORY, room.messages); 
 			} else {
 				const newRoom = new Room({ roomId: roomId, messages: [] }); 
 				newRoom.save(); 
@@ -55,7 +57,7 @@ io.on("connection", (socket) => {
 		});
 	}); 
 
-	socket.on("send_message", (data) => {
+	socket.on(ChatEvent.SEND_MSG, (data) => {
 		const { msg, username, roomId } = data; 
 		if (!history[roomId]) {
 			history[roomId] = []; 
@@ -65,10 +67,10 @@ io.on("connection", (socket) => {
 		saveMessageToDb(roomId, newMsg);
 
 		console.debug("Received msg: " + msg + " from user: " + username + " in room: " + roomId);  
-		io.to(roomId).emit("receive_message", newMsg);
+		io.to(roomId).emit(ChatEvent.RECEIVE_MSG, newMsg);
 	});
 
-	socket.on("leave_chatroom", (data) => {
+	socket.on(ChatEvent.LEAVE, (data) => {
 		const { username, roomId } = data;  
 
 		const newMsg = formatMessage(`${username} has left the room`, CHAT_BOT, new Date());
@@ -77,20 +79,14 @@ io.on("connection", (socket) => {
 			saveMessageToDb(roomId, newMsg);
 		}
 		
-		io.to(roomId).emit("receive_message", newMsg);
-		socket.to(roomId).emit("user-disconnected");
+		io.to(roomId).emit(ChatEvent.RECEIVE_MSG, newMsg);
+		// socket.to(roomId).emit("user-disconnected");
 		console.debug(`${username} has left the room`); 
 
 		console.log("cleaning up rooms in db");
 		cleanUpRoomsInDb(socket.rooms, socket.id);
 
 		socket.leave(roomId);
-	});
-
-	socket.on("join_video_room", (data) => {
-		const { userId, roomId } = data;
-		socket.join(roomId);
-		socket.to(roomId).emit("user-connected", userId);
 	});
 });
 
