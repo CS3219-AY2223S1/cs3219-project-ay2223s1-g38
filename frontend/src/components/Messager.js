@@ -6,14 +6,15 @@ import { Box } from "@mui/system";
 
 import { useSelector } from "react-redux";
 
-import { selectRoomId } from "../../features/match/matchSlice";
-import { selectUsername } from "../../features/user/userSlice";
+import { selectRoomId } from "../features/match/matchSlice";
+import { selectUsername } from "../features/user/userSlice";
 
-import { ChatEvent } from "../../utils/constants";
-import { convertToMessageBoxFields } from "../../utils/utils";
-import MessageInput from "../molecules/MessageInput";
+import { ChatEvent } from "../utils/constants";
+import { convertToMessageBoxFields } from "../utils/utils";
+
+import MessageInput from "./MessageInput";
  
-import ChatBox from "../molecules/MessageList"; 
+import ChatBox from "./MessageList"; 
 
 
 const Messager = ({ chatSocket }) => {

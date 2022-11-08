@@ -4,7 +4,7 @@ import { Videocam, VideocamOff, Mic, MicOff } from "@mui/icons-material";
 import { Grid } from "@mui/material";
 import PropTypes from "prop-types";
 
-import VideoButton from "../atoms/VideoButton";
+import VideoButton from "./VideoButton";
 
 const VideoButtons = (props) => {
 	const { localStream } = props;

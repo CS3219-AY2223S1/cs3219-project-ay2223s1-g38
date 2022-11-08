@@ -64,15 +64,15 @@ services:
       - "8003:8003"
     environment:
       ENV: production
-      DB_LOCAL_URI: mongodb://mongo:27017/collab
+      DB_LOCAL_URI: mongodb://mongo:27017/history
       PORT: 8003
     depends_on:
       - mongo
 
-  communication-service:
-    container_name: communication-service
+  chat-service:
+    container_name: chat-service
     build:
-      context: ./communication-service
+      context: ./chat-service
     command: npm start
     ports:
       - "9000:9000"
@@ -110,7 +110,7 @@ services:
       - matching-service
       - user-service 
       - collab-service
-      - communication-service
+      - chat-service
       - video-service
   
 

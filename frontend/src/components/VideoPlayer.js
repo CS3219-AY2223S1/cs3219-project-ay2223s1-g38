@@ -10,7 +10,7 @@ import { selectUserId } from "../features/user/userSlice";
 
 import { VideoEvent } from "../utils/constants";
 
-import VideoButtons from "./molecules/VideoButtons";
+import VideoButtons from "./VideoButtons";
 
 const VideoPlayer = ({ videoSocket }) => {
 	const myVideo = useRef();

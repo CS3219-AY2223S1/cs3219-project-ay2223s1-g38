@@ -16,7 +16,7 @@ import { NavLink } from "react-router-dom";
 const createData = (entry) => {
 	const { createdAt, difficulty, qids } = entry;
 	const date = new Date(Date.parse(createdAt));
-	const formattedDate = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+	const formattedDate = date.toLocaleString();
 	return { createdAt: formattedDate, qids, difficulty };
 };
 
@@ -38,7 +38,6 @@ export const HistoryTable = ({ history }) => {
 				<TableBody>
 					{history.map((entry) => {
 						const row = createData(entry);
-						console.log(row.qids);
 						return (
 							<TableRow
 								key={row.name}
