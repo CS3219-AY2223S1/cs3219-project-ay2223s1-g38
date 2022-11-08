@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 
 const columns = [
 	{ field: "id", headerName: "ID", width: 100, renderCell: (params) => <NavLink className="nav-link" to={`/questions/${params.value}`}>{params.value}</NavLink> },
-	{ field: "title", headerName: "Title", width: 500, sortComparator: (d1, d2) => d1.title.localeCompare(d2.title), renderCell: (params) => <NavLink className="nav-link" to={`/questions/${params.value.id}`}>{params.value.title}</NavLink> },
+	{ field: "title", headerName: "Title", width: 500, valueGetter: (e) => e.value.title, renderCell: (params) => <NavLink className="nav-link" to={`/questions/${params.id}`}>{params.value}</NavLink> },
 	{ field: "difficulty", headerName: "Difficulty", width: 130, renderCell: (params) => <p className={`difficulty-cell ${params.value}`}>{params.value}</p> },
 ];
 
