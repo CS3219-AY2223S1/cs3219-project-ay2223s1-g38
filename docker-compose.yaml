@@ -64,7 +64,7 @@ services:
       - "8003:8003"
     environment:
       ENV: production
-      DB_LOCAL_URI: mongodb://mongo:27017/collab
+      DB_LOCAL_URI: mongodb://mongo:27017/history
       PORT: 8003
     depends_on:
       - mongo
