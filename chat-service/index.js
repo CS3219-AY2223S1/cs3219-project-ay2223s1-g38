@@ -116,7 +116,7 @@ const saveMessageToDb = (roomId, newMsg) => {
 		if (room) {
 			room.messages.push(newMsg);
 			// only store past 50 messages max
-			room.messages = room.messages.slice(Math.max(room.messages.length - 50, 0)); 
+			room.messages = room.messages.slice(Math.max(room.messages.length - 500, 0)); 
 			room.save();
 		}
 	});
