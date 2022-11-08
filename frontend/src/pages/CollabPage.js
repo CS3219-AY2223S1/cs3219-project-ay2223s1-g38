@@ -17,6 +17,8 @@ import VideoPlayer from "../components/VideoPlayer";
 import { resetRoom, selectRoomId } from "../features/match/matchSlice";
 import { selectQuestionId } from "../features/session/sessionSlice";
 import { selectUsername } from "../features/user/userSlice";
+import { VideoEvent } from "../utils/constants";
+import { ChatEvent } from "../utils/constants";
 import { listenSession } from "../utils/eventHandlers";
 import { joinSession, leaveSession } from "../utils/socket";
 
@@ -44,8 +46,8 @@ const CollabPage = ({ chatSocket, sessionSocket, videoSocket }) => {
 
 	const handleLeaveRoom = () => {
 		leaveSession(sessionSocket);
-		chatSocket.emit("leave_chatroom", { username, roomId });
-		videoSocket.emit("leave_video_room", { username, roomId });
+		chatSocket.emit(ChatEvent.LEAVE, { username, roomId });
+		videoSocket.emit(VideoEvent.LEAVE, { username, roomId });
 		dispatch(resetRoom());
 		navigate("/home");
 	};

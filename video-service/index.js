@@ -4,6 +4,8 @@ import cors from "cors";
 import express from "express";
 import { Server } from "socket.io";
 
+import { VideoEvent } from "./constants.js";
+
 const app = express(); 
 app.use(cors());
 app.options("*", cors());
@@ -22,17 +24,17 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
 	console.debug("A user connected to the video socket!"); 
-	socket.on("leave_video_room", (data) => {
+	socket.on(VideoEvent.LEAVE, (data) => {
 		const { username, roomId } = data; 
 		socket.leave(roomId); 
-		socket.to(roomId).emit("user-disconnected-video");
+		socket.to(roomId).emit(VideoEvent.DISCONNECT);
 		console.debug(`${username} has left the video room`); 
 	});
 
-	socket.on("join_video_room", (data) => {
+	socket.on(VideoEvent.JOIN, (data) => {
 		const { userId, roomId } = data;
 		socket.join(roomId);
-		socket.to(roomId).emit("user-connected-video", userId);
+		socket.to(roomId).emit(VideoEvent.CONNECT, userId);
 	});
 
 });

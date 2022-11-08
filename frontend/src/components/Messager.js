@@ -9,11 +9,13 @@ import { useSelector } from "react-redux";
 import { selectRoomId } from "../features/match/matchSlice";
 import { selectUsername } from "../features/user/userSlice";
 
+import { ChatEvent } from "../utils/constants";
 import { convertToMessageBoxFields } from "../utils/utils";
 
 import MessageInput from "./MessageInput";
  
 import ChatBox from "./MessageList"; 
+
 
 const Messager = ({ chatSocket }) => {
 	const roomId = useSelector(selectRoomId); 
@@ -25,12 +27,12 @@ const Messager = ({ chatSocket }) => {
 		if (chatSocket) {
 			joinChatRoom();
 			
-			chatSocket.on("load_room_history", (data) => { 
+			chatSocket.on(ChatEvent.LOAD_HISTORY, (data) => { 
 				const pastMessages = data.map((msgInfo) => convertToMessageBoxFields(msgInfo, currUsername));
 				setMessages(messages => messages.concat(pastMessages));
 			});
 
-			chatSocket.on("receive_message", (data) => {
+			chatSocket.on(ChatEvent.RECEIVE_MSG, (data) => {
 				setMessages(state => [
 					...state, 
 					convertToMessageBoxFields(data, currUsername)
@@ -38,19 +40,19 @@ const Messager = ({ chatSocket }) => {
 			});
 
 			return () => {
-				chatSocket.off("receive_message");
+				chatSocket.off(ChatEvent.RECEIVE_MSG);
 			};
 		}
 	}, [ chatSocket ]);
 
 	const emitMessage = (msg) => { 
 		if (msg && msg.length > 0) {
-			chatSocket.emit("send_message", { msg, username: currUsername, roomId });
+			chatSocket.emit(ChatEvent.SEND_MSG, { msg, username: currUsername, roomId });
 		}
 	};
 
 	const joinChatRoom = () => {
-		chatSocket.emit("join_chatroom", { username: currUsername, roomId }); 
+		chatSocket.emit(ChatEvent.JOIN, { username: currUsername, roomId }); 
 	};
 
 	return <Box container sx={{ height: "calc(30% - 6px)", paddingTop: "5px", backgroundColor: "white", borderTop: "1px solid black" }}>
