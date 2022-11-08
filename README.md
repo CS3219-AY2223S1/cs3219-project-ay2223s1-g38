@@ -14,14 +14,21 @@ This is our CS3219 project.
 # First time developer set up guide
 ### Software Prerequisites: 
 1. MongoDB
-
-### User Service
-1. Rename `.env.sample` file to `.env`.
-2. Find the `DB_CLOUD_URI` from a team member and update in `.env` file.
-3. Install npm packages using `npm i`.
-4. Run User Service using `npm run dev`.
+2. RabbitMQ
 
 ### Frontend
 1. Install npm packages using `npm i --force`. (Need to force due to firepad dependencies not being the most up to date)
 2. Run Frontend using `npm start`.
 3. Set up `.env` file by renaming the `.env.sample` file and filling up the details for the firebase project. (For collaborative code editor)
+
+### Matching Service
+1. Install necessary packages with `npm install`.
+2. Set up the SQLite database with `npm run migrate`. Verify that `database.sqlite3` was created.
+3. Create a Docker container for RabbitMQ with `docker container run --name rabbitmq --detach -p 5672:5672 rabbitmq`.
+4. Run the Match Service with `npm run dev`.
+
+### Other Services
+1. Install necessary packages with `npm install`.
+2. Obtain the `.env` file from the link above.
+3. Run the development server with `npm run dev`.
+
