@@ -8,6 +8,8 @@ import { useSelector } from "react-redux";
 import { selectRoomId } from "../features/match/matchSlice";
 import { selectUserId } from "../features/user/userSlice";
 
+import { VideoEvent } from "../utils/constants";
+
 import VideoButtons from "./molecules/VideoButtons";
 
 const VideoPlayer = ({ videoSocket }) => {
@@ -26,7 +28,7 @@ const VideoPlayer = ({ videoSocket }) => {
 				setLocalStream(stream);
 				myVideo.current.srcObject = stream;
 				myVideo.current.play();
-				videoSocket.emit("join_video_room",{ roomId, userId });
+				videoSocket.emit(VideoEvent.JOIN,{ roomId, userId });
 				myPeer.on("call", call => {
 					call.answer(stream);
 					call.on("stream", userVideoStream => { // When we recieve their stream
@@ -35,11 +37,11 @@ const VideoPlayer = ({ videoSocket }) => {
 					});
 				});
   
-				videoSocket.on("user-connected-video", userId => { // If a new user connect
+				videoSocket.on(VideoEvent.CONNECT, userId => { // If a new user connect
 					connectToNewUser(userId, stream); 
 				});
 				
-				videoSocket.on("user-disconnected-video", () => {
+				videoSocket.on(VideoEvent.DISCONNECT, () => {
 					peerVideo.current.srcObject = null;
 				});
 
