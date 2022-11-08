@@ -5,10 +5,18 @@ import { PropTypes } from "prop-types";
 import "./style.scss";
 import { NavLink } from "react-router-dom";
 
+const difficultyValuesMap = { "EASY": 1, "MEDIUM": 2, "HARD": 3 };
+
+const sortByDifficulty = (d1, d2) => {
+	const d1Value = difficultyValuesMap[d1];
+	const d2Value = difficultyValuesMap[d2];
+	return d1Value - d2Value;
+};
+
 const columns = [
 	{ field: "id", headerName: "ID", width: 100, renderCell: (params) => <NavLink className="nav-link" to={`/questions/${params.value}`}>{params.value}</NavLink> },
 	{ field: "title", headerName: "Title", width: 500, valueGetter: (e) => e.value.title, renderCell: (params) => <NavLink className="nav-link" to={`/questions/${params.id}`}>{params.value}</NavLink> },
-	{ field: "difficulty", headerName: "Difficulty", width: 130, renderCell: (params) => <p className={`difficulty-cell ${params.value}`}>{params.value}</p> },
+	{ field: "difficulty", headerName: "Difficulty", width: 130, sortComparator: sortByDifficulty, renderCell: (params) => <p className={`difficulty-cell ${params.value}`}>{params.value}</p> },
 ];
 
 const generateRows = (questions) => {
