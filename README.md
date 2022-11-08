@@ -7,8 +7,8 @@ This is our CS3219 project.
 1. Ensure you have Docker installed.
 2. Pull the repository to your local device and `cd` into the directory.
 3. Ensure that you have the necessary .env files for the different services. Obtain the environment variables from [here](https://drive.google.com/drive/folders/19W-aJ8sCx0g9EkEqVuJvIHJppAJ8o36U).
-4. Ensure you insert the `.env` files into the correct microservices, e.g. insert the `.env` file in user-service folder on Google Drive into the user-service folder.
-5. Run docker-compose up -d
+4. Ensure you insert the `.env` files into the correct microservices, e.g. insert the `.env` file in user-service folder on Google Drive into the user-service folder. Remember to rename the files to `.env` (they are stored as just `env` on Google Drive).
+5. Run docker-compose up -d.
 6. Go to localhost:3000.
 
 # First time developer set up guide
