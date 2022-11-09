@@ -1,0 +1,135 @@
+version: "3"
+
+services:
+  question-service:
+    container_name: question-service 
+    build:
+      context: ./question-service
+    command: npm start
+    ports:
+      - "8081:8081"
+    
+  matching-service:
+    container_name: matching-service
+    build:
+      context: ./matching-service
+    command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- npm start'
+    ports:
+      - "8001:8001"
+    environment:
+      ENV: production
+      MQ_CONN_URL: amqp://guest:guest@rabbitmq:5672
+      URI_COLLAB_SVC: collab-service:8080
+    depends_on:
+      - rabbitmq
+      - collab-service
+  
+  user-service:
+    container_name: user-service
+    build:
+      context: ./user-service
+    command: npm start
+    ports:
+      - "8000:8000"
+    environment:
+      ENV: production
+      DB_LOCAL_URI: mongodb://mongo:27017/user
+    depends_on:
+      - mongo
+  
+  collab-service:
+    container_name: collab-service
+    build:
+      context: ./collab-service
+    command: npm start
+    ports:
+      - "8080:8080"
+    environment:
+      ENV: production
+      DB_LOCAL_URI: mongodb://mongo:27017/collab
+      PORT: 8080
+      URI_QUESTION_SVC: http://question-service:8081
+      URI_HISTORY_SVC: http://history-service:8003
+    depends_on:
+      - mongo
+      - question-service
+      - history-service
+
+  history-service:
+    container_name: history-service
+    build:
+      context: ./history-service
+    command: npm start
+    ports:
+      - "8003:8003"
+    environment:
+      ENV: production
+      DB_LOCAL_URI: mongodb://mongo:27017/history
+      PORT: 8003
+    depends_on:
+      - mongo
+
+  chat-service:
+    container_name: chat-service
+    build:
+      context: ./chat-service
+    command: npm start
+    ports:
+      - "9000:9000"
+    environment:
+      ENV: production
+      DB_LOCAL_URI: mongodb://mongo:27017/collab
+      PORT: 9000
+    depends_on:
+      - mongo
+
+  video-service:
+    container_name: video-service
+    build:
+      context: ./video-service
+    command: npm start
+    ports:
+      - "9001:9001"
+  
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+    command: npm start
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_URI_CHAT_SVC: http://localhost:9000
+      REACT_APP_URI_SESSION_SVC: http://localhost:8080
+      REACT_APP_URI_MATCHING_SVC: http://localhost:8001
+      REACT_APP_URI_QUESTION_SVC: http://localhost:8081
+      REACT_APP_URI_USER_SVC: http://localhost:8000
+      REACT_APP_URI_VIDEO_SVC: http://localhost:9001
+    depends_on:
+      - question-service
+      - matching-service
+      - user-service 
+      - collab-service
+      - chat-service
+      - video-service
+  
+
+  mongo:
+    container_name: mongo-node
+    platform: linux/amd64
+    image: mongo:4.4.14
+    ports:
+      - "27017:27017"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 12345
+  
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq

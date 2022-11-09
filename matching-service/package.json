@@ -3,23 +3,35 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx eslint .",
+    "lint-fix": "npx eslint . --fix",
+    "migrate": "sequelize db:migrate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^8.23.0",
+    "eslint-plugin-import": "^2.26.0",
     "nodemon": "^2.0.19"
   },
   "dependencies": {
+    "amqplib": "^0.10.3",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.1",
-    "sequelize": "^6.21.3",
+    "node-schedule": "^2.1.0",
+    "sequelize": "^6.21.4",
+    "sequelize-cli": "^6.4.1",
     "socket.io": "^4.5.1",
-    "sqlite3": "^5.0.10",
-    "uuid": "^8.3.2"
+    "socket.io-client": "^4.5.2",
+    "sqlite3": "^5.0.11",
+    "uuid": "^8.3.2",
+    "uuid4": "^2.0.3"
   }
 }

@@ -1,0 +1,39 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "overrides": [
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+    "ignorePatterns": ["migrations/*.js", "seeders/*.js"],
+    "rules": {
+        "indent": [
+            "error",
+            "tab"
+        ],
+        "linebreak-style": [
+            "error",
+            "windows"
+        ],
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "semi": 2,
+        "object-curly-spacing": [
+            "error",
+            "always",
+            { "arraysInObjects": true }
+        ], 
+        "array-bracket-spacing": [
+            "error", 
+            "always"
+        ]
+    }
+}
