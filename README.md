@@ -1,7 +1,17 @@
 # CS3219-AY22-23-Project
 
 # AlgoHike
-This is our CS3219 project.
+## Background
+AlgoHike is a web application that helps students and job seekers in the technological industry build up their confidence in tackling technical interviews through interview simulations with randomly matched strangers.
+
+Via various features such as a question generator, collaborative editor, real time chat messaging service and video and voice chat, it provides users with a realistic environment to practise coding interviews.
+
+## Purpose
+Coding interviews are a key aspect of job hunting in the technological industry. Employers often evaluate potential employees’ capabilities by assessing how well they can solve algorithm questions and explain their solutions in a clear and effective manner. 
+
+To aid users in landing their dream technical jobs, AlgoHike not only allows users to practise algorithm questions, but also matches them with other users so he/she can explain their solutions to them and receive feedback on areas they can improve. Through such technical interview simulations, AlgoHike aims to guide users in their algorithmic hike to the summit, and as an added bonus, meet new friends along the way.
+
+
 
 # Running application locally
 1. Ensure you have Docker installed.
